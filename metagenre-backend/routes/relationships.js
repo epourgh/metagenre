@@ -1,0 +1,175 @@
+const express = require('express');
+const router = express.Router();
+const connection = require('../connection');
+
+router.get('/relationships', (req, res) => {
+
+    const { genreId, subgenreId } = req.query;
+
+    /*
+    SELECT: 
+    0. RelationshipsTotalTally: subgenre total votes (results[0][0])
+    1. Relationship: genres voted for a subgenre (results[1][i]) WHERE a mediumGenre row (for each Medium) exists
+       For vote removal only; currently separate from mediumVotesModifier()
+    2. mediumGenres / Subgenres: mediumGenreId, mediumSubgenreId, mediumGenreVotes, mediumSubgenreVotes (results[2][i])
+    3. Relationship: Individual Subgenre x Genre (results[3][0])
+    4. Relationship: genres voted for a subgenre (results[1][i]) WHERE a mediumGenre row (for each Medium) DOES NOT exist
+       For additions only; within mediumVotesModifier()
+    */
+
+    const MULTI_SELECT_RELATIONSHIP_QUERIES = `
+        SELECT * FROM metagenre.relationshipsTotalTally WHERE subgenreId=${subgenreId};
+        SELECT r.*, mg.id as mediumGenreId, ms.votes as mediumSubgenreVotes
+        FROM metagenre.relationships as r, metagenre.mediums as m, metagenre.mediumsSubgenres as ms, metagenre.mediumsGenres as mg
+        WHERE EXISTS(SELECT * FROM metagenre.mediumsGenres as mg WHERE mg.genreId = r.genreId AND mg.mediumId = m.id) AND ms.subgenreId = r.subgenreId AND m.id = ms.mediumId AND m.id = mg.mediumId AND mg.genreId = r.genreId AND r.subgenreId = ${subgenreId};
+        SELECT metagenre.mediumsGenres.genreId, metagenre.mediumsSubgenres.subgenreId, metagenre.mediumsGenres.id as mediumGenreId, metagenre.mediumsSubgenres.id as mediumSubgenreId, metagenre.mediumsGenres.votes as mediumGenreVotes, metagenre.mediumsSubgenres.votes as mediumSubgenreVotes
+        FROM metagenre.mediumsSubgenres, metagenre.mediumsGenres
+        WHERE metagenre.mediumsSubgenres.mediumId = metagenre.mediumsGenres.mediumId AND metagenre.mediumsSubgenres.subgenreId=${subgenreId};
+        SELECT * FROM metagenre.relationships WHERE genreId=${genreId} AND subgenreId=${subgenreId};
+        SELECT r.*, ms.mediumId as mediumId, ms.votes as mediumSubgenreVotes
+        FROM metagenre.relationships as r, metagenre.mediums as m, metagenre.mediumsSubgenres as ms
+        WHERE NOT EXISTS(SELECT * FROM metagenre.mediumsGenres as mg WHERE mg.genreId = r.genreId AND mg.mediumId = m.id) AND ms.subgenreId = r.subgenreId AND m.id = ms.mediumId AND r.subgenreId = ${subgenreId} AND r.genreId=${genreId};`;
+
+    connection.query(MULTI_SELECT_RELATIONSHIP_QUERIES, (err, results) => {
+
+        if (err) {
+            return res.send(err);
+        } else {
+
+            const [relTotal, relSubgenreMediumGenresExist, mediumsGenresSubgenres, relClicked, relSubgenreMediumGenresNotExist] =
+                  [results[0][0], results[1], results[2], results[3][0], results[4][0]];
+                  
+            const dispatchToDatabase = (MULTI_QUERY) => {
+
+                console.log('dispatching...');
+                console.log(MULTI_QUERY);
+
+                connection.query(MULTI_QUERY, (err, updateRes) => {
+                    if (err) {
+                        return res.send(err);
+                    } else {
+                        return res.json({
+                            data: updateRes
+                        })
+                    }
+                })
+            };
+
+            const relationshipViewModel = (subgenreId, genreId) => {
+
+                if (typeof relClicked != "undefined") {
+                    // UPDATE relationship
+                    return `UPDATE metagenre.relationships SET votes = votes + 1 WHERE subgenreID = ${subgenreId} AND genreID = ${genreId};`;
+                } else {
+                    // INSERT relationship
+                    return `INSERT INTO metagenre.relationships (subgenreId, genreId, connection, votes) VALUES(${subgenreId}, ${genreId}, 1, 1);`;
+                }
+
+            }
+
+            const checkPercentageGenreToTotalViewModel = (subgenreId, genreId) => {
+
+                console.log(`genreId: ${genreId}`)
+
+                let multiTempMultiQuery = '';
+
+                if (relClicked.connection === 0) {
+
+                    console.log(`genreId: ${genreId}`)
+
+                    if ((relClicked.votes + 1) / (relTotal.votes + 1) >= .5 || 
+                        (relClicked.votes + 1) / (relTotal.votes + 1) == Infinity) {
+
+                        console.log('not connected & majority')
+
+                        // UPDATE relationship
+                        multiTempMultiQuery += `UPDATE metagenre.relationships SET connection = 1 WHERE subgenreID = ${subgenreId} AND genreID = ${genreId};`;
+                        multiTempMultiQuery += mediumVotesModifier(genreId, '+');
+
+                    }
+
+                } else if (relClicked.connection === 1) {
+
+                    console.log(`genreId: ${genreId}`)
+
+                    if ((relClicked.votes + 1) / (relTotal.votes + 1) < .5) {
+
+                        console.log('not connected & not majority')
+
+                        multiTempMultiQuery += `UPDATE metagenre.relationships SET connection = 0 WHERE subgenreID = ${subgenreId} AND genreID = ${genreId};`;
+
+                        multiTempMultiQuery += mediumVotesModifier(genreId, '-');
+
+                    }
+
+                }
+
+                relSubgenreMediumGenresExist.forEach(function (genre) {
+
+                    console.log(`${genre.genreId} != ${genreId}`);
+
+                    if (genre.genreId != genreId &&
+                        genre.votes / (relTotal.votes + 1) < .5 &&
+                        genre.connection === 1) {
+
+                        // UPDATE genre
+                        multiTempMultiQuery += `UPDATE metagenre.relationships SET connection = 0 WHERE subgenreID = ${subgenreId} AND genreID = ${genre.genreId};`;
+
+                        multiTempMultiQuery += `UPDATE metagenre.mediumsGenres SET votes = votes - ${genre.mediumSubgenreVotes} WHERE id = ${genre.mediumGenreId};`;
+                    }
+
+                });
+
+                multiTempMultiQuery += `UPDATE metagenre.relationshipsTotalTally SET votes = votes + 1 WHERE subgenreID = ${subgenreId};`;
+                return multiTempMultiQuery;
+
+            }
+
+
+            // subgenres and genres are no longer fixed in an array
+
+            const mediumVotesModifier = (loopedGenreId, choice) => {
+
+                let stringOfUpdates = '';
+                console.log(`START: ${stringOfUpdates}`);
+
+                mediumsGenresSubgenres.forEach(function (mediumsGenreSubgenre) {
+                    if (mediumsGenreSubgenre.genreId == loopedGenreId) {
+                        stringOfUpdates += `UPDATE metagenre.mediumsGenres SET votes = votes ${choice} ${mediumsGenreSubgenre.mediumSubgenreVotes} WHERE id = ${mediumsGenreSubgenre.mediumGenreId};`;
+                        console.log(`\n${choice}: ${stringOfUpdates}\n`);
+                    }
+                });
+
+                if (choice === '+' && relSubgenreMediumGenresNotExist !== undefined) {
+                    console.log('relSubgenreMediumGenresNotExist')
+                    console.log(relSubgenreMediumGenresNotExist);
+                    if(relSubgenreMediumGenresNotExist.length > 1) {
+                        relSubgenreMediumGenresNotExist.forEach(function (mediumGenreSubgenre) {
+                            stringOfUpdates += `INSERT INTO metagenre.mediumsGenres (mediumId, genreId, votes) VALUES(${mediumGenreSubgenre.mediumId}, ${mediumGenreSubgenre.genreId}, ${mediumGenreSubgenre.mediumSubgenreVotes});`;
+                        });
+                    } else if (relSubgenreMediumGenresNotExist.id !== undefined) {
+                        stringOfUpdates += `INSERT INTO metagenre.mediumsGenres (mediumId, genreId, votes) VALUES(${relSubgenreMediumGenresNotExist.mediumId}, ${relSubgenreMediumGenresNotExist.genreId}, ${relSubgenreMediumGenresNotExist.mediumSubgenreVotes});`;
+                    }
+                }
+ 
+                return stringOfUpdates;
+
+            };
+
+
+            // IIFE CONSTRUCTOR FUNCTION
+            ((subgenreId, genreId) => {
+
+                console.log(`CONSTRUCTOR genreId: ${genreId}`)
+                let MULTI_QUERY = relationshipViewModel(subgenreId, genreId);
+                MULTI_QUERY += checkPercentageGenreToTotalViewModel(subgenreId, genreId);
+                dispatchToDatabase(MULTI_QUERY);
+            })(subgenreId, genreId);
+
+
+        }
+    });
+
+});
+
+module.exports = router;
