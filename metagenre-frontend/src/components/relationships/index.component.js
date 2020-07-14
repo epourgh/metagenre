@@ -12,7 +12,7 @@ export default function RelationshipsIndex() {
     }, [])
 
     const getGenres = (stringParam) => {
-        fetch(`http://18.225.9.206:4000/genres`)
+        fetch(`http://localhost:4000/genres`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
