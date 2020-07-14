@@ -27,7 +27,7 @@ export default function Register() {
 
         console.log('fetching...');
 
-        fetch('http://localhost:4000/securityQuestions')
+        fetch('http://18.225.9.206:4000/securityQuestions')
             .then(response => response.json())
             .then(response => {
                 if (response.data.length > 0) {
@@ -80,7 +80,7 @@ export default function Register() {
         }
     
         if (typeof usernameObject.username != undefined && typeof usernameObject.password != undefined) {
-          fetch(`http://localhost:4000/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
+          fetch(`http://18.225.9.206:4000/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
             .then(res => console.log(res))
             .catch(err => console.log(err))
         }
