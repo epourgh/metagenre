@@ -27,7 +27,7 @@ export default function Register() {
 
         console.log('fetching...');
 
-        fetch('http://localhost/api/securityQuestions')
+        fetch('./api/securityQuestions')
             .then(response => response.json())
             .then(response => {
                 if (response.data.length > 0) {
@@ -80,7 +80,7 @@ export default function Register() {
         }
     
         if (typeof usernameObject.username != undefined && typeof usernameObject.password != undefined) {
-          fetch(`http://localhost/api/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
+          fetch(`./api/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
             .then(res => console.log(res))
             .catch(err => console.log(err))
         }

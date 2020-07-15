@@ -16,7 +16,7 @@ export default function Login() {
     const signIn = () => {
 
         if (typeof username.username != undefined && typeof username.password != undefined) {
-        fetch(`http://localhost/api/username/login?username=${username.username}&password=${username.password}`)
+        fetch(`./api/username/login?username=${username.username}&password=${username.password}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response);

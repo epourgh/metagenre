@@ -23,7 +23,7 @@ export default function Series() {
     }, [])
 
     const getCreatorsSeries = () => {
-        fetch(`http://localhost/api/creators/${id}`)
+        fetch(`./api/creators/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)

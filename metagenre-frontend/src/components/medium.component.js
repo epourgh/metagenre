@@ -59,7 +59,7 @@ export default function Medium() {
     })
 
     const getMediumsDetails = () => {
-        fetch(`http://localhost/api/mediumsDetails/${id}`)
+        fetch(`./api/mediumsDetails/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data);
@@ -69,7 +69,7 @@ export default function Medium() {
     }
 
     const getPlatforms = () => {
-        fetch(`http://localhost/api/platforms`)
+        fetch(`./api/platforms`)
             .then(response => response.json())
             .then(response => {
                 setPlatforms(response.data);
@@ -77,7 +77,7 @@ export default function Medium() {
     }
 
     const getRegions = () => {
-    fetch(`http://localhost/api/regions`)
+    fetch(`./api/regions`)
         .then(response => response.json())
         .then(response => {
             setRegions(response.data);
@@ -85,7 +85,7 @@ export default function Medium() {
     }
 
     const getSimilarMediums = () => {
-        fetch(`http://localhost/api/similar/${id}`)
+        fetch(`./api/similar/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data);
@@ -99,7 +99,7 @@ export default function Medium() {
     }
 
     const getExternalLinks = () => {
-        fetch(`http://localhost/api/mediumExternalLinks/${id}`)
+        fetch(`./api/mediumExternalLinks/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log('response.data')
@@ -112,7 +112,7 @@ export default function Medium() {
 
 
     const getCreatorsSeries = () => {
-        fetch(`http://localhost/api/mediumsCreatorsSeries/view/${id}`)
+        fetch(`./api/mediumsCreatorsSeries/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -126,7 +126,7 @@ export default function Medium() {
 
         const userPickedContainer = [];
 
-        fetch(`http://localhost/api/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
+        fetch(`./api/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data)
@@ -146,7 +146,7 @@ export default function Medium() {
 
         const mediumsGenresContainer = [];
 
-        fetch(`http://localhost/api/${mediumsGenres}/view/${id}`)
+        fetch(`./api/${mediumsGenres}/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 if (userPickedContainer.length > 0) {
@@ -215,7 +215,7 @@ export default function Medium() {
 
     const getMediumsGenres = (stringParam) => {
 
-        fetch(`http://localhost/api/${stringParam}/view/${id}`)
+        fetch(`./api/${stringParam}/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -243,7 +243,7 @@ export default function Medium() {
  
     const voteMediumGenre = (mediumGenresId, routeString, routeString2, mediumGenreVotes, genreId, symbol) => {
 
-        fetch(`http://localhost/api/${routeString}/update/${mediumGenresId}?votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
+        fetch(`./api/${routeString}/update/${mediumGenresId}?votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
             .then(response => {
                 console.log(response)
                 getMediumsGenresMultiple(routeString, routeString2);
@@ -262,7 +262,7 @@ export default function Medium() {
 
             console.log(`name=${medium.genreName}&mediumId=${id}&genreType=${medium.genreType}`);
 
-            fetch(`http://localhost/api/mediumsGenresChecker?genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
+            fetch(`./api/mediumsGenresChecker?genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
                 .then(update => {
                     console.log(update.url)
 
