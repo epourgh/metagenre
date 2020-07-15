@@ -35,7 +35,7 @@ export default function Medium() {
   }, [paramsMediumType]);
 
   const getMediums = () => {
-    fetch(`18.225.9.206/api/mediums/genreless?mediumType=${paramsMediumType}`)
+    fetch(`http://localhost:80/api/mediums/genreless?mediumType=${paramsMediumType}`)
       .then(response => response.json())
       .then(response => setMediums(response.data))
       .catch(err => console.error(err))
@@ -43,7 +43,7 @@ export default function Medium() {
 
   const getMediumsGenres = () => {
     const container = {};
-    fetch(`18.225.9.206/api/mediumsGenresView?mediumType=${paramsMediumType}`)
+    fetch(`http://localhost:80/api/mediumsGenresView?mediumType=${paramsMediumType}`)
         .then(response => response.json())
         .then(response => {
         if (response.data.length > 0) {
@@ -74,7 +74,7 @@ export default function Medium() {
         .catch(err => console.error(err))
     
 
-    fetch(`18.225.9.206/api/mediumsSubgenresView?mediumType=${paramsMediumType}`)
+    fetch(`http://localhost:80/api/mediumsSubgenresView?mediumType=${paramsMediumType}`)
         .then(response => response.json())
         .then(response => {
             if (response.data.length > 0) {
@@ -123,7 +123,7 @@ export default function Medium() {
       
 
     //   if (typeof medium.title != undefined && typeof medium.mediumType != undefined) {
-    //     fetch(`18.225.9.206/api/mediums/add?title=${medium.title}&mediumType=${medium.mediumType}`)
+    //     fetch(`http://localhost:80/api/mediums/add?title=${medium.title}&mediumType=${medium.mediumType}`)
     //       .then(update => {
     //           getMediums();
     //           getMediumsGenres();
@@ -135,7 +135,7 @@ export default function Medium() {
 
         let votedMediumGenre = mediumGenreVotes + 1;
 
-        fetch(`18.225.9.206/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
+        fetch(`http://localhost:80/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
             .then(response => {
               getMediums();
               getMediumsGenres();
@@ -147,7 +147,7 @@ export default function Medium() {
 
       let votedMediumGenre = mediumGenreVotes + 1;
 
-      fetch(`18.225.9.206/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}&subgenreId=${subgenreId}`)
+      fetch(`http://localhost:80/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}&subgenreId=${subgenreId}`)
         .then(response => {
           getMediums();
           getMediumsGenres();
