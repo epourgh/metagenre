@@ -17,7 +17,7 @@ export default function RelationshipsIndex() {
 
     const getGenres = (stringParam) => {
         const container = {};
-        fetch(`http://localhost:4000/mediumsFrontPage`)
+        fetch(`http://localhost/api/mediumsFrontPage`)
             .then(response => response.json())
             .then(response => {
                 if (response.data.length > 0) {
@@ -63,7 +63,7 @@ export default function RelationshipsIndex() {
 
         let votedMediumGenre = mediumGenreVotes + 1;
 
-        fetch(`http://localhost:4000/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
+        fetch(`http://localhost/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
             .then(response => {
                 getGenres();
             })

@@ -27,7 +27,7 @@ export default function RelationshipsSubgenres() {
     }, [])
 
     const getGenres = (stringParam) => {
-        fetch(`http://localhost:4000/subgenres`)
+        fetch(`http://localhost/api/subgenres`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -41,7 +41,7 @@ export default function RelationshipsSubgenres() {
 
     const voteSubgenreIntoGenre = (genreId, subgenreId) => {
         console.log(`${genreId}, ${subgenreId}`)
-        fetch(`http://localhost:4000/relationships?genreId=${genreId}&subgenreId=${subgenreId}`)
+        fetch(`http://localhost/api/relationships?genreId=${genreId}&subgenreId=${subgenreId}`)
             .then(response => response.json())
             .then(response => {
                  if (response.data.length > 0) {
