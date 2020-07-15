@@ -23,7 +23,7 @@ export default function Genre() {
     }, [])
 
     const getMediumsGenres = () => {
-        fetch(`./api/genresMediums?genreId=${id}`)
+        fetch(`/api/genresMediums?genreId=${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)

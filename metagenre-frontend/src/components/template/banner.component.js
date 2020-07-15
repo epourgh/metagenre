@@ -11,7 +11,7 @@ export default function Banner() {
   }, [])
 
   const getMediums = () => {
-    fetch(`./api/mediumsForSearch`)
+    fetch(`/api/mediumsForSearch`)
       .then(response => response.json())
       .then(response => {
         console.log('fetching mediums')
