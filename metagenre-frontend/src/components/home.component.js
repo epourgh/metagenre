@@ -56,20 +56,7 @@ export default function RelationshipsIndex() {
             });
 
     }
-
-    console.log(frontPageMediums)
     
-    const voteMediumGenre = (mediumId, mediumGenresId, routeString, mediumGenreVotes) => {
-
-        let votedMediumGenre = mediumGenreVotes + 1;
-
-        fetch(`/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
-            .then(response => {
-                getGenres();
-            })
-
-    }
-
     return (
         <div className="bodyContentStyling frontPageBodyContentStyling">
             {
@@ -90,7 +77,7 @@ export default function RelationshipsIndex() {
                                 <ul className="listGenreStyling">
                                     {
                                         frontPageMedium.genres.map(genre => {
-                                        return (<li><a href="#" onClick={() => voteMediumGenre(frontPageMedium.id, genre.mediumGenreId, 'mediumsGenres', genre.votes)}><b>{genre.name}</b> | {genre.votes}</a>{" "}</li>)
+                                        return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
                                         })
                                     }
                                 </ul>

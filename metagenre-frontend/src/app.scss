@@ -381,3 +381,20 @@ input::placeholder {
     color: #000;
     text-decoration: none;
 }
+
+.nuetral-alert {
+  background: rgb(255, 255, 89);
+  cursor: crosshair
+}
+
+.warning-alert,
+.warning-alert a {
+  background: rgb(190, 7, 7);
+  color: #fff;
+  cursor: crosshair
+}
+
+.warning-alert a {
+  text-decoration: underline;
+  cursor: pointer
+}

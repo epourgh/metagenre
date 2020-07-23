@@ -131,11 +131,21 @@ export default function Medium() {
     //   }
     // }
 
+
+    /*
+
+    // Vote Medium Genre and Subgenre
+
+    <a href="#" onClick={() => voteMediumGenre(medium.id, genre.id, 'mediumsGenres', genre.votes)}></a>
+    <a href="#" onClick={() => voteMediumSubgenre(medium.id, subgenre.id, 'mediumsSubgenres', subgenre.votes, subgenre.subgenreId)}></a>
+
+    
+
     const voteMediumGenre = (mediumId, mediumGenresId, routeString, mediumGenreVotes) => {
 
         let votedMediumGenre = mediumGenreVotes + 1;
 
-        fetch(`/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
+        fetch(`http://localhost:4000/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}`)
             .then(response => {
               getMediums();
               getMediumsGenres();
@@ -147,14 +157,14 @@ export default function Medium() {
 
       let votedMediumGenre = mediumGenreVotes + 1;
 
-      fetch(`/api/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}&subgenreId=${subgenreId}`)
+      fetch(`http://localhost:4000/${routeString}/update/${mediumGenresId}?mediumId=${mediumId}&votes=${votedMediumGenre}&subgenreId=${subgenreId}`)
         .then(response => {
           getMediums();
           getMediumsGenres();
         })
 
     }
-
+    */
 
   const renderMediumGenre = (medium) => {
 
@@ -173,13 +183,13 @@ export default function Medium() {
 
                   <ul className="listGenreStyling">
                     <li className="genreCategory"><b>genres:</b></li>
-                    {medium.genresVoted.map(genre => <li key={genre.id}><a href="#" onClick={() => voteMediumGenre(medium.id, genre.id, 'mediumsGenres', genre.votes)}><b>{genre.name}</b> | {genre.votes}</a> {" "}</li>)}
+                    {medium.genresVoted.map(genre => <li key={genre.id}><p><b>{genre.name}</b> | {genre.votes}</p> {" "}</li>)}
                   </ul>
 
                   
                   <ul className="listGenreStyling">
                     <li className="genreCategory"><b>subgenres:</b></li>
-                    {medium.subgenresVoted.map(subgenre => <li key={subgenre.id}><a href="#" onClick={() => voteMediumSubgenre(medium.id, subgenre.id, 'mediumsSubgenres', subgenre.votes, subgenre.subgenreId)}><b>{subgenre.name}</b> | {subgenre.votes}</a> {" "}</li>)}
+                    {medium.subgenresVoted.map(subgenre => <li key={subgenre.id}><p><b>{subgenre.name}</b> | {subgenre.votes}</p> {" "}</li>)}
                   </ul>
                   
                 </div>
@@ -188,10 +198,28 @@ export default function Medium() {
           )
       }
   };
-  
+
+  const LoggedInNotification = () => {
+
+    if(loggedIn.id === 0) {
+      return (
+        <div className="individualMediumStyling row warning-alert">
+          Need to <a href="./login">sign in</a> to vote for medium genres and subgenres.
+        </div>
+      )
+    } else {
+      return (
+        <div className="individualMediumStyling row nuetral-alert">
+          Check out individual medium pages to vote for the medium.
+        </div>
+      )
+    }
+  }
 
   return (
     <div className="bodyContentStyling">
+
+      <LoggedInNotification />
 
       <div>
         {
