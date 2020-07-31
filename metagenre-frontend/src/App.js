@@ -5,9 +5,10 @@ import './app.scss';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {useRoutes} from 'hookrouter';
 
+import Home from "./components/home.component";
 import Register from "./components/register.component";
 import Login from "./components/login.component";
-import Home from "./components/home.component";
+import Profile from "./components/profile.component";
 import Mediums from "./components/mediums.component";
 import Medium from "./components/medium.component";
 import Banner from "./components/template/banner.component";
@@ -40,8 +41,8 @@ export default function App() {
 
   return (
       <Router>
-        <Banner />
         <GlobalProvider>
+          <Banner />
           <Navbar />
           <div className='body'>
             <Switch>
@@ -56,6 +57,7 @@ export default function App() {
               <Route path="/series" exact component={Series} />
               <Route path="/creator" exact component={Creator} />
               <Route path="/genre" exact component={Genre} />
+              <Route path="/profile" exact component={Profile} />
             </Switch>
           </div>
           <Footer />

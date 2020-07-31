@@ -1,31 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { GlobalContext } from '../../context/GlobalState';
 
 export default function Banner() {
 
-  const [mediums, setMediums] = useState([]);
+  const {mediums, setMediums} = useContext(GlobalContext)
   const [searchValue, setSearchValue] = useState('');
-
-  useEffect(() => {
-    getMediums();
-  }, [])
-
-  const getMediums = () => {
-    fetch(`/api/mediumsForSearch`)
-      .then(response => response.json())
-      .then(response => {
-        console.log('fetching mediums')
-        console.log(response.data);
-        setMediums(response.data.map(medium => {
-          return {
-            id: medium.id,
-            tag: medium.title.toLowerCase(),
-            title: medium.title,
-            active: 0
-          };
-        }))
-      });
-  }
 
   const nameHandler = (e) => {
     e.preventDefault();
@@ -78,7 +58,7 @@ export default function Banner() {
       <div className="row">
         <div className="column-header-1">
             <h1>
-              <Link to="/" className="navbar-brand">{"{o}"} Metagenre</Link>
+              <Link to="/" className="navbar-brand">{"{o}"} Meta<heavy>(DEV)</heavy></Link>
             </h1>
         </div>
         <div className="column-header-2">

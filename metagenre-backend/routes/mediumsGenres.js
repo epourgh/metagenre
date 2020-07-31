@@ -131,7 +131,7 @@ router.get('/mediumsSubgenres/view/:id', (req, res) => {
 
 
 router.get('/mediumsGenres/update/:id', (req, res) => {
-    const {votes, symbol, userId, mediumId, genreId} = req.query;
+    const {date, votes, symbol, userId, mediumId, genreId} = req.query;
     
     const symbolMath = (symbol === '-')? '-':'+';
 
@@ -143,8 +143,8 @@ router.get('/mediumsGenres/update/:id', (req, res) => {
                                      AND mediumId = ${mediumId}
                                      AND genreId = ${genreId};`;
     } else if (symbolMath === '+') {
-        UPDATE_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsGenres(userId, mediumId, genreId, voted) 
-                                     VALUES(${userId}, ${mediumId}, ${genreId}, 1);`;
+        UPDATE_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsGenres(date, userId, mediumId, genreId, voted) 
+                                     VALUES('${date}', ${userId}, ${mediumId}, ${genreId}, 1);`;
     }
     console.log(UPDATE_MEDIUMGENRE_QUERY)
     connection.query(UPDATE_MEDIUMGENRE_QUERY, (err, results) => {
@@ -157,7 +157,7 @@ router.get('/mediumsGenres/update/:id', (req, res) => {
 });
 
 router.get('/mediumsSubgenres/update/:id', (req, res) => {
-    const {votes, symbol, userId, mediumId, genreId} = req.query;
+    const {date, votes, symbol, userId, mediumId, genreId} = req.query;
 
     const symbolMath = (symbol === '-') ? '-' : '+';
 
@@ -184,8 +184,8 @@ router.get('/mediumsSubgenres/update/:id', (req, res) => {
 
         console.log(UPDATE_MEDIUMSUBGENRE_QUERY)
     } else if (symbolMath === '+') {
-        UPDATE_MEDIUMSUBGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsSubgenres(userId, mediumId, subgenreId, voted) 
-                                        VALUES(${userId}, ${mediumId}, ${genreId}, 1);`;
+        UPDATE_MEDIUMSUBGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsSubgenres(date, userId, mediumId, subgenreId, voted) 
+                                        VALUES('${date}', ${userId}, ${mediumId}, ${genreId}, 1);`;
         console.log(UPDATE_MEDIUMSUBGENRE_QUERY)
     }
 
@@ -230,7 +230,7 @@ router.get('/mediumsSubgenres/update/:id', (req, res) => {
 
 router.get('/mediumsGenresChecker', (req, res) => {
 
-    const {genreName, userId, mediumId, mediumType} = req.query;
+    const {date, genreName, userId, mediumId, mediumType} = req.query;
 
     const genres = mediumType === 'genre' ? 'genres' : 'subgenres';
     const subgenres = mediumType === 'genre' ? 'subgenres' : 'genres';
@@ -352,8 +352,8 @@ router.get('/mediumsGenresChecker', (req, res) => {
             if (results[6].length > 0 || results[7].length >= 3) {
                 INSERT_MEDIUMGENRE_QUERY = ``;
             } else if (foundOrNewGenreId !== 0) {
-                INSERT_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.${userBoolean}(userId, mediumId, ${genreId}, voted) 
-                                             VALUES(${userId}, ${mediumId}, ${foundOrNewGenreId}, 1);`;
+                INSERT_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.${userBoolean}(date, userId, mediumId, ${genreId}, voted) 
+                                             VALUES('${date}', ${userId}, ${mediumId}, ${foundOrNewGenreId}, 1);`;
             }
 
 

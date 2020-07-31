@@ -243,7 +243,9 @@ export default function Medium() {
  
     const voteMediumGenre = (mediumGenresId, routeString, routeString2, mediumGenreVotes, genreId, symbol) => {
 
-        fetch(`/api/${routeString}/update/${mediumGenresId}?votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
+        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        fetch(`/api/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
             .then(response => {
                 console.log(response)
                 getMediumsGenresMultiple(routeString, routeString2);
@@ -260,9 +262,11 @@ export default function Medium() {
             && medium.genreName !== ''
             && typeof id != undefined) {
 
+            const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
             console.log(`name=${medium.genreName}&mediumId=${id}&genreType=${medium.genreType}`);
 
-            fetch(`/api/mediumsGenresChecker?genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
+            fetch(`/api/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
                 .then(update => {
                     console.log(update.url)
 

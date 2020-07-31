@@ -24,7 +24,7 @@ export default function Navbar() {
   function userNav() {
       return (
           <span>
-              <li className="navbar-item"><Link to="">{ loggedIn.username.toUpperCase() }</Link></li>
+              <li className="navbar-item"><Link to="/profile">{ loggedIn.username.toUpperCase() }</Link></li>
               <li className="navbar-item"><a onClick={() => signOut()}>SIGN OUT</a></li>
           </span>
       )
