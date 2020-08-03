@@ -13,10 +13,12 @@ export default function Navbar() {
     if (loggedIn.id !== 0) {
       localStorage.removeItem('loginId');
       localStorage.removeItem('loginUsername');
+      localStorage.removeItem('loginDisplay');
 
       setLoggedIn({
         id: 0,
-        username: 'Currently not logged in.'
+        username: 'Currently not logged in.',
+        display: '-'
       })
     }
   }

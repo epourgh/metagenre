@@ -4,7 +4,7 @@ const md5 = require("md5");
 
 export default function Register() {
 
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
 
     const [ questions, setQuestions ] = useState([]);
     const [ usernameObject, setUsernameObject] = useState({
@@ -27,7 +27,7 @@ export default function Register() {
 
         console.log('fetching...');
 
-        fetch('/api/securityQuestions')
+        fetch(`${backendUrl}/securityQuestions`)
             .then(response => response.json())
             .then(response => {
                 if (response.data.length > 0) {
@@ -80,7 +80,7 @@ export default function Register() {
         }
     
         if (typeof usernameObject.username != undefined && typeof usernameObject.password != undefined) {
-          fetch(`/api/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
+          fetch(`${backendUrl}/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
             .then(res => console.log(res))
             .catch(err => console.log(err))
         }

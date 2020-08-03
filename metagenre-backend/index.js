@@ -38,7 +38,7 @@ app.use(booleansContent);
 */
 
 contentUpdate = () => {
-    fetch(`/api/similar`)
+    fetch(`http://localhost:4000/similar`)
         .then(response => response.json())
         .then(response => {
             if (response.data.length > 0) {

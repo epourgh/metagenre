@@ -13,7 +13,7 @@ function getWindowParam() {
 
 export default function Genre() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [id] = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([{name: ''}]);
     console.log(id)
@@ -23,7 +23,7 @@ export default function Genre() {
     }, [])
 
     const getMediumsGenres = () => {
-        fetch(`/api/genresMediums?genreId=${id}`)
+        fetch(`${backendUrl}/genresMediums?genreId=${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)

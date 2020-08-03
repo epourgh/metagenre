@@ -8,7 +8,7 @@ function capitalizeFirstLetter(string) {
 
 export default function RelationshipsIndex() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [frontPageMediums, setFrontPageMediums] = useState([]);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function RelationshipsIndex() {
 
     const getGenres = (stringParam) => {
         const container = {};
-        fetch(`/api/mediumsFrontPage`)
+        fetch(`${backendUrl}/mediumsFrontPage`)
             .then(response => response.json())
             .then(response => {
                 if (response.data.length > 0) {
@@ -56,7 +56,8 @@ export default function RelationshipsIndex() {
             });
 
     }
-    
+
+
     return (
         <div className="bodyContentStyling frontPageBodyContentStyling">
             {

@@ -40,9 +40,9 @@ export default function App() {
   const routeResult = useRoutes(routes);
 
   return (
-      <Router>
+    <Router>
         <GlobalProvider>
-          <Banner />
+          <Banner /> 
           <Navbar />
           <div className='body'>
             <Switch>

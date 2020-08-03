@@ -9,14 +9,14 @@ export default function Login() {
         password: ''
     });
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
 
     console.log(localStorage)
   
     const signIn = () => {
 
         if (typeof username.username != undefined && typeof username.password != undefined) {
-        fetch(`/api/username/login?username=${username.username}&password=${username.password}`)
+        fetch(`${backendUrl}/username/login?username=${username.username}&password=${username.password}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response);
@@ -25,9 +25,14 @@ export default function Login() {
                     localStorage.setItem('loginId', response.data[0].id)
                     localStorage.setItem('loginUsername', response.data[0].username)
 
+                    if (response.data[0].displayName !== null) {
+                        localStorage.setItem('loginDisplay', response.data[0].displayName)
+                    }
+
                     setLoggedIn({
                         id: localStorage.getItem('loginId'),
-                        username: localStorage.getItem('loginUsername')
+                        username: localStorage.getItem('loginUsername'),
+                        display: localStorage.getItem('loginDisplay')
                     })
                 }
             })
@@ -39,10 +44,12 @@ export default function Login() {
         if (loggedIn.id != 0) {
             localStorage.removeItem('loginId');
             localStorage.removeItem('loginUsername');
+            localStorage.removeItem('loginDisplay');
 
             setLoggedIn({
                 id: 0,
-                username: 'Currently not logged in.'
+                username: 'Currently not logged in.',
+                display: ''
             })
         }
     }
@@ -50,7 +57,7 @@ export default function Login() {
     function userNav() {
         return (
             <p>
-                <b>user id:</b> { loggedIn.id }, <b>username:</b> { loggedIn.username }
+                <b>user id:</b> { loggedIn.id }, <b>display name:</b> { loggedIn.display }, <b>username:</b> { loggedIn.username }
                 <p><button onClick={() => signOut()}>Sign Out</button></p>
             </p>
         )

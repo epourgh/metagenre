@@ -13,8 +13,11 @@ export const GlobalProvider = ({ children }) => {
 
   const [genres, setGenres] = useState([{id: 0, name: ''}]);
   const [subgenres, setSubgenres] = useState([{id: 0, name: ''}]);
-  
 
+  // const backendUrl = '/api';
+  const backendUrl = 'http://localhost:4000';
+  
+  
   useEffect(() => {
     getMediums();
     getGenres();
@@ -23,11 +26,12 @@ export const GlobalProvider = ({ children }) => {
 
   const [loggedIn, setLoggedIn] = useState({
       id: localStorage.getItem('loginId') || 0,
-      username: localStorage.getItem('loginUsername') || 'Currently not logged in.'
+      username: localStorage.getItem('loginUsername') || 'Currently not logged in.',
+      display: localStorage.getItem('loginDisplay') || '-'
   })
 
   const getMediums = () => {
-    fetch(`/api/mediumsForSearch`)
+    fetch(`${backendUrl}/mediumsForSearch`)
       .then(response => response.json())
       .then(response => {
         setMediums(response.data.map(medium => {
@@ -42,7 +46,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const getGenres = () => {
-    fetch(`/api/genres`)
+    fetch(`${backendUrl}/genres`)
       .then(response => response.json())
       .then(response => {
         setGenres(response.data)
@@ -50,15 +54,16 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const getSubgenres = () => {
-    fetch(`/api/subgenres`)
+    fetch(`${backendUrl}/subgenres`)
       .then(response => response.json())
       .then(response => {
         setSubgenres(response.data)
       });
   }
 
+
   return (
-    <GlobalContext.Provider value={{loggedIn, setLoggedIn, mediums, setMediums, genres, subgenres}}>
+    <GlobalContext.Provider value={{backendUrl, loggedIn, setLoggedIn, mediums, setMediums, genres, subgenres}}>
       {children}
     </GlobalContext.Provider>
   );

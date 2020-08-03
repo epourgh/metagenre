@@ -17,7 +17,7 @@ function capitalizeFirstLetter(string) {
 
 export default function Medium() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const { backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const id = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([]);
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);
@@ -59,7 +59,7 @@ export default function Medium() {
     })
 
     const getMediumsDetails = () => {
-        fetch(`/api/mediumsDetails/${id}`)
+        fetch(`${backendUrl}/mediumsDetails/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data);
@@ -69,7 +69,7 @@ export default function Medium() {
     }
 
     const getPlatforms = () => {
-        fetch(`/api/platforms`)
+        fetch(`${backendUrl}/platforms`)
             .then(response => response.json())
             .then(response => {
                 setPlatforms(response.data);
@@ -77,7 +77,7 @@ export default function Medium() {
     }
 
     const getRegions = () => {
-    fetch(`/api/regions`)
+    fetch(`${backendUrl}/regions`)
         .then(response => response.json())
         .then(response => {
             setRegions(response.data);
@@ -85,7 +85,7 @@ export default function Medium() {
     }
 
     const getSimilarMediums = () => {
-        fetch(`/api/similar/${id}`)
+        fetch(`${backendUrl}/similar/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data);
@@ -99,7 +99,7 @@ export default function Medium() {
     }
 
     const getExternalLinks = () => {
-        fetch(`/api/mediumExternalLinks/${id}`)
+        fetch(`${backendUrl}/mediumExternalLinks/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log('response.data')
@@ -112,7 +112,7 @@ export default function Medium() {
 
 
     const getCreatorsSeries = () => {
-        fetch(`/api/mediumsCreatorsSeries/view/${id}`)
+        fetch(`${backendUrl}/mediumsCreatorsSeries/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -126,7 +126,7 @@ export default function Medium() {
 
         const userPickedContainer = [];
 
-        fetch(`/api/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
+        fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data)
@@ -146,7 +146,7 @@ export default function Medium() {
 
         const mediumsGenresContainer = [];
 
-        fetch(`/api/${mediumsGenres}/view/${id}`)
+        fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 if (userPickedContainer.length > 0) {
@@ -215,7 +215,7 @@ export default function Medium() {
 
     const getMediumsGenres = (stringParam) => {
 
-        fetch(`/api/${stringParam}/view/${id}`)
+        fetch(`${backendUrl}/${stringParam}/view/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -245,7 +245,7 @@ export default function Medium() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        fetch(`/api/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
             .then(response => {
                 console.log(response)
                 getMediumsGenresMultiple(routeString, routeString2);
@@ -262,11 +262,11 @@ export default function Medium() {
             && medium.genreName !== ''
             && typeof id != undefined) {
 
-            const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
             console.log(`name=${medium.genreName}&mediumId=${id}&genreType=${medium.genreType}`);
 
-            fetch(`/api/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
+            const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            fetch(`${backendUrl}/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
                 .then(update => {
                     console.log(update.url)
 

@@ -13,7 +13,7 @@ function getWindowParam() {
 
 export default function Series() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [id] = getWindowParam();
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
     console.log(id)
@@ -23,7 +23,7 @@ export default function Series() {
     }, [])
 
     const getCreatorsSeries = () => {
-        fetch(`/api/series/${id}`)
+        fetch(`${backendUrl}/series/${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
