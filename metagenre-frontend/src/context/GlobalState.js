@@ -14,8 +14,8 @@ export const GlobalProvider = ({ children }) => {
   const [genres, setGenres] = useState([{id: 0, name: ''}]);
   const [subgenres, setSubgenres] = useState([{id: 0, name: ''}]);
 
-  const backendUrl = '/api';
-  // const backendUrl = 'http://localhost:4000';
+  // const backendUrl = '/api';
+  const backendUrl = 'http://localhost:4000';
   
   
   useEffect(() => {

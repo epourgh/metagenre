@@ -1,7 +1,7 @@
 import React, { useState, useContext, createContext } from 'react';
 import { GlobalProvider } from './context/GlobalState';
 
-import './app.scss';
+import './styles/main.scss';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {useRoutes} from 'hookrouter';
 
