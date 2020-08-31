@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function getWindowParam() {
     var url_string = window.location.href;
@@ -530,7 +532,7 @@ export default function Medium() {
 
                             
                                 {
-                                    pictureCount[4]?<div className="gallery"><div className="imageContainer"><a onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${pictureCount[4]}`} width="400" /></a><div classnName="imageContainerTopLeft"><b>Close</b></div></div></div>:null
+                                    pictureCount[4]?<div className="selectedImage"><div className="imageContainer"><a onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${pictureCount[4]}`} width="400" /></a><div className="imageContainerTopRight imageContainerTopClose"><b><a onClick={() => enlargePicture('')}><FontAwesomeIcon icon={faTimes}/></a></b></div></div></div>:null
                                 }
                                 
 

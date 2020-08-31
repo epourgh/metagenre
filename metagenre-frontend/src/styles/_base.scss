@@ -90,12 +90,12 @@ a:hover {
 
 .headerBannerStyling {
   padding: 10px;
-  background: $black;
+  background: $header-color-darken;
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
 
-.headerBannerStyling  a {
+.headerBannerStyling a {
   color: $white;
 }
 
@@ -130,9 +130,15 @@ a:hover {
 
 input {
   -webkit-tap-highlight-color: transparent;
-  border-radius: 100px;
+  border-radius: 5px;
   border: 1px solid #ddd;
   padding-left: 10px;
+}
+
+.banner-search-input {
+  background: $header-color;
+  color: $white;
+  padding: 5px
 }
 
 *:focus {
@@ -157,7 +163,6 @@ input::placeholder {
 
 .frontPageBodyContentStyling .gallery,
 .gallery {
-
   border: $border-style;
   width: 270px;
   min-height: 350px;
@@ -176,6 +181,16 @@ input::placeholder {
   font-size: .75em;
 }
 
+.selectedImage {
+  width: 400px;
+  height: auto;
+}
+
+.selectedImage img{
+  width: 100%;
+  height: auto;
+}
+
 .imageContainer {
   position: relative;
   text-align: center;
@@ -183,13 +198,25 @@ input::placeholder {
   font-size: .7rem;
 }
 
-.imageContainerTopLeft {
+.imageContainerTopLeft, .imageContainerTopRight {
   position: absolute;
   top: 4px;
-  left: 8px;
   padding: 2px 8px;
   border-radius: 5px;
   background: $column-sidebar;
+}
+
+.imageContainerTopLeft {
+  left: 8px;
+}
+
+.imageContainerTopRight {
+  right: 8px;
+}
+
+.imageContainerTopClose {
+  padding: 1px 4px;
+  border-radius: 100px;
 }
 
 .desc {

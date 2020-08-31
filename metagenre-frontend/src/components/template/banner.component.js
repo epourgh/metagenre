@@ -67,6 +67,7 @@ export default function Banner() {
               placeholder={"search by name"}
               value={searchValue}
               onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
+              className="banner-search-input"
               />
           </form>
         </div>
