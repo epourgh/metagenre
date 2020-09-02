@@ -1,11 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export default function Banner() {
 
-  const {mediums, setMediums} = useContext(GlobalContext)
+  const {
+    mediums,
+    setMediums,
+    showNavStyle,
+    setShowNavStyle
+  } = useContext(GlobalContext)
   const [searchValue, setSearchValue] = useState('');
+
+  const changeNavStyling = () => {
+    console.log(showNavStyle)
+    if(showNavStyle=='navbar') {
+      setShowNavStyle('navbarShow')
+    } else {
+      setShowNavStyle('navbar')
+    }
+  }
 
   const nameHandler = (e) => {
     e.preventDefault();
@@ -62,14 +78,24 @@ export default function Banner() {
             </h1>
         </div>
         <div className="column-header-2">
-          <form onKeyUp={nameHandler} onSubmit={nameHandler}>
-            <input
-              placeholder={"search by name"}
-              value={searchValue}
-              onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
-              className="banner-search-input"
-              />
-          </form>
+          <hr className="banner-hr" />
+          <div className="row">
+            <div className="column-header-mobile">
+              <a onClick={() => changeNavStyling()} >
+                <FontAwesomeIcon className="navbar-hamburger" icon={faBars}/>
+              </a>
+            </div>
+            < div className = "column-header-mobile" >
+              <form onKeyUp={nameHandler} onSubmit={nameHandler}>
+                <input
+                  placeholder={"search by name"}
+                  value={searchValue}
+                  onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
+                  className="banner-search-input"
+                  />
+              </form>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -78,6 +104,7 @@ export default function Banner() {
           mediums.filter(medium => medium.active == 1).map(medium => <RenderSearchResult medium={medium} />)
         }
       </div>
+
 
     </div>
   );

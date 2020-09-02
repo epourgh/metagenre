@@ -42,8 +42,10 @@ export default function App() {
   return (
     <Router>
         <GlobalProvider>
-          <Banner /> 
-          <Navbar />
+          <div className="header-content">
+            <Banner /> 
+            <Navbar />
+          </div>
           <div className='body'>
             <Switch>
               <Route path="/" exact component={Home} />

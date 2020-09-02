@@ -13,6 +13,7 @@ export const GlobalProvider = ({ children }) => {
 
   const [genres, setGenres] = useState([{id: 0, name: ''}]);
   const [subgenres, setSubgenres] = useState([{id: 0, name: ''}]);
+  const [showNavStyle, setShowNavStyle] = useState('navbar');
 
   // const backendUrl = '/api';
   const backendUrl = 'http://localhost:4000';
@@ -61,9 +62,20 @@ export const GlobalProvider = ({ children }) => {
       });
   }
 
-
   return (
-    <GlobalContext.Provider value={{backendUrl, loggedIn, setLoggedIn, mediums, setMediums, genres, subgenres}}>
+    <GlobalContext.Provider value={
+      {
+        backendUrl,
+        loggedIn,
+        setLoggedIn,
+        mediums,
+        setMediums,
+        genres,
+        subgenres,
+        showNavStyle,
+        setShowNavStyle
+      }
+    }>
       {children}
     </GlobalContext.Provider>
   );

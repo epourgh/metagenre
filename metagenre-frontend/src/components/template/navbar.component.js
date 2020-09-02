@@ -1,13 +1,21 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 
 // (loggedIn.id !== 'N/A')
 
-
 export default function Navbar() {
-  const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+  const {
+    loggedIn,
+    setLoggedIn,
+    showNavStyle
+  } = useContext(GlobalContext)
   const loggedInNavbar = (loggedIn.id !== 0) ? userNav() : notLoggedInNav();
+  
+
+  useEffect(() => {
+    console.log(showNavStyle)
+  }, ([]));
 
   const signOut = () => {
     if (loggedIn.id !== 0) {
@@ -45,7 +53,7 @@ export default function Navbar() {
     )
   }
   return (
-    <nav className="row navbar">
+    <nav className={`row ${showNavStyle}`}>
       <ul className="column">
         <li className="navbar-item">
           <Link to="/" className="nav-link">HOME</Link>
@@ -54,20 +62,6 @@ export default function Navbar() {
         <li className="navbar-item">
           <Link to="/mediums?medium=game" className="nav-link">GAMES</Link>
         </li>
-        {/* 
-        <li className="navbar-item">
-          <Link to="/mediums?medium=film" className="nav-link">FILMS</Link>
-        </li>
-        <li className="navbar-item">
-          <Link to="/mediums?medium=tv show" className="nav-link">TV SERIES</Link>
-        </li>
-        <li className="navbar-item">
-          <Link to="/mediums?medium=music" className="nav-link">MUSIC</Link>
-        </li> 
-        <li className="navbar-item">
-          <Link to="/mediums?medium=book" className="nav-link">BOOKS</Link>
-        </li> 
-        */}
         <li className="navbar-item">
           <Link to="/relationships" className="nav-link">RELATIONSHIPS</Link>
         </li>

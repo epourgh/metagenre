@@ -27,6 +27,10 @@
         font-size: 100%;
     }
 
+    .body {
+        margin-top: 125px;
+    }
+
 
 }
 
@@ -57,5 +61,66 @@
         width: 100%;
         height: auto;
     }
+
+    .headerBannerStyling {
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    .navbar-hamburger {
+        font-size: 1.5em;
+        line-height: 1.5;
+        display: inline-block;
+        vertical-align: middle;
+        
+    }
+
+    .column-header-mobile {
+        float: left;
+        padding-right: 10px;
+    }
+
+    .banner-hr {
+        display: block;
+        border: 0;
+        border-top: 1px solid $grey;
+        margin: 10px 0;
+
+    }
+
+    .body {
+        margin-top: 150px;
+    }
+
+
+    .navbarShow {
+        display: block;
+        margin: 0;
+        padding: 0;
+        background: $black;
+        color: $white;
+    }
+
+    .navbarShow a {
+        color: $white;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+    }
+
+    .row, .column {
+        width: 100%;
+    }
+
+    .navbar-item {
+        display: block;
+        border-bottom: 1px solid $grey;
+        margin: 0;
+        padding: 0;
+    }
+
 
 }
