@@ -13,18 +13,27 @@ export default function Banner() {
     setShowNavStyle
   } = useContext(GlobalContext)
   const [searchValue, setSearchValue] = useState('');
+  const [greyBGBoolean, setGreyBGBoolean] = useState('')
+  
 
   const changeNavStyling = () => {
     console.log(showNavStyle)
-    if(showNavStyle=='navbar') {
+    if(searchValue !== '') {
+      setSearchValue('')
+      nameHandler('remove');
+      setShowNavStyle('navbar')
+    } else if(showNavStyle=='navbar') {
       setShowNavStyle('navbarShow')
     } else {
       setShowNavStyle('navbar')
     }
   }
 
-  const nameHandler = (e) => {
-    e.preventDefault();
+  const nameHandler = (searchArg) => {
+
+    console.log(searchArg);
+    
+    let searchTerm = (searchArg == 'remove') ? '' : searchValue;
 
     let tempMedium = [];
     let i = 0;
@@ -38,8 +47,8 @@ export default function Banner() {
         active: 0
       }
 
-      if (medium.tag.includes(searchValue) 
-          && searchValue !== ''
+      if (medium.tag.includes(searchTerm) 
+          && searchTerm !== ''
           && i < 5) {
         row.active = 1;
         i++;
@@ -48,6 +57,15 @@ export default function Banner() {
       tempMedium.push(row)
       console.log(tempMedium)
     })
+
+    if (i >= 1) {
+      console.log('greyBackrgound');
+      setGreyBGBoolean('greyBackrgound');
+      setShowNavStyle('navbar')
+    } else {
+      console.log('no greyBackrgound')
+      setGreyBGBoolean('');
+    }
 
     setMediums(tempMedium);
 
@@ -59,15 +77,28 @@ export default function Banner() {
 
     let med = medium.medium;
     
-    return (
-        <div className={`search-item-${num}`}>
-          <hr className="hr-banner-styling" />
-          <p>
-            <Link to={`/medium?id=${med.id}&title=${med.title}`}><b>{med.title}</b></Link>{" "}
-          </p>
-        </div>
+    return ( 
+        <li className={`navbar-item search-item-${num}`}>
+          <Link to={`/medium?id=${med.id}&title=${med.title}`}><b>{med.title}</b></Link>{" "}
+        </li>
+
     )
   }
+
+    const GreyBackdrop = () => {
+        if (greyBGBoolean === 'greyBackrgound' || showNavStyle === 'navbarShow') {
+            return (
+              <span className="below">
+                <div className='grey' onClick={() => changeNavStyling()}></div>
+              </span>
+            )
+        } else {
+            return (
+                <>
+                </>
+            )
+        }
+    }
 
   return (
     <div className='headerBannerStyling'>
@@ -81,12 +112,12 @@ export default function Banner() {
           <hr className="banner-hr" />
           <div className="row">
             <div className="column-header-mobile">
-              <a onClick={() => changeNavStyling()} >
+              <a onClick={() => changeNavStyling()}>
                 <FontAwesomeIcon className="navbar-hamburger" icon={faBars}/>
               </a>
             </div>
             < div className = "column-header-mobile" >
-              <form onKeyUp={nameHandler} onSubmit={nameHandler}>
+              <form onKeyUp={e => nameHandler('search')} onSubmit={nameHandler}>
                 <input
                   placeholder={"search by name"}
                   value={searchValue}
@@ -99,13 +130,15 @@ export default function Banner() {
         </div>
       </div>
       
-      <div>
-        {
-          mediums.filter(medium => medium.active == 1).map(medium => <RenderSearchResult medium={medium} />)
-        }
-      </div>
-
-
+      <nav className={`row`}>
+        <ul className="column">
+          {
+            mediums.filter(medium => medium.active == 1).map(medium => <RenderSearchResult medium={medium} />)
+          }
+        </ul>
+      </nav>
+      
+      <GreyBackdrop />
     </div>
   );
 }

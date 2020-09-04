@@ -1,0 +1,32 @@
+@media only screen and (max-width: 1024px) and (max-height: 1366px) {
+    .individualMediumStyling {
+        margin: 0;
+    }
+    .column-sidebar {
+        width: 100%;
+        padding: 0;
+    }
+
+    .column1, .column2 {
+        width: 100%;
+    }
+
+
+    .bodyContentStyling {
+        padding: 0%;
+    }
+
+    .frontPageBodyContentStyling .gallery,
+    .gallery {
+        width: 33%;
+        align-self: center;
+    }
+
+    .desc h2 {
+        font-size: 100%;
+    }
+
+    .body {
+        margin-top: 125px;
+    }
+}
