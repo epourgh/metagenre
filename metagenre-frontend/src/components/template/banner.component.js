@@ -16,9 +16,13 @@ export default function Banner() {
   const [greyBGBoolean, setGreyBGBoolean] = useState('')
   
 
-  const changeNavStyling = () => {
+  const changeNavStyling = (argu) => {
     console.log(showNavStyle)
-    if(searchValue !== '') {
+    if (searchValue !== '' && argu=='hamburger') {
+      setSearchValue('')
+      nameHandler('remove');
+      setShowNavStyle('navbarShow')
+    } else if(searchValue !== '') {
       setSearchValue('')
       nameHandler('remove');
       setShowNavStyle('navbar')
@@ -89,7 +93,7 @@ export default function Banner() {
         if (greyBGBoolean === 'greyBackrgound' || showNavStyle === 'navbarShow') {
             return (
               <span className="below">
-                <div className='grey' onClick={() => changeNavStyling()}></div>
+                <div className='grey' onClick={() => changeNavStyling('grey')}></div>
               </span>
             )
         } else {
@@ -112,7 +116,7 @@ export default function Banner() {
           <hr className="banner-hr" />
           <div className="row">
             <div className="column-header-mobile">
-              <a onClick={() => changeNavStyling()}>
+              <a onClick={() => changeNavStyling('hamburger')}>
                 <FontAwesomeIcon className="navbar-hamburger" icon={faBars}/>
               </a>
             </div>
