@@ -14,6 +14,7 @@ export default function Banner() {
   } = useContext(GlobalContext)
   const [searchValue, setSearchValue] = useState('');
   const [greyBGBoolean, setGreyBGBoolean] = useState('')
+  const [activeSearchRows, setActiveSearchRows] = useState(0)
   
 
   const changeNavStyling = (argu) => {
@@ -62,6 +63,8 @@ export default function Banner() {
       console.log(tempMedium)
     })
 
+    setActiveSearchRows(i)
+
     if (i >= 1) {
       console.log('greyBackrgound');
       setGreyBGBoolean('greyBackrgound');
@@ -82,7 +85,7 @@ export default function Banner() {
     let med = medium.medium;
     
     return ( 
-        <li className={`navbar-item search-item-${num}`}>
+        <li className={`navbar-item search-item search-item-${num}`}>
           <Link to={`/medium?id=${med.id}&title=${med.title}`}><b>{med.title}</b></Link>{" "}
         </li>
 
@@ -135,10 +138,15 @@ export default function Banner() {
       </div>
       
       <nav className={`row`}>
-        <ul className="column">
+        <ul className={`column ${(activeSearchRows !== 0 || searchValue !== '')?'search-container':''}`}>
           {
             mediums.filter(medium => medium.active == 1).map(medium => <RenderSearchResult medium={medium} />)
           }
+          <li className={`${(activeSearchRows == 0 && searchValue !== '')?'nav-item':''}`}>
+            <Link>{
+              `${(activeSearchRows == 0 && searchValue !== '')?'no results':''}`
+            }</Link>
+          </li>
         </ul>
       </nav>
       
