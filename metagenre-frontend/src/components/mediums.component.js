@@ -5,9 +5,16 @@ import { GlobalContext } from '../context/GlobalState';
 function getWindowParam() {
   var url_string = window.location.href;
   var url = new URL(url_string);
+
+  
+  // if (url.searchParams.get("mediums") == undefined) {
+  //   window.location.href = '/';
+  // }
+  
   const mediumType = url.searchParams.get("medium").toString();
   
   console.log(mediumType)
+
   
   return mediumType;
 }

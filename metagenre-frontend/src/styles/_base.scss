@@ -361,3 +361,14 @@ input::placeholder {
   text-decoration: underline;
   cursor: pointer
 }
+
+.below .grey {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: $header-color;
+  z-index: -1;
+  opacity: 50%;
+}

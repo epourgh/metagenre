@@ -123,7 +123,7 @@ export default function Banner() {
                 <FontAwesomeIcon className="navbar-hamburger" icon={faBars}/>
               </a>
             </div>
-            < div className = "column-header-mobile" >
+            <div className = "column-header-mobile">
               <form onKeyUp={e => nameHandler('search')} onSubmit={nameHandler}>
                 <input
                   placeholder={"search by name"}

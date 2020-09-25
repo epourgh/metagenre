@@ -20,6 +20,8 @@ export default function RelationshipsSubgenres() {
     const {loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [id, title] = getWindowParam();
     const [subgenres, setSubgenres] = useState([]);
+    const [subgenresFiltered, setSubgenresFiltered] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
     
 
     useEffect(() => {
@@ -36,6 +38,23 @@ export default function RelationshipsSubgenres() {
                 }
             
             });
+    }
+
+    const searchHandler = () => {
+        console.log(searchValue)
+        let tempSubgenres = []
+
+        if (searchValue !== '' && searchValue !== undefined) {
+            for (let i = 0; i < subgenres.length; i++) {
+                if (subgenres[i].name.includes(searchValue)) {
+                    tempSubgenres.push({
+                        name: subgenres[i].name,
+                        id: subgenres[i].id
+                    })
+                }
+            }
+        }
+         setSubgenresFiltered(tempSubgenres)
     }
 
 
@@ -56,10 +75,21 @@ export default function RelationshipsSubgenres() {
 
     return (
         <div className="bodyContentStyling">
-            <h3><b>{title}</b></h3>
+            <h2><b>Genre:</b> {title}</h2>
+            <h3>Vote on a Subgenre:</h3>
+            <form onKeyUp={e => searchHandler()} onSubmit={searchHandler}>
+                <input
+                  placeholder={"search by name"}
+                  value={searchValue}
+                  onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
+                  className="banner-search-input"
+                  />
+            </form>
+            <br />
+            <hr />
             <ul className="listGenreStyling">
             {
-                subgenres.map(subgenre => {
+                subgenresFiltered.map(subgenre => {
                     return (
                         <li>
                             <a href="#" onClick={() => voteSubgenreIntoGenre(id, subgenre.id)}><b>{subgenre.name}</b></a>{" "}
