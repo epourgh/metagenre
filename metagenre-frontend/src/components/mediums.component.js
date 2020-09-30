@@ -178,7 +178,7 @@ export default function Medium() {
 
       if (medium !== undefined) {
           return (
-              <div key={medium.id} className="individualMediumStyling row">
+              <div key={medium.id} className="individualStyling row">
 
                 <div className="column1">
                   <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} width="150"/>
@@ -211,13 +211,13 @@ export default function Medium() {
 
     if(loggedIn.id === 0) {
       return (
-        <div className="individualMediumStyling row warning-alert">
+        <div className="individualStyling individualMediumStyling row warning-alert">
           Need to <a href="./login">sign in</a> to vote for medium genres and subgenres.
         </div>
       )
     } else {
       return (
-        <div className="individualMediumStyling row nuetral-alert">
+        <div className="individualStyling individualMediumStyling row nuetral-alert">
           Check out individual medium pages to vote for the medium.
         </div>
       )
@@ -240,7 +240,7 @@ export default function Medium() {
           mediums.map((medium) => {
 
             return (
-              <div key={medium.id} className="individualMediumStyling row">
+              <div key={medium.id} className="individualStyling row">
                 <div className="column1">
                   <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} width="150"/>
                 </div>

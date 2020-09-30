@@ -431,7 +431,7 @@ export default function Medium() {
 
     return (
         <div className="bodyContentStyling">
-           <div className="individualMediumStyling">
+           <div className="individualStyling">
                <div className="row">
                         <div className="column-body">
                             <div className="row">

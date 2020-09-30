@@ -16,9 +16,13 @@
         padding: 0%;
     }
 
+    .frontPageBodyContentStyling {
+        grid-template-columns: 33.33% 33.33% 33.33%;
+    }
+    
+
     .frontPageBodyContentStyling .gallery,
     .gallery {
-        width: 33%;
         align-self: center;
     }
 

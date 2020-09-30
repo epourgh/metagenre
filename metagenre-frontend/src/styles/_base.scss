@@ -49,14 +49,18 @@ a:hover {
   border-right: $border-style;
 }
 
-.individualMediumStyling {
+.individualStyling {
   border: 1px $grey solid;
   padding: 10px;
   margin: 0 15% 10px 15%;
 }
 
+.individualMediumStyling {
+  margin: 0 15% 10px 15%;
+}
+
 .individualHomePageStyling {
-  margin: 0;
+  margin: 10px 0;
 }
 
 .listGenreStyling {
@@ -192,14 +196,14 @@ input::placeholder {
 }
 
 .frontPageBodyContentStyling {
-  display: flex;
-  flex-wrap: wrap;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
 }
 
 .frontPageBodyContentStyling .gallery,
 .gallery {
   border: $border-style;
-  width: 270px;
   min-height: 350px;
 }
 

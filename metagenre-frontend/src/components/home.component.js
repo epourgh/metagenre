@@ -60,10 +60,10 @@ export default function RelationshipsIndex() {
 
     return (
         <div className="bodyContentStyling styleCenter">
-            <div className="individualMediumStyling">
-                Check out individual medium pages to vote for the medium.
+            < div className = "individualStyling individualHomePageStyling" >
+                Help tie genres and subgnenres together through the <Link to="/relationships">Relationship</Link> section. When a subgenre is associated with a genre, subgenre votes will be applied to the genre as well.
             </div>
-            <div className="frontPageBodyContentStyling styleCenter">
+            <div className="frontPageBodyContentStyling">
                 {
                     frontPageMediums.map(frontPageMedium => {
                         return (                
