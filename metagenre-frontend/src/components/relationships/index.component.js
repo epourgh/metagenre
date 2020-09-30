@@ -8,6 +8,7 @@ export default function RelationshipsIndex() {
     const [genres, setGenres] = useState([]);
     const [genresFiltered, setGenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    const [message, setMessage] = useState('Currently nothing to show.');
 
     useEffect(() => {
         getGenres();
@@ -15,11 +16,12 @@ export default function RelationshipsIndex() {
 
     const searchHandler = () => {
         console.log(searchValue)
-        let tempGenres = []
+        let [tempGenres, j] = [[], 0];
 
         if (searchValue !== '' && searchValue !== undefined) {
             for (let i = 0; i < genres.length; i++) {
                 if (genres[i].name.includes(searchValue)) {
+                    j++;
                     tempGenres.push({
                         name: genres[i].name,
                         id: genres[i].id
@@ -28,6 +30,7 @@ export default function RelationshipsIndex() {
             }
         }
         setGenresFiltered(tempGenres)
+        setMessage((j === 0) ? 'Currently nothing to show.' : '')
     }
 
 
@@ -45,28 +48,31 @@ export default function RelationshipsIndex() {
 
     return (
         <div className="bodyContentStyling">
-            <h3>Choose a Genre:</h3>
-            <form onKeyUp={e => searchHandler()} onSubmit={searchHandler}>
-                <input
-                  placeholder={"search by name"}
-                  value={searchValue}
-                  onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
-                  className="banner-search-input"
-                  />
-            </form>
-            <br />
-            <hr />
-            <ul className="listGenreStyling">
-                {
-                    genresFiltered.map(genre => {
-                        return (
-                            <li>
-                                <Link to={`/relationships/subgenres?id=${genre.id}&title=${genre.name}`}><b>{genre.name}</b></Link>{" "}
-                            </li>
-                        );
-                    })
-                }
-            </ul>
+            <div className="single-content-container">
+                <h3>Choose a Genre:</h3>
+                <form onKeyUp={e => searchHandler()} onSubmit={searchHandler}>
+                    <input
+                    placeholder={"search by name"}
+                    value={searchValue}
+                    onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
+                    className="banner-search-input"
+                    />
+                </form>
+                <br />
+                <hr />
+                <ul className="listGenreStyling">
+                    {message}
+                    {
+                        genresFiltered.map(genre => {
+                            return (
+                                <li>
+                                    <Link to={`/relationships/subgenres?id=${genre.id}&title=${genre.name}`}><b>{genre.name}</b></Link>{" "}
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
         </div>
     );
 }

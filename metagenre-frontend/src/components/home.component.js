@@ -59,34 +59,39 @@ export default function RelationshipsIndex() {
 
 
     return (
-        <div className="bodyContentStyling frontPageBodyContentStyling">
-            {
-                frontPageMediums.map(frontPageMedium => {
-                    return (                
-                        <div className="gallery">
-                            <div className="imageContainer">
-                                {/* target="_blank"  */}
-                                <a href={`/medium?id=${frontPageMedium.id}`}>
-                                    <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
-                                </a>
-                                <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
+        <div className="bodyContentStyling styleCenter">
+            <div className="individualMediumStyling">
+                Check out individual medium pages to vote for the medium.
+            </div>
+            <div className="frontPageBodyContentStyling styleCenter">
+                {
+                    frontPageMediums.map(frontPageMedium => {
+                        return (                
+                            <div className="gallery">
+                                <div className="imageContainer">
+                                    {/* target="_blank"  */}
+                                    <a href={`/medium?id=${frontPageMedium.id}`}>
+                                        <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
+                                    </a>
+                                    <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
+                                </div>
+                                <div className="desc">
+                                    <h2><a href={`/medium?id=${frontPageMedium.id}`}>{frontPageMedium.title}</a></h2>
+                                    <p>{frontPageMedium.shortDesc}</p>
+                                    <br />
+                                    <ul className="listGenreStyling">
+                                        {
+                                            frontPageMedium.genres.map(genre => {
+                                            return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                            })
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                            <div className="desc">
-                                <h2><a href={`/medium?id=${frontPageMedium.id}`}>{frontPageMedium.title}</a></h2>
-                                <p>{frontPageMedium.shortDesc}</p>
-                                <br />
-                                <ul className="listGenreStyling">
-                                    {
-                                        frontPageMedium.genres.map(genre => {
-                                        return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
-                                        })
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    );
-                })
-            }
+                        );
+                    })
+                }
+            </div>
         </div>
     );
 }

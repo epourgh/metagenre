@@ -26,6 +26,7 @@ export default function RelationshipsSubgenres() {
     const [subgenres, setSubgenres] = useState([]);
     const [subgenresFiltered, setSubgenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    const [message, setMessage] = useState('Currently nothing to show.');
     
 
     useEffect(() => {
@@ -51,11 +52,13 @@ export default function RelationshipsSubgenres() {
 
     const searchHandler = () => {
         console.log(searchValue)
-        let tempSubgenres = []
+        let [tempSubgenres, j] = [[], 0];
+
 
         if (searchValue !== '' && searchValue !== undefined) {
             for (let i = 0; i < subgenres.length; i++) {
                 if (subgenres[i].name.includes(searchValue)) {
+                    j++;
                     tempSubgenres.push({
                         name: subgenres[i].name,
                         id: subgenres[i].id
@@ -64,6 +67,7 @@ export default function RelationshipsSubgenres() {
             }
         }
          setSubgenresFiltered(tempSubgenres)
+         setMessage((j === 0)?'Currently nothing to show.':'')
     }
 
 
@@ -84,29 +88,32 @@ export default function RelationshipsSubgenres() {
 
     return (
         <div className="bodyContentStyling">
-            <h2><b>Genre:</b> {genre.title}</h2>
-            <h3>Vote on a Subgenre:</h3>
-            <form onKeyUp={e => searchHandler()} onSubmit={searchHandler}>
-                <input
-                  placeholder={"search by name"}
-                  value={searchValue}
-                  onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
-                  className="banner-search-input"
-                  />
-            </form>
-            <br />
-            <hr />
-            <ul className="listGenreStyling">
-            {
-                subgenresFiltered.map(subgenre => {
-                    return (
-                        <li>
-                            <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id)}><b>{subgenre.name}</b></a>{" "}
-                        </li>
-                    );
-                })
-            }
-            </ul>
+            <div className="single-content-container">
+                <h2><b>Genre:</b> {genre.title}</h2>
+                <h3>Vote on a Subgenre:</h3>
+                <form onKeyUp={e => searchHandler()} onSubmit={searchHandler}>
+                    <input
+                    placeholder={"search by name"}
+                    value={searchValue}
+                    onChange={e => setSearchValue(e.target.value.toLocaleLowerCase())}
+                    className="banner-search-input"
+                    />
+                </form>
+                <br />
+                <hr />
+                <ul className="listGenreStyling">
+                {message}
+                {
+                    subgenresFiltered.map(subgenre => {
+                        return (
+                            <li>
+                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id)}><b>{subgenre.name}</b></a>{" "}
+                            </li>
+                        );
+                    })
+                }
+                </ul>
+            </div>
         </div>
     );
 }

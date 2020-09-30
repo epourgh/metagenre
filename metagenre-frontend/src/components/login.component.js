@@ -65,7 +65,7 @@ export default function Login() {
 
     function notLoggedInNav() {
         return (
-            <>
+            <div className="single-content-container">
                 <p>{ loggedIn.username }</p>
 
                 <input value={username.username} 
@@ -78,7 +78,7 @@ export default function Login() {
                 <p><Link to="/register" className="nav-link">Sign Up</Link> | <Link to="/forgot" className="nav-link">Forgot Password</Link></p>
             
                     
-            </>
+            </div>
         )
     }
 
