@@ -7,11 +7,33 @@ router.get('/genresMediums/', (req, res) => {
     const {genreId} = req.query;
 
     const SELECT_MEDIUMGENRE_BY_GENREID_QUERY = `
-    SELECT mg.*, g.name, m.title
+    SELECT mg.*, g.name, m.id as mediumId, m.title
     FROM mediumsGenres as mg, genres as g, mediums as m
     WHERE mg.genreId = ${genreId}
     AND m.id = mg.mediumId
     AND g.id = mg.genreId;`;
+
+    connection.query(SELECT_MEDIUMGENRE_BY_GENREID_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.json({
+                data: results
+            })
+        }
+    })
+});
+
+router.get('/subgenresMediums/', (req, res) => {
+
+    const {subgenreId} = req.query;
+
+    const SELECT_MEDIUMGENRE_BY_GENREID_QUERY = `
+    SELECT mg.*, g.name, m.id as mediumId, m.title
+    FROM mediumsSubgenres as mg, subgenres as g, mediums as m
+    WHERE mg.subgenreId = ${subgenreId}
+    AND m.id = mg.mediumId
+    AND g.id = mg.subgenreId;`;
 
     connection.query(SELECT_MEDIUMGENRE_BY_GENREID_QUERY, (err, results) => {
         if (err) {

@@ -570,7 +570,7 @@ export default function Medium() {
                             <p className="smallFont">{noGenres}</p>
                             {
                                 mediumsGenres.map(mediumGenre => {
-                                    return (<li className="smallFont"><a href={`./genre?id=${mediumGenre.genreId}`}>{mediumGenre.name}</a> {" "}</li>);
+                                    return (<li className="smallFont"><a href={`./genre?type=genre&id=${mediumGenre.genreId}`}>{mediumGenre.name}</a> {" "}</li>);
                                 })
                             }
                             <br />
@@ -578,7 +578,7 @@ export default function Medium() {
                             <p className="smallFont">{noGenres}</p>
                             {
                                 mediumsSubgenres.map(mediumSubgenre => {
-                                    return (<li className="smallFont"><a href={`./genre?id=${mediumSubgenre.subgenreId}`}>{mediumSubgenre.name }</a> {" "}</li>);
+                                    return (<li className="smallFont"><a href={`./genre?type=subgenre&id=${mediumSubgenre.subgenreId}`}>{mediumSubgenre.name }</a> {" "}</li>);
                                 })
                             }
                         </div>

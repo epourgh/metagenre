@@ -6,7 +6,8 @@ function getWindowParam() {
     var url_string = window.location.href;
     var url = new URL(url_string);
     const id = url.searchParams.get("id").toString();
-    const windowsParams = [id];
+    const type = url.searchParams.get("type").toString();
+    const windowsParams = [id, type];
     
     return windowsParams;
 }
@@ -14,7 +15,7 @@ function getWindowParam() {
 export default function Genre() {
     
     const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
-    const [id] = getWindowParam();
+    const [id, type] = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([{name: ''}]);
     const [genreSubgenres, setGenreSubgenres] =  useState([{subgenreName: ''}]);
 
@@ -22,11 +23,13 @@ export default function Genre() {
 
     useEffect(() => {
         getMediumsGenres();
-        getGenreSubgenres();
+        if (type == 'genre') {
+            getGenreSubgenres();
+        }
     }, [])
 
     const getMediumsGenres = () => {
-        fetch(`${backendUrl}/genresMediums?genreId=${id}`)
+        fetch(`${backendUrl}/${type}sMediums?${type}Id=${id}`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
@@ -48,7 +51,7 @@ export default function Genre() {
     }
 
 
-    const RenderCreator = () => {
+    const RenderMediums = () => {
 
         if (mediumsGenres.length > 1) {
             return (
@@ -56,7 +59,11 @@ export default function Genre() {
                     <ul>
                         {
                             mediumsGenres.map(mediumGenre => {
-                                return(<li>{mediumGenre.title}</li>);
+                                return(
+                                    <li>
+                                        <Link to={`/medium?id=${mediumGenre.mediumId}`}>{mediumGenre.title}</Link>
+                                    </li>
+                                );
                             })
                         }
                     </ul>
@@ -67,11 +74,12 @@ export default function Genre() {
         }
     }
 
-        const RenderCreator2 = () => {
+    const RenderSubgenres = () => {
 
         if (genreSubgenres.length > 1) {
             return (
                 <div>
+                    <Link to={`/relationships/subgenres?id=${id}&title=${mediumsGenres[0].name}`}>Vote for Subgenres</Link>
                     <ul>
                         {
                             genreSubgenres.map(mediumGenre => {
@@ -93,17 +101,16 @@ export default function Genre() {
         <div className="bodyContentStyling">
            < div className = "individualStyling" >
                <h2>{mediumsGenres[0].name}</h2>
-               <Link to={`/relationships/subgenres?id=${id}&title=${mediumsGenres[0].name}`}>Vote for Subgenres</Link>
-                <br />
-                <hr />
-                <br />
-                <h3>Medium(s):</h3>
-                <RenderCreator />
                 <br />
                 <hr />
                 <br />
                 <h3>Subgenre(s):</h3>
-                <RenderCreator2 />
+                <RenderSubgenres />
+                <br />
+                <hr />
+                <br />
+                <h3>Medium(s):</h3>
+                <RenderMediums />
             </div>
         </div>
     );
