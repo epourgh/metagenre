@@ -26,7 +26,7 @@ export default function Genre() {
         if (type == 'genre') {
             getGenreSubgenres();
         }
-    }, [])
+    }, [id, type])
 
     const getMediumsGenres = () => {
         fetch(`${backendUrl}/${type}sMediums?${type}Id=${id}`)
@@ -49,7 +49,6 @@ export default function Genre() {
                 }
             });
     }
-
 
     const RenderMediums = () => {
 
@@ -83,7 +82,11 @@ export default function Genre() {
                     <ul>
                         {
                             genreSubgenres.map(mediumGenre => {
-                                return(<li>{mediumGenre.subgenreName}</li>);
+                                return(
+                                    <li>
+                                        <Link to={`/genre?type=subgenre&id=${mediumGenre.subgenreId}`}>{mediumGenre.subgenreName}</Link>
+                                    </li>
+                                );
                             })
                         }
                     </ul>
