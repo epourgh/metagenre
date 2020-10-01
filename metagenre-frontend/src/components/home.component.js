@@ -10,6 +10,7 @@ export default function RelationshipsIndex() {
     
     const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [frontPageMediums, setFrontPageMediums] = useState([]);
+    const [tree, setTree] = useState('0');
 
     useEffect(() => {
         getGenres();
@@ -57,11 +58,63 @@ export default function RelationshipsIndex() {
 
     }
 
+    const RenderThirdTreeRow = () => {
+
+        const genreTotal = (window.screen.width > 1000)?'30':'20';
+
+        setTree(genreTotal);
+
+        if (window.screen.width > 1000) {
+            return (
+                <li>
+                    <b>
+                        <p>SUBGENRE</p>
+                        <hr className="genre-line"/>
+                        <p>votes: 10</p>
+                    </b>
+                </li>
+            )
+        } else {
+            return (
+                <></>
+            )
+        }
+    }
+
 
     return (
         <div className="bodyContentStyling styleCenter">
             < div className = "individualStyling individualHomePageStyling" >
                 Help tie genres and subgnenres together through the <Link to="/relationships">Relationship</Link> section. When a subgenre is associated with a genre, subgenre votes will be applied to the genre as well.
+                <div className="tree">
+                    <ul>
+                        <li>    
+                            <b>
+                                <p>GENRE</p>
+                                <hr className="genre-line"/>
+                                <p>votes: 20 (+{tree} subgenre votes)</p>
+                            </b>
+                            <ul>
+                                <li>
+                                    <b>
+                                        <p>SUBGENRE</p>
+                                        <hr className="genre-line"/>
+                                        <p>votes: 10</p>
+                                        
+                                    </b>
+                                </li>
+                                <li>
+                                    <b>
+                                        <p>SUBGENRE</p>
+                                        <hr className="genre-line"/>
+                                        <p>votes: 10</p>
+                                    </b>
+                                </li>
+                                <RenderThirdTreeRow />
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div className="frontPageBodyContentStyling">
                 {
