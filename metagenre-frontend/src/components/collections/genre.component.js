@@ -16,10 +16,13 @@ export default function Genre() {
     const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [id] = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([{name: ''}]);
+    const [genreSubgenres, setGenreSubgenres] =  useState([{subgenreName: ''}]);
+
     console.log(id)
 
     useEffect(() => {
         getMediumsGenres();
+        getGenreSubgenres();
     }, [])
 
     const getMediumsGenres = () => {
@@ -33,16 +36,46 @@ export default function Genre() {
         });
     }
 
+    const getGenreSubgenres = () => {
+        fetch(`${backendUrl}/genreSubgenres?genreId=${id}`)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.data.length)
+                if (response.data.length > 0) {
+                    setGenreSubgenres(response.data)
+                }
+            });
+    }
+
+
     const RenderCreator = () => {
 
         if (mediumsGenres.length > 1) {
             return (
                 <div>
-                    <h2>{mediumsGenres[0].name}</h2>
                     <ul>
                         {
                             mediumsGenres.map(mediumGenre => {
-                                return(<li><b>{mediumGenre.title}</b></li>);
+                                return(<li>{mediumGenre.title}</li>);
+                            })
+                        }
+                    </ul>
+                </div>
+            )
+        } else {
+            return (<p>Nothing</p>)
+        }
+    }
+
+        const RenderCreator2 = () => {
+
+        if (genreSubgenres.length > 1) {
+            return (
+                <div>
+                    <ul>
+                        {
+                            genreSubgenres.map(mediumGenre => {
+                                return(<li>{mediumGenre.subgenreName}</li>);
                             })
                         }
                     </ul>
@@ -54,10 +87,23 @@ export default function Genre() {
     }
 
 
+
+
     return (
         <div className="bodyContentStyling">
-           <div className="individualMediumStyling">
+           < div className = "individualStyling" >
+               <h2>{mediumsGenres[0].name}</h2>
+               <Link to={`/relationships/subgenres?id=${id}&title=${mediumsGenres[0].name}`}>Vote for Subgenres</Link>
+                <br />
+                <hr />
+                <br />
+                <h3>Medium(s):</h3>
                 <RenderCreator />
+                <br />
+                <hr />
+                <br />
+                <h3>Subgenre(s):</h3>
+                <RenderCreator2 />
             </div>
         </div>
     );
