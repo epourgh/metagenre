@@ -112,7 +112,7 @@ export default function Banner() {
       <div className="row">
         <div className="column-header-1">
             <h1>
-              <Link to="/" className="navbar-brand"><heavy>{"{o}"}</heavy> Metagenre</Link>
+              <Link to="/" className="navbar-brand"><img src={`./images/logo/nodes.svg`} className="logo" width="25" /> Metagenre</Link>
             </h1>
         </div>
         <div className="column-header-2">
