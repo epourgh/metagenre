@@ -81,70 +81,115 @@ export default function RelationshipsIndex() {
         }
     }
 
+    const FrontPageGallery = () => {
+        return (
+            <>
+                <div className = "individualStyling individualHomePageStyling">
+                    <h1>Curated Gallery</h1>
+                </div>                
+                <div className="frontPageBodyContentStyling">
+                    {
+                        frontPageMediums.map(frontPageMedium => {
+                            return (                
+                                <div className="gallery">
+                                    <div className="imageContainer">
+                                        {/* target="_blank"  */}
+                                        <a href={`/medium?id=${frontPageMedium.id}`}>
+                                            <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
+                                        </a>
+                                        <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
+                                    </div>
+                                    <div className="desc">
+                                        <h2><a href={`/medium?id=${frontPageMedium.id}`}>{frontPageMedium.title}</a></h2>
+                                        <p>{frontPageMedium.shortDesc}</p>
+                                        <br />
+                                        <ul className="listGenreStyling">
+                                            {
+                                                frontPageMedium.genres.map(genre => {
+                                                return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </>
+        )
+    }
 
-    return (
-        <div className="bodyContentStyling styleCenter">
-            < div className = "individualStyling individualHomePageStyling" >
-                Help tie genres and subgnenres together through the <Link to="/relationships">Relationship</Link> section. When a subgenre is associated with a genre, subgenre votes will be applied to the genre as well.
+    const AboutMetagenre = () => {
+        return (
+            <div className = "individualStyling individualHomePageStyling">
+                <h1>About Metagenre</h1>
+                <br/><hr/>
+                <div className="paragraph-crunch">
+                    <p>Vote on the genres for your favorite entertainment mediums. Users can vote for either pre-existing genres or create genres of their own to vote on. Currently mediums can only be voted on through their pages, with the most popular being shown on the curated gallery of this page (right below) and within the medium category on the navbar (i.e., Games).</p> 
+                </div>
+            </div>
+        )
+    }
+
+    const RenderRelationships = () => {
+        return (
+            <div className = "individualStyling individualHomePageStyling">
+                
+                <h1> Genre to Subgenre Relationships</h1>
+
+                <br/><hr/>
+                
+                <div className="paragraph-crunch">
+                    <p>Help tie genres and subgnenres together through the <Link to = "/relationships"> Relationship </Link> section. When a subgenre is associated with a genre, subgenre votes will be applied to the genre as well.</p>
+                </div>
                 <div className="tree">
                     <ul>
-                        <li>    
+                        <li>
                             <b>
-                                <p>GENRE</p>
-                                <hr className="genre-line"/>
-                                <p>votes: 20 (+{tree} subgenre votes)</p>
+                                <p>MEDIUM</p>
                             </b>
-                            <ul>
-                                <li>
+                            <ul> 
+                                <li>    
                                     <b>
-                                        <p>SUBGENRE</p>
+                                        <p>GENRE</p>
                                         <hr className="genre-line"/>
-                                        <p>votes: 10</p>
-                                        
+                                        <p>votes: 20 (+{tree} subgenre votes)</p>
                                     </b>
+                                    <ul>
+                                        <li>
+                                            <b>
+                                                <p>SUBGENRE</p>
+                                                <hr className="genre-line"/>
+                                                <p>votes: 10</p>
+                                                
+                                            </b>
+                                        </li>
+                                        <li>
+                                            <b>
+                                                <p>SUBGENRE</p>
+                                                <hr className="genre-line"/>
+                                                <p>votes: 10</p>
+                                            </b>
+                                        </li>
+                                        <RenderThirdTreeRow />
+                                    </ul>
                                 </li>
-                                <li>
-                                    <b>
-                                        <p>SUBGENRE</p>
-                                        <hr className="genre-line"/>
-                                        <p>votes: 10</p>
-                                    </b>
-                                </li>
-                                <RenderThirdTreeRow />
                             </ul>
                         </li>
                     </ul>
                 </div>
+                <br />
             </div>
-            <div className="frontPageBodyContentStyling">
-                {
-                    frontPageMediums.map(frontPageMedium => {
-                        return (                
-                            <div className="gallery">
-                                <div className="imageContainer">
-                                    {/* target="_blank"  */}
-                                    <a href={`/medium?id=${frontPageMedium.id}`}>
-                                        <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
-                                    </a>
-                                    <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
-                                </div>
-                                <div className="desc">
-                                    <h2><a href={`/medium?id=${frontPageMedium.id}`}>{frontPageMedium.title}</a></h2>
-                                    <p>{frontPageMedium.shortDesc}</p>
-                                    <br />
-                                    <ul className="listGenreStyling">
-                                        {
-                                            frontPageMedium.genres.map(genre => {
-                                            return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        );
-                    })
-                }
-            </div>
+        )
+    }
+
+
+    return (
+        <div className="bodyContentStyling styleCenter">
+            <AboutMetagenre /><br />
+            <FrontPageGallery /><br />
+            <RenderRelationships />
         </div>
     );
 }
