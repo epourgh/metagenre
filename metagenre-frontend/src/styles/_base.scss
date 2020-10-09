@@ -409,3 +409,63 @@ input::placeholder {
   padding: 10px;
   filter: invert(93%) sepia(65%) saturate(1%) hue-rotate(73deg) brightness(92%) contrast(73%);
 }
+
+/*
+
+:
+
+*/
+
+
+.main {
+  color: lighten(#ccc, 25%);
+  background-color: lighten(skyblue, 60%);
+  grid-area: main;
+  padding: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.items {
+  position: relative;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  transition: all 0.2s;
+  transform: scale(0.98);
+  will-change: transform;
+  user-select: none;
+  cursor: pointer;
+}
+
+.items.active {
+  background: rgba(255, 255, 255, 0.3);
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  transform: scale(1);
+}
+
+.item {
+  display: inline-block;
+  color: black;
+  background: #fff;
+  border: grey 1px solid;
+  min-height: 500px;
+  min-width: 400px;
+  margin: 2em 1em;
+}
+
+.front-link {
+  cursor: crosshair;
+  z-index: 10000;
+
+}
+
+@media screen and (max-width: 500px) {
+  .item {
+    min-height: 400px;
+    min-width: 300px;
+    margin: 2em .5em;
+  }
+}

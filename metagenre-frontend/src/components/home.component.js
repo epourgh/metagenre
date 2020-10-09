@@ -11,10 +11,20 @@ export default function RelationshipsIndex() {
     const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [frontPageMediums, setFrontPageMediums] = useState([]);
     const [tree, setTree] = useState('0');
+    const [curatedGalleryClass, setCuratedGalleryClass] = useState('items');
+    const [isDown, setIsDown] = useState('items');
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const [startX, setStartX] = useState(0);
+    const [snapshot, setSnapshot] = useState(1000);
 
     useEffect(() => {
         getGenres();
     }, [])
+
+    useEffect(() => {
+        document.getElementById('items').scrollLeft = snapshot;
+        console.log('position saved')
+    })
 
     const getGenres = (stringParam) => {
         const container = {};
@@ -120,6 +130,74 @@ export default function RelationshipsIndex() {
         )
     }
 
+    const mouseDownFunction = (e) => {
+        e.preventDefault();
+        console.log(snapshot)
+        setIsDown(true);
+        setCuratedGalleryClass('items active')
+        setStartX(e.pageX - document.getElementById('items').offsetLeft);
+        setScrollLeft(document.getElementById('items').scrollLeft)
+    }
+    
+    const mouseLeaveFunction = (e) => {
+        e.preventDefault();
+        setIsDown(false);
+        setCuratedGalleryClass('items active')
+    }
+    
+    const mouseUpFunction = (e) => {
+        e.preventDefault();
+        setIsDown(false)
+        setCuratedGalleryClass('items')
+        setSnapshot(document.getElementById('items').scrollLeft);
+        document.getElementById('items').pageXOffset = document.getElementById('items').scrollLeft;
+    }
+
+    const mouseMoveFunction = (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const slider = document.getElementById('items');
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 3; //scroll-fast
+        const location = scrollLeft - walk;
+        slider.scrollLeft = location;
+        
+    }
+
+    const clickedLink = (e) => {
+        e.stopPropagation();
+        console.log('hi')
+    }
+
+    const FrontPageGalleryAlternative = () => { 
+        
+        return (
+            <>
+                <div className = "individualStyling individualHomePageStyling">
+                    <h1>Curated Gallery</h1>
+                </div>           
+                <main className="main">
+                    <div className={curatedGalleryClass} id="items"
+                        onMouseDown={(e) => mouseDownFunction(e)} 
+                        onMouseLeave={(e) => mouseLeaveFunction(e)} 
+                        onMouseUp={(e) => mouseUpFunction(e)}
+                        onMouseMove={(e) => mouseMoveFunction(e)}>
+                        {
+                            frontPageMediums.map(frontPageMedium => {
+                                return(
+                                    <div className="item">
+                                        <a onClick={(e) => clickedLink(e)}>{frontPageMedium.title}</a>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </main>
+            </>
+        )
+
+    }
+
     const AboutMetagenre = () => {
         return (
             <div className = "individualStyling individualHomePageStyling">
@@ -189,6 +267,7 @@ export default function RelationshipsIndex() {
     return (
         <div className="bodyContentStyling styleCenter">
             <AboutMetagenre /><br />
+            <FrontPageGalleryAlternative /><br />
             <FrontPageGallery /><br />
             <RenderRelationships />
         </div>
