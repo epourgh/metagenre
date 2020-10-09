@@ -130,6 +130,13 @@ export default function RelationshipsIndex() {
         )
     }
 
+    const clickedLink = (e, id) => {
+        e.stopPropagation()
+        console.log('hi')
+        window.location = `/medium?id=${id}`;
+    }
+
+
     const mouseDownFunction = (e) => {
         e.preventDefault();
         console.log(snapshot)
@@ -164,11 +171,6 @@ export default function RelationshipsIndex() {
         
     }
 
-    const clickedLink = (e) => {
-        e.stopPropagation();
-        console.log('hi')
-    }
-
     const FrontPageGalleryAlternative = () => { 
         
         return (
@@ -185,8 +187,26 @@ export default function RelationshipsIndex() {
                         {
                             frontPageMediums.map(frontPageMedium => {
                                 return(
-                                    <div className="item">
-                                        <a onClick={(e) => clickedLink(e)}>{frontPageMedium.title}</a>
+                                    <div className="item gallery">
+                                        <div className="imageContainer">
+                                            {/* target="_blank"  */}
+                                            <a href={`/medium?id=${frontPageMedium.id}`}>
+                                                <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
+                                            </a>
+                                            <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
+                                        </div>
+                                        <h4 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
+                                            <a>{frontPageMedium.title}</a>
+                                        </h4>
+                                        <p>{frontPageMedium.shortDesc}</p>
+                                        <br />
+                                        <ul className="listGenreStyling">
+                                            {
+                                                frontPageMedium.genres.map(genre => {
+                                                return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                                })
+                                            }
+                                        </ul>
                                     </div>
                                 )
                             })
@@ -268,7 +288,7 @@ export default function RelationshipsIndex() {
         <div className="bodyContentStyling styleCenter">
             <AboutMetagenre /><br />
             <FrontPageGalleryAlternative /><br />
-            <FrontPageGallery /><br />
+            {/* <FrontPageGallery /><br /> */}
             <RenderRelationships />
         </div>
     );

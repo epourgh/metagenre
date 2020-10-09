@@ -451,15 +451,18 @@ input::placeholder {
   color: black;
   background: #fff;
   border: grey 1px solid;
-  min-height: 500px;
-  min-width: 400px;
+  max-height: 400px;
+  max-width: 300px;
   margin: 2em 1em;
 }
 
-.front-link {
+.item .imageContainer img {
+  width: 100%;
+}
+
+.front-link a {
   cursor: crosshair;
   z-index: 10000;
-
 }
 
 @media screen and (max-width: 500px) {
