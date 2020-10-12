@@ -133,7 +133,7 @@ export default function RelationshipsSubgenres() {
 
     const voteSubgenreIntoGenre = (genreId, subgenreId, symbol) => {
         console.log(`${genreId}, ${subgenreId}`)
-        fetch(`${backendUrl}/relationships?genreId=${genreId}&subgenreId=${subgenreId}&symbol=${symbol.toString()}`)
+        fetch(`${backendUrl}/relationships?genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
             .then(response => response.json())
             .then(response => {
                  if (response.data.length > 0) {

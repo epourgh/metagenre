@@ -2,9 +2,13 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../connection');
 
+
+
 router.get('/relationships', (req, res) => {
 
-    const { genreId, subgenreId } = req.query;
+    const { genreId, subgenreId, userId, symbol } = req.query;
+
+    const symbolMath = (symbol === '-') ? '-' : '+';
 
     /*
     SELECT: 
@@ -28,7 +32,9 @@ router.get('/relationships', (req, res) => {
         SELECT * FROM metagenre.relationships WHERE genreId=${genreId} AND subgenreId=${subgenreId};
         SELECT r.*, ms.mediumId as mediumId, ms.votes as mediumSubgenreVotes
         FROM metagenre.relationships as r, metagenre.mediums as m, metagenre.mediumsSubgenres as ms
-        WHERE NOT EXISTS(SELECT * FROM metagenre.mediumsGenres as mg WHERE mg.genreId = r.genreId AND mg.mediumId = m.id) AND ms.subgenreId = r.subgenreId AND m.id = ms.mediumId AND r.subgenreId = ${subgenreId} AND r.genreId=${genreId};`;
+        WHERE NOT EXISTS(SELECT * FROM metagenre.mediumsGenres as mg WHERE mg.genreId = r.genreId AND mg.mediumId = m.id) AND ms.subgenreId = r.subgenreId AND m.id = ms.mediumId AND r.subgenreId = ${subgenreId} AND r.genreId=${genreId};
+        SELECT * FROM metagenre.userBooleanRelationships WHERE genreId = ${genreId} AND subgenreId = ${subgenreId} AND userId = ${userId};
+    `;
 
     connection.query(MULTI_SELECT_RELATIONSHIP_QUERIES, (err, results) => {
 
@@ -36,8 +42,8 @@ router.get('/relationships', (req, res) => {
             return res.send(err);
         } else {
 
-            const [relTotal, relSubgenreMediumGenresExist, mediumsGenresSubgenres, relClicked, relSubgenreMediumGenresNotExist] =
-                  [results[0][0], results[1], results[2], results[3][0], results[4][0]];
+            const [relTotal, relSubgenreMediumGenresExist, mediumsGenresSubgenres, relClicked, relSubgenreMediumGenresNotExist, userBoolean] =
+                  [results[0][0], results[1], results[2], results[3][0], results[4][0], results[5][0]];
                   
             const dispatchToDatabase = (MULTI_QUERY) => {
 
@@ -55,7 +61,7 @@ router.get('/relationships', (req, res) => {
                 })
             };
 
-            const relationshipViewModel = (subgenreId, genreId) => {
+            const relationshipViewModelAdd = (subgenreId, genreId) => {
 
                 if (typeof relClicked != "undefined") {
                     // UPDATE relationship
@@ -63,6 +69,15 @@ router.get('/relationships', (req, res) => {
                 } else {
                     // INSERT relationship
                     return `INSERT INTO metagenre.relationships (subgenreId, genreId, connection, votes) VALUES(${subgenreId}, ${genreId}, 1, 1);`;
+                }
+
+            }
+
+            const relationshipViewModelSubtract = (subgenreId, genreId) => {
+
+                if (typeof relClicked != "undefined" && relClicked.votes > 0) {
+                    // UPDATE relationship
+                    return `UPDATE metagenre.relationships SET votes = votes - 1 WHERE subgenreID = ${subgenreId} AND genreID = ${genreId};`;
                 }
 
             }
@@ -125,6 +140,54 @@ router.get('/relationships', (req, res) => {
 
             }
 
+            const checkPercentageGenreToTotalViewModelSubtract = (subgenreId, genreId) => {
+
+                console.log(`genreId: ${genreId}`)
+
+                let multiTempMultiQuery = '';
+
+                if (relClicked.connection === 0) {
+
+                    console.log('do nothing')
+
+                } else if (relClicked.connection === 1) {
+
+                    console.log(`genreId: ${genreId}`)
+
+                    if ((relClicked.votes - 1) / (relTotal.votes - 1) < .5) {
+
+                        console.log('not connected & not majority')
+
+                        multiTempMultiQuery += `UPDATE metagenre.relationships SET connection = 0 WHERE subgenreID = ${subgenreId} AND genreID = ${genreId};`;
+
+                        multiTempMultiQuery += mediumVotesModifier(genreId, '-');
+
+                    }
+
+                }
+
+                relSubgenreMediumGenresExist.forEach(function (genre) {
+
+                    console.log(`${genre.genreId} != ${genreId}`);
+
+                    if (genre.genreId != genreId &&
+                        genre.votes / (relTotal.votes - 1) < .5 &&
+                        genre.connection === 1) {
+
+                        // UPDATE genre
+                        multiTempMultiQuery += `UPDATE metagenre.relationships SET connection = 0 WHERE subgenreID = ${subgenreId} AND genreID = ${genre.genreId};`;
+
+                        multiTempMultiQuery += `UPDATE metagenre.mediumsGenres SET votes = votes - ${genre.mediumSubgenreVotes} WHERE id = ${genre.mediumGenreId};`;
+                    }
+
+                });
+
+                multiTempMultiQuery += `UPDATE metagenre.relationshipsTotalTally SET votes = votes - 1 WHERE subgenreID = ${subgenreId};`;
+                return multiTempMultiQuery;
+
+            }
+
+
 
             // subgenres and genres are no longer fixed in an array
 
@@ -157,20 +220,55 @@ router.get('/relationships', (req, res) => {
             };
 
 
-            // IIFE CONSTRUCTOR FUNCTION
-            ((subgenreId, genreId) => {
 
-                console.log(`CONSTRUCTOR genreId: ${genreId}`)
-                let MULTI_QUERY = relationshipViewModel(subgenreId, genreId);
-                MULTI_QUERY += checkPercentageGenreToTotalViewModel(subgenreId, genreId);
-                dispatchToDatabase(MULTI_QUERY);
-            })(subgenreId, genreId);
+            const userBooleanFunViewModel = (subgenreId, genreId, userId, symbol) => {
+
+                let userBooleanQuery;
+
+                if (typeof userBoolean != "undefined") {
+
+                    const votedBoolean = (symbolMath === '-') ? '0' : '1';
+
+                    userBooleanQuery = `UPDATE metagenre.userBooleanRelationships SET voted = ${votedBoolean} WHERE WHERE genreId = ${genreId} AND subgenreId = ${subgenreId} AND userId = ${userId};`;
+                } else {
+                    userBooleanQuery = `INSERT INTO metagenre.userBooleanRelationships (userId, subgenreId, genreId, voted) VALUES(${userId}, ${subgenreId}, ${genreId}, 1)`
+                }
+
+                return userBooleanQuery;
+            }
+
+
+            // IIFE CONSTRUCTOR FUNCTION
+            ((subgenreId, genreId, userId, symbol) => {
+
+                let MULTI_QUERY;
+
+                console.log(`CONSTRUCTOR \ngenreId: ${genreId}\nsubgenreId: ${subgenreId}\nAction: ${symbolMath}`)
+
+                if (symbolMath === '+') {
+                    MULTI_QUERY = relationshipViewModelAdd(subgenreId, genreId, symbol);
+                    MULTI_QUERY += checkPercentageGenreToTotalViewModel(subgenreId, genreId, symbol);
+                } else {
+                    MULTI_QUERY = relationshipViewModelSubtract(subgenreId, genreId, symbol);
+                    MULTI_QUERY += checkPercentageGenreToTotalViewModelSubtract(subgenreId, genreId, symbol);
+                }
+                MULTI_QUERY += userBooleanFunViewModel(subgenreId, genreId, userId, symbol);
+
+                console.log(MULTI_QUERY)
+                // dispatchToDatabase(MULTI_QUERY);
+            })(subgenreId, genreId, userId, symbol);
 
 
         }
     });
 
 });
+
+/* 
+ *
+--------------------------------------------------------------------------------------------------------------------------------------------
+ *
+ */
 
 router.get('/genreSubgenres', (req, res) => {
 
