@@ -66,4 +66,22 @@ router.get('/userBooleanMediums/:id', (req, res) => {
     })
 });
 
+
+router.get('/userBooleanRelationships/', (req, res) => {
+
+    const {userId, genreId} = req.query;
+    
+    const SELECT_USERBOOLEANRELATIONSHIPS_QUERY = `SELECT s.name, ubr.genreId, ubr.subgenreId, ubr.voted FROM metagenre.userBooleanRelationships ubr, metagenre.subgenres s WHERE ubr.userId = ${userId} AND ubr.genreId = ${genreId} AND ubr.subgenreId = s.id;`;
+    
+    connection.query(SELECT_USERBOOLEANRELATIONSHIPS_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.json({
+                data: results
+            })
+        }
+    })
+});
+
 module.exports = router;

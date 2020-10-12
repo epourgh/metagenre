@@ -18,15 +18,16 @@ function capitalizeFirstLetter(string) {
 
 export default function RelationshipsSubgenres() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const { backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [genre, setGenre] =  useState({
         id: 0,
         title: 'none'
     });
-    const [subgenres, setSubgenres] = useState([]);
     const [subgenresFiltered, setSubgenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [message, setMessage] = useState('Currently nothing to show.');
+    const [genresSubgenres, setGenresSubgenres] = useState([]);
+    const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState([]);
     
 
     useEffect(() => {
@@ -35,20 +36,76 @@ export default function RelationshipsSubgenres() {
             id: id,
             title: title
         })
-        getSubgenres();
     }, [])
 
-    const getSubgenres = (stringParam) => {
-        fetch(`http://localhost:4000/subgenres`)
+    useEffect(() => {
+        getGenreSubgenres();
+    }, [genre])
+
+    const getGenreSubgenres = (() => {
+
+        const userPickedContainer = [];
+
+        fetch(`${backendUrl}/userBooleanRelationships?userId=${loggedIn.id}&genreId=${genre.id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data.length)
-                if (response.data.length > 0) {
-                    setSubgenres(response.data)
+                console.log(response.data)
+                if (response.data !== undefined) {
+                    response.data.forEach(item => {
+                        userPickedContainer.push(item.subgenreId);
+                    })
                 }
-            
             });
-    }
+
+        const mediumsGenresContainer = [];
+
+        fetch(`${backendUrl}/genreSubgenresDesc?genreId=${genre.id}`)
+            .then(response => response.json())
+            .then(response => {
+                if (userPickedContainer.length > 0) {
+
+                    let i = 0;
+                    let found;
+                    let userVoted;
+
+                    response.data.forEach(item => {
+
+                        found = userPickedContainer.find(element => element == item.subgenreId);
+
+                        console.log('FOUND')
+                        console.log(found)
+                        userVoted = (found !== undefined) ? 1 : 0;
+
+                        let content = {
+                            id: item.subgenreId, 
+                            name: item.name,
+                            votes: item.votes,
+                            voted: userVoted,
+                            total: item.totalVotes
+                        }
+
+                        content.subgenreId = item.subgenreId;
+
+                        mediumsGenresContainer.push(content);
+                    })
+
+                    setGenresSubgenres(mediumsGenresContainer)
+
+                    setUserPickedSubgenresLength(userPickedContainer.length);
+
+                } else {
+
+                    setGenresSubgenres(response.data)
+
+                    setUserPickedSubgenresLength(3);
+
+                }
+            });
+
+        console.log('/////////////')
+        console.log(mediumsGenresContainer)
+
+    });
 
     const searchHandler = () => {
         console.log(searchValue)
@@ -56,12 +113,15 @@ export default function RelationshipsSubgenres() {
 
 
         if (searchValue !== '' && searchValue !== undefined) {
-            for (let i = 0; i < subgenres.length; i++) {
-                if (subgenres[i].name.includes(searchValue)) {
+            for (let i = 0; i < genresSubgenres.length; i++) {
+                if (genresSubgenres[i].name.includes(searchValue)) {
                     j++;
                     tempSubgenres.push({
-                        name: subgenres[i].name,
-                        id: subgenres[i].id
+                        id: genresSubgenres[i].id,
+                        name: genresSubgenres[i].name,
+                        votes: genresSubgenres[i].votes,
+                        voted: genresSubgenres[i].voted,
+                        total: genresSubgenres[i].total
                     })
                 }
             }
@@ -71,9 +131,9 @@ export default function RelationshipsSubgenres() {
     }
 
 
-    const voteSubgenreIntoGenre = (genreId, subgenreId) => {
+    const voteSubgenreIntoGenre = (genreId, subgenreId, symbol) => {
         console.log(`${genreId}, ${subgenreId}`)
-        fetch(`http://localhost:4000/relationships?genreId=${genreId}&subgenreId=${subgenreId}`)
+        fetch(`${backendUrl}/relationships?genreId=${genreId}&subgenreId=${subgenreId}&symbol=${symbol.toString()}`)
             .then(response => response.json())
             .then(response => {
                  if (response.data.length > 0) {
@@ -84,6 +144,26 @@ export default function RelationshipsSubgenres() {
             })
             .catch(err => console.error(err))
 
+    }
+
+    const RenderSubgenre = () => {
+        { 
+            return subgenresFiltered.map(subgenre => {
+                    if(subgenre.voted === 1) {
+                        return (
+                            <li className="userVotedForThis">
+                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
+                            </li>
+                        );
+                    } else {
+                        return (
+                            <li>
+                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
+                            </li>
+                        )
+                    }
+                })
+        }
     }
 
     return (
@@ -102,17 +182,12 @@ export default function RelationshipsSubgenres() {
                 <br />
                 <hr />
                 <ul className="listGenreStyling">
+                <br />
+                <b>Search Results:</b>{" "}
                 {message}
-                {
-                    subgenresFiltered.map(subgenre => {
-                        return (
-                            <li>
-                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id)}><b>{subgenre.name}</b></a>{" "}
-                            </li>
-                        );
-                    })
-                }
+                <RenderSubgenre />
                 </ul>
+
             </div>
         </div>
     );

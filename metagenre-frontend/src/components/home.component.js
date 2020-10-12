@@ -94,7 +94,7 @@ export default function RelationshipsIndex() {
     const FrontPageGallery = () => {
         return (
             <>
-                <div className = "individualStyling individualHomePageStyling">
+                <div className = "individualStyling individualHomePageStyling grid-cell">
                     <h1>Curated Gallery</h1>
                 </div>                
                 <div className="frontPageBodyContentStyling">
@@ -195,9 +195,9 @@ export default function RelationshipsIndex() {
                                             </a>
                                             <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
                                         </div>
-                                        <h4 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
+                                        <h2 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
                                             <a>{frontPageMedium.title}</a>
-                                        </h4>
+                                        </h2>
                                         <p>{frontPageMedium.shortDesc}</p>
                                         <br />
                                         <ul className="listGenreStyling">
@@ -220,7 +220,7 @@ export default function RelationshipsIndex() {
 
     const AboutMetagenre = () => {
         return (
-            <div className = "individualStyling individualHomePageStyling">
+            <div className = "individualStyling individualHomePageStyling grid-cell">
                 <h1>About Metagenre</h1>
                 <br/><hr/>
                 <div className="paragraph-crunch">
@@ -233,7 +233,7 @@ export default function RelationshipsIndex() {
 
     const RenderRelationships = () => {
         return (
-            <div className = "individualStyling individualHomePageStyling">
+            <div className = "individualStyling individualHomePageStyling grid-cell">
                 
                 <h1> Genre to Subgenre Relationships</h1>
 
@@ -286,10 +286,12 @@ export default function RelationshipsIndex() {
 
     return (
         <div className="bodyContentStyling styleCenter">
-            <AboutMetagenre /><br />
             <FrontPageGalleryAlternative /><br />
             {/* <FrontPageGallery /><br /> */}
-            <RenderRelationships />
+            <div className="grid-container">
+                <AboutMetagenre />
+                <RenderRelationships />
+            </div>
         </div>
     );
 }

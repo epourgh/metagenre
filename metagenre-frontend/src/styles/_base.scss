@@ -201,6 +201,16 @@ input::placeholder {
   grid-template-columns: 25% 25% 25% 25%;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.grid-cell {
+  margin: 2%;
+  min-height: 450px;
+}
+
 .frontPageBodyContentStyling .gallery,
 .gallery {
   border: $border-style;

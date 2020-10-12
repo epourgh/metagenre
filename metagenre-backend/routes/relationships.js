@@ -195,4 +195,24 @@ router.get('/genreSubgenres', (req, res) => {
             });
 });
 
+router.get('/genreSubgenresDesc', (req, res) => {
+
+            const {genreId} = req.query;
+
+            const GENRE_SUBGENRES_QUERY = `
+                SELECT r.subgenreId, s.name, r.votes, rtt.votes totalVotes FROM metagenre.relationships r, metagenre.relationshipsTotalTally rtt, metagenre.subgenres s
+                WHERE genreId = ${genreId} AND r.subgenreId = rtt.subgenreId AND s.id = r.subgenreId ORDER BY r.votes DESC;
+            `;
+
+            connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
+                if (err) {
+                    return res.send(err);
+                } else {
+                    return res.json({
+                        data: results
+                    })
+                }
+            });
+});
+
 module.exports = router;
