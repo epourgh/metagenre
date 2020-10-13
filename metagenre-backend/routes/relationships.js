@@ -6,7 +6,7 @@ const connection = require('../connection');
 
 router.get('/relationships', (req, res) => {
 
-    const { genreId, subgenreId, userId, symbol } = req.query;
+    const { date, genreId, subgenreId, userId, symbol } = req.query;
 
     const symbolMath = (symbol === '-') ? '-' : '+';
 
@@ -221,17 +221,15 @@ router.get('/relationships', (req, res) => {
 
 
 
-            const userBooleanFunViewModel = (subgenreId, genreId, userId, symbol) => {
+            const userBooleanFunViewModel = (date, subgenreId, genreId, userId, symbol) => {
 
                 let userBooleanQuery;
 
                 if (typeof userBoolean != "undefined") {
 
-                    const votedBoolean = (symbolMath === '-') ? '0' : '1';
-
                     userBooleanQuery = `DELETE FROM metagenre.userBooleanRelationships WHERE id=${userBoolean.id};`;
                 } else {
-                    userBooleanQuery = `INSERT INTO metagenre.userBooleanRelationships (userId, subgenreId, genreId, voted) VALUES(${userId}, ${subgenreId}, ${genreId}, 1);`
+                    userBooleanQuery = `INSERT INTO metagenre.userBooleanRelationships (date, userId, subgenreId, genreId, voted) VALUES('${date}', ${userId}, ${subgenreId}, ${genreId}, 1);`
                 }
 
                 return userBooleanQuery;
@@ -239,11 +237,11 @@ router.get('/relationships', (req, res) => {
 
 
             // IIFE CONSTRUCTOR FUNCTION
-            ((subgenreId, genreId, userId, symbol) => {
+            ((date, subgenreId, genreId, userId, symbol) => {
 
                 console.log(`CONSTRUCTOR \ngenreId: ${genreId}\nsubgenreId: ${subgenreId}\nAction: ${symbolMath}`)
 
-                let MULTI_QUERY = userBooleanFunViewModel(subgenreId, genreId, userId, symbol);
+                let MULTI_QUERY = userBooleanFunViewModel(date, subgenreId, genreId, userId, symbol);
 
                 if (symbolMath === '+') {
                     MULTI_QUERY += relationshipViewModelAdd(subgenreId, genreId, symbol);
@@ -254,7 +252,7 @@ router.get('/relationships', (req, res) => {
                 }
 
                 dispatchToDatabase(MULTI_QUERY);
-            })(subgenreId, genreId, userId, symbol);
+            })(date, subgenreId, genreId, userId, symbol);
 
 
         }

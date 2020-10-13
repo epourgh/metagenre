@@ -50,9 +50,11 @@ router.get('/userBooleanMediumsSubgenres/', (req, res) => {
 router.get('/userBooleanMediums/:id', (req, res) => {
     
     const SELECT_ALL_USERBOOLEANMEDIUM_QUERY = `
-            SELECT id, date, mediumId, ubmg.genreId as genreId, '-' as subgenreId FROM metagenre.userBooleanMediumsGenres as ubmg WHERE userId = ${req.params.id}
-            UNION 
-            SELECT id, date, mediumId, '-' as genreId, ubms.subgenreId as subgenreId FROM metagenre.userBooleanMediumsSubgenres as ubms WHERE userId = ${req.params.id} ORDER BY id DESC LIMIT 10;
+        SELECT id, 'genres' as category, date, mediumId, ubmg.genreId as genreId, '-' as subgenreId FROM metagenre.userBooleanMediumsGenres as ubmg WHERE userId = ${req.params.id}
+        UNION 
+        SELECT id, 'relationships' as category, date, '-' as mediumId, genreId, subgenreId From metagenre.userBooleanRelationships WHERE userId = ${req.params.id}
+        UNION 
+        SELECT id, 'subgenres' as category, date, mediumId, '-' as genreId, ubms.subgenreId as subgenreId FROM metagenre.userBooleanMediumsSubgenres as ubms WHERE userId = ${req.params.id} ORDER BY id DESC LIMIT 15;
     `;
 
     connection.query(SELECT_ALL_USERBOOLEANMEDIUM_QUERY, (err, results) => {

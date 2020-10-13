@@ -85,10 +85,12 @@ export default function Profile() {
                 <>
                     {
                         userMediumsGenres.map(userMediumsGenre => {
-                            if (userMediumsGenre.genreId !== '-') {
+                            if (userMediumsGenre.category === 'genres') {
                                 return (<><hr class="greyLine"/><p className="smallFont"><a href={`./medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {genres[userMediumsGenre.genreId].name}(genre) {" "} <i class="greyFont">{timeDifference(userMediumsGenre.date)}</i></p></>);
-                            } else {
+                            } else if (userMediumsGenre.category === 'subgenres') {
                                 return (<><hr class="greyLine" /><p className="smallFont"><a href={`./medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {subgenres[userMediumsGenre.subgenreId].name}(subgenre) <i class="greyFont">{timeDifference(userMediumsGenre.date)}</i>{" "}</p></>);
+                            } else if (userMediumsGenre.category === 'relationships') {
+                                return (<><hr class="greyLine" /><p className="smallFont"><b><a href={`./genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId].name} (genre)</a> x <a href={`./genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId].name} (subgenre)</a></b><i class="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></>);
                             }
 
                         })

@@ -145,7 +145,9 @@ export default function RelationshipsSubgenres() {
         }
         console.log(`user pick length: ${userPickLength}`)
 
-        fetch(`${backendUrl}/relationships?genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
+        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        fetch(`${backendUrl}/relationships?date=${date}&genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
             .then(response => response.json())
             .then(response => {
                  if (response.data.length > 0) {
