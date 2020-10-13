@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 
 function getWindowParam() {
@@ -19,28 +20,27 @@ function capitalizeFirstLetter(string) {
 export default function RelationshipsSubgenres() {
     
     const { backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const [id, title] = getWindowParam();
     const [genre, setGenre] =  useState({
-        id: 0,
-        title: 'none'
+        id: id,
+        title: title
     });
     const [subgenresFiltered, setSubgenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [message, setMessage] = useState('Currently nothing to show.');
     const [genresSubgenres, setGenresSubgenres] = useState([]);
-    const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState([]);
+    const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
+    const [votedSubgenres, setVotedSubgenres] = useState([]);
     
 
     useEffect(() => {
-        const [id, title] = getWindowParam();
-        setGenre({
-            id: id,
-            title: title
-        })
+        getGenreSubgenres();
     }, [])
 
     useEffect(() => {
         getGenreSubgenres();
-    }, [genre])
+        searchHandler();
+    }, [userPickedSubgenresLength])
 
     const getGenreSubgenres = (() => {
 
@@ -54,6 +54,8 @@ export default function RelationshipsSubgenres() {
                     response.data.forEach(item => {
                         userPickedContainer.push(item.subgenreId);
                     })
+
+                    setVotedSubgenres(response.data);
                 }
             });
 
@@ -131,8 +133,18 @@ export default function RelationshipsSubgenres() {
     }
 
 
-    const voteSubgenreIntoGenre = (genreId, subgenreId, symbol) => {
-        console.log(`${genreId}, ${subgenreId}`)
+    const voteSubgenreIntoGenre = (e, genreId, subgenreId, symbol) => {
+        e.preventDefault();
+
+        let userPickLength = userPickedSubgenresLength;
+
+        if (symbol == '+') {
+            userPickLength += 1;
+        } else if (symbol == '-') {
+            userPickLength -= 1;
+        }
+        console.log(`user pick length: ${userPickLength}`)
+
         fetch(`${backendUrl}/relationships?genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
             .then(response => response.json())
             .then(response => {
@@ -143,6 +155,8 @@ export default function RelationshipsSubgenres() {
                  }
             })
             .catch(err => console.error(err))
+        setSearchValue('');
+        setUserPickedSubgenresLength(userPickLength);
 
     }
 
@@ -152,15 +166,19 @@ export default function RelationshipsSubgenres() {
                     if(subgenre.voted === 1) {
                         return (
                             <li className="userVotedForThis">
-                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
+                                <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
                             </li>
                         );
                     } else {
-                        return (
-                            <li>
-                                <a href="#" onClick={() => voteSubgenreIntoGenre(genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
-                            </li>
-                        )
+                        if (userPickedSubgenresLength === 3) {
+                            return <li><p><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p></li>;
+                        } else {
+                            return (
+                                <li>
+                                    <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
+                                </li>
+                            );
+                        }
                     }
                 })
         }
@@ -183,6 +201,21 @@ export default function RelationshipsSubgenres() {
                 <hr />
                 <ul className="listGenreStyling">
                 <br />
+                <p><b>Number of genres voted:</b> {userPickedSubgenresLength}/3</p>
+                <p>
+                    <ul>
+                        <li><b>Voted Subgenres:</b></li>
+                        {
+                            votedSubgenres.map(subgenre => {
+                                return (
+                                    <li className="userVotedForThis">
+                                        <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></a>{" "}
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </p>
                 <b>Search Results:</b>{" "}
                 {message}
                 <RenderSubgenre />

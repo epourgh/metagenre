@@ -229,9 +229,9 @@ router.get('/relationships', (req, res) => {
 
                     const votedBoolean = (symbolMath === '-') ? '0' : '1';
 
-                    userBooleanQuery = `UPDATE metagenre.userBooleanRelationships SET voted = ${votedBoolean} WHERE WHERE genreId = ${genreId} AND subgenreId = ${subgenreId} AND userId = ${userId};`;
+                    userBooleanQuery = `DELETE FROM metagenre.userBooleanRelationships WHERE id=${userBoolean.id};`;
                 } else {
-                    userBooleanQuery = `INSERT INTO metagenre.userBooleanRelationships (userId, subgenreId, genreId, voted) VALUES(${userId}, ${subgenreId}, ${genreId}, 1)`
+                    userBooleanQuery = `INSERT INTO metagenre.userBooleanRelationships (userId, subgenreId, genreId, voted) VALUES(${userId}, ${subgenreId}, ${genreId}, 1);`
                 }
 
                 return userBooleanQuery;
@@ -241,21 +241,19 @@ router.get('/relationships', (req, res) => {
             // IIFE CONSTRUCTOR FUNCTION
             ((subgenreId, genreId, userId, symbol) => {
 
-                let MULTI_QUERY;
-
                 console.log(`CONSTRUCTOR \ngenreId: ${genreId}\nsubgenreId: ${subgenreId}\nAction: ${symbolMath}`)
 
+                let MULTI_QUERY = userBooleanFunViewModel(subgenreId, genreId, userId, symbol);
+
                 if (symbolMath === '+') {
-                    MULTI_QUERY = relationshipViewModelAdd(subgenreId, genreId, symbol);
+                    MULTI_QUERY += relationshipViewModelAdd(subgenreId, genreId, symbol);
                     MULTI_QUERY += checkPercentageGenreToTotalViewModel(subgenreId, genreId, symbol);
                 } else {
-                    MULTI_QUERY = relationshipViewModelSubtract(subgenreId, genreId, symbol);
+                    MULTI_QUERY += relationshipViewModelSubtract(subgenreId, genreId, symbol);
                     MULTI_QUERY += checkPercentageGenreToTotalViewModelSubtract(subgenreId, genreId, symbol);
                 }
-                MULTI_QUERY += userBooleanFunViewModel(subgenreId, genreId, userId, symbol);
 
-                console.log(MULTI_QUERY)
-                // dispatchToDatabase(MULTI_QUERY);
+                dispatchToDatabase(MULTI_QUERY);
             })(subgenreId, genreId, userId, symbol);
 
 
