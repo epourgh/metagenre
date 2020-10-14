@@ -80,7 +80,7 @@ export default function Register() {
         }
     
         if (typeof usernameObject.username != undefined && typeof usernameObject.password != undefined) {
-          fetch(`${backendUrl}/username/add?username=${usernameObject.username}&password=${hashedPassword}`)
+          fetch(`${backendUrl}/username/add?username=${usernameObject.username}&password=${hashedPassword}&email=${usernameObject.email}`)
             .then(res => console.log(res))
             .catch(err => console.log(err))
         }

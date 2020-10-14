@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../connection');
+const { route } = require('./relationships');
 
 router.get('/mediumsFrontPage/', (req, res) => {
     const SELECT_MEDIUMSFRONTPAGE_QUERY = `

@@ -15,6 +15,7 @@ const mediumsDetails = require('./routes/mediumsDetails');
 const booleansContent = require('./routes/booleans');
 const app = express();
 
+
 app.use(cors());
 
 app.get('/', (req, res) => {

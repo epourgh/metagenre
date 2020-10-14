@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {useRoutes} from 'hookrouter';
 
 import Home from "./components/home.component";
+import Mail from "./components/mail.component";
 import Register from "./components/register.component";
 import Login from "./components/login.component";
 import Profile from "./components/profile.component";
@@ -49,6 +50,7 @@ export default function App() {
           <div className='body'>
             <Switch>
               <Route path="/" exact component={Home} />
+              <Route path="/mail" exact component={Mail} />
               <Route path="/mediums" exact component={Mediums} />
               <Route path="/medium" exact component={Medium} />
               <Route path="/Register" exact component={Register} /> 
