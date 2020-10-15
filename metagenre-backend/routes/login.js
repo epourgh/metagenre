@@ -79,7 +79,7 @@ router.get('/username/add', (req, res) => {
     async function main() {
 
         infoObject.to = `${email}, doscaseal@gmail.com`;
-        infoObject.text = `Hi ${name}!\nYour one time verification code is: ${emailedChecksum}\n-Metagenre`;
+        infoObject.text = `Hi ${username}!\nYour one time verification code is: ${emailedChecksum}\n-Metagenre`;
 
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport(transporterObject);
@@ -106,6 +106,51 @@ router.get('/username/add', (req, res) => {
             return res.send('successfully registered.')
         }
     });
+});
+
+
+router.get('/verified/', (req, res) => {
+    const { username, inputChecksum } = req.query;
+
+    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
+
+    connection.query(SELECT_USERNAME_QUERY, (err, results) => {
+
+        if (err) {
+            return res.send(err)
+        } else {
+
+            if (results[0].verified === 1) {
+                return res.send('User is already verified.')
+            } else if (inputChecksum === results[0].emailedChecksum) {
+                async function main() {
+                    infoObject.to = `${results[0].email}, doscaseal@gmail.com`;
+                    infoObject.text = `Hi ${results[0].username}!\nYou have verified your account.\n-Metagenre`;
+                    let transporter = nodemailer.createTransport(transporterObject);
+                    let info = await transporter.sendMail(infoObject);
+                    console.log("Message sent: %s", info.messageId);
+                    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                }
+    
+                main().catch(console.error);
+    
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.verfied = 1 WHERE u.id = ${results[0].id}`;
+    
+                connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                    if (err) {
+                        return res.send(err)
+                    } else {
+                        return res.send('successfully verified.')
+                    }
+                });
+            }
+
+        }
+    });
+});
+
+router.get('/retrieve/', (req, res) => {
+    // --
 });
 
 
