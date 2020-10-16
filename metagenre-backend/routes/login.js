@@ -21,6 +21,12 @@ let infoObject = {
     html: "<b>Hello world?</b>", // html body
 };
 
+createRandomAlphaNumChecksum = (length, chars) => {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
 router.get('/mail/', (req, res) => {
 
     async function main() {
@@ -66,12 +72,6 @@ router.get('/securityQuestions', (req, res) => {
 router.get('/username/add', (req, res) => {
     const { username, password, email } = req.query;
 
-
-    function createRandomAlphaNumChecksum(length, chars) {
-        var result = '';
-        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
-    }
     var emailedChecksum = createRandomAlphaNumChecksum(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     const INSERT_MEDIUM_QUERY = `INSERT INTO usernames (username, password, email, emailedChecksum, verified) VALUES('${username}', '${password}', '${email}', '${emailedChecksum}', 0)`;
@@ -149,8 +149,89 @@ router.get('/verified/', (req, res) => {
     });
 });
 
-router.get('/retrieve/', (req, res) => {
-    // --
+router.get('/retrieve/add', (req, res) => {
+    requestedPasswordrequestedPassword
+
+    var emailedChecksum = createRandomAlphaNumChecksum(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+    const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.requestedPassword=1, u.emailedChecksum=${emailedChecksum} WHERE u.username = ${username}`;
+
+    async function main() {
+        infoObject.to = `${results[0].email}, doscaseal@gmail.com`;
+        infoObject.text = `Hi ${results[0].username}!\nYou have requested to change your password, update with this code: ${emailedChecksum}.\n-Metagenre`;
+        let transporter = nodemailer.createTransport(transporterObject);
+        let info = await transporter.sendMail(infoObject);
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    }
+
+    connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send('Requested password.')
+        }
+    });
+    
+});
+
+router.get('/retrieve/update', (req, res) => {
+    const { username, inputChecksum } = req.query;
+
+    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
+
+    connection.query(SELECT_USERNAME_QUERY, (err, results) => {
+
+        if (err) {
+            return res.send(err)
+        } else {
+
+            if (results[0].requestedPassword === 1 && results[0].emailedChecksum == inputChecksum) {
+
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.requestedPassword=0, u.allowPasswordReset=1 WHERE u.username = ${username}`;
+
+                connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                    if (err) {
+                        return res.send(err)
+                    } else {
+                        return res.send('good')
+                    }
+                });
+
+            }
+        }
+    });
+
+});
+
+
+router.get('/password/update', (req, res) => {
+    const {username, password} = req.query;
+
+    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
+
+    connection.query(SELECT_USERNAME_QUERY, (err, results) => {
+
+        if (err) {
+            return res.send(err)
+        } else {
+
+            if (results[0].allowPasswordRese === 1) {
+
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.password=${password} WHERE u.username = ${username}`;
+
+                connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                    if (err) {
+                        return res.send(err)
+                    } else {
+                        return res.send('Password changed.')
+                    }
+                });
+
+            }
+        }
+    });
+
 });
 
 
