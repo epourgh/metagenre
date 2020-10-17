@@ -34,7 +34,7 @@ export default function Navbar() {
   function userNav() {
       return (
           <span>
-              <li className="navbar-item"><Link to="/profile">{ loggedIn.username.toUpperCase() }</Link></li>
+              <li className="navbar-item"><Link to="/user/profile">{ loggedIn.username.toUpperCase() }</Link></li>
               <li className="navbar-item"><a onClick={() => signOut()}>SIGN OUT</a></li>
           </span>
       )
@@ -44,10 +44,10 @@ export default function Navbar() {
     return (
       <>
         <li className="navbar-item">
-          <Link to="/login" className="nav-link">SIGN IN</Link>
+          <Link to="/user/login" className="nav-link">SIGN IN</Link>
         </li>
         <li className="navbar-item">
-          <Link to="/register" className="nav-link">REGISTER</Link>
+          <Link to="/user/register" className="nav-link">REGISTER</Link>
         </li>
       </>
     )

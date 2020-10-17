@@ -18,7 +18,7 @@ let infoObject = {
     to: "", // list of receivers
     subject: "METAGENRE TEST", // Subject line
     text: "", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: "", // html body
 };
 
 createRandomAlphaNumChecksum = (length, chars) => {
@@ -149,34 +149,57 @@ router.get('/verified/', (req, res) => {
     });
 });
 
-router.get('/retrieve/add', (req, res) => {
-    requestedPasswordrequestedPassword
+router.get('/retrieve/password', (req, res) => {
 
+    const { usernameOrEmail } = req.query;
+    
     var emailedChecksum = createRandomAlphaNumChecksum(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-
-    const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.requestedPassword=1, u.emailedChecksum=${emailedChecksum} WHERE u.username = ${username}`;
-
-    async function main() {
-        infoObject.to = `${results[0].email}, doscaseal@gmail.com`;
-        infoObject.text = `Hi ${results[0].username}!\nYou have requested to change your password, update with this code: ${emailedChecksum}.\n-Metagenre`;
-        let transporter = nodemailer.createTransport(transporterObject);
-        let info = await transporter.sendMail(infoObject);
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    
+    function validateEmail(elementValue) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailPattern.test(elementValue);
     }
 
-    connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+    const queryFilter = (validateEmail(usernameOrEmail))?`email='${usernameOrEmail}'`:`username='${usernameOrEmail}'`;
+
+    
+    const SELECT_USERNAME_BOOLEAN = `SELECT * FROM metagenre.usernames WHERE ${queryFilter};`;
+    
+    console.log(SELECT_USERNAME_BOOLEAN)
+    connection.query(SELECT_USERNAME_BOOLEAN, (err, results) => {
+
+        console.log(results)
         if (err) {
             return res.send(err)
         } else {
-            return res.send('Requested password.')
+            async function main() {
+                infoObject.to = `${results[0].email}, doscaseal@gmail.com`;
+                infoObject.text = `Hi ${results[0].username}! You have requested to change your password, but first you must verify you are updating your password with this code: ${emailedChecksum} http://localhost:3000/user/forgot/code -Metagenre`;
+                infoObject.html = `<p>Hi ${results[0].username}!</p><p>You have requested to change your password, but first you must verify you are updating your password with this code: <b>${emailedChecksum}</b></p><p><a href="http://localhost:3000/user/forgot/code?id=${results[0].id}">localhost:3000/user/forgot/code</a></p><br> -Metagenre`;
+                let transporter = nodemailer.createTransport(transporterObject);
+                let info = await transporter.sendMail(infoObject);
+                console.log("Message sent: %s", info.messageId);
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            }
+
+            main().catch(console.error);
+
+            const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames SET requestPassword=1, emailedChecksum='${emailedChecksum}' WHERE ${queryFilter}`
+
+            connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                if (err) {
+                    return res.send(err)
+                } else {
+                    return res.send('Requested password.')
+                }
+            });
         }
     });
-    
+
 });
 
-router.get('/retrieve/update', (req, res) => {
-    const { username, inputChecksum } = req.query;
+router.get('/security/update', (req, res) => {
+    const { username, securityQuestionId, securityQuestionResponse } = req.query;
 
     const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
 
@@ -186,9 +209,44 @@ router.get('/retrieve/update', (req, res) => {
             return res.send(err)
         } else {
 
-            if (results[0].requestedPassword === 1 && results[0].emailedChecksum == inputChecksum) {
+            if (
+                (results[0].securityQuestion1id === securityQuestionId && results[0].securityQuestion1answer == securityQuestionResponse) 
+                || (results[0].securityQuestion2id === securityQuestionId && results[0].securityQuestion2answer == securityQuestionResponse)
+                ) {
 
-                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.requestedPassword=0, u.allowPasswordReset=1 WHERE u.username = ${username}`;
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.allowPasswordReset=1 WHERE u.username = ${username}`;
+
+                connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                    if (err) {
+                        return res.send(err)
+                    } else {
+                        return res.send('good')
+                    }
+                });
+
+            }
+        }
+    });
+
+});
+
+
+router.get('/retrieve/update', (req, res) => {
+    const { userId, inputChecksum } = req.query;
+
+    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames WHERE id=${userId};`;
+
+    connection.query(SELECT_USERNAME_QUERY, (err, results) => {
+
+        console.log(`${results[0].requestPassword} === ${1} && ${results[0].emailedChecksum} == ${inputChecksum}`)
+
+        if (err) {
+            return res.send(err)
+        } else {
+
+            if (results[0].requestPassword === 1 && results[0].emailedChecksum == inputChecksum) {
+
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames SET requestPassword=0, allowPasswordReset=1 WHERE id=${userId}`;
 
                 connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
                     if (err) {

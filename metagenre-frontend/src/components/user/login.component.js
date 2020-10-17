@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalState';
 
 export default function Login() {
     
@@ -75,7 +75,7 @@ export default function Login() {
                         onChange={e => setUsername({ ...username, password: e.target.value })} />
                 <button onClick={() => signIn()}>Sign In</button>
                 <br />
-                <p><Link to="/register" className="nav-link">Sign Up</Link> | <Link to="/forgot" className="nav-link">Forgot Password</Link></p>
+                <p><Link to="/user/register" className="nav-link">Sign Up</Link> | <Link to="/user/forgot" className="nav-link">Forgot Password</Link></p>
             
                     
             </div>

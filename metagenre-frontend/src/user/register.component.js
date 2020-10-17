@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../../../context/GlobalState';
 const md5 = require("md5");
 
 export default function Register() {
