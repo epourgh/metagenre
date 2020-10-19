@@ -20,7 +20,7 @@ export default function ForgotIndex() {
       fetch(`${backendUrl}/retrieve/update?userId=${id}&inputChecksum=${code}`)
         .then(res => {
             console.log(res);
-            window.location.href = './change'
+            window.location.href = `./change?id=${id}`;
         })
         .catch(err => console.log(err))
     }

@@ -18,7 +18,7 @@ export default function ForgotIndex() {
         </li>
         <li className="navbar-item">
           <Link to="/user/forgot/retrieve">Retrieve Password</Link>{" "}
-          <Link to="/user/forgot/secure">Security Questions</Link>
+          {/* <Link to="/user/forgot/secure">Security Questions</Link> */}
         </li>
       </ul>
     </>

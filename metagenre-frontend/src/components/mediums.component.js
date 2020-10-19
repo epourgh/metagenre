@@ -212,7 +212,7 @@ export default function Medium() {
     if(loggedIn.id === 0) {
       return (
         <div className="individualStyling individualMediumStyling row warning-alert">
-          Need to <a href="./login">sign in</a> to vote for medium genres and subgenres.
+          Need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.
         </div>
       )
     } else {

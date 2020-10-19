@@ -13,7 +13,9 @@ import Login from "./components/user/login.component";
 import ForgotIndex from "./components/user/forgot/index.component";
 import ForgotRetrieve from "./components/user/forgot/retrieve.component";
 import ForgotCode from "./components/user/forgot/code.component";
+import ForgotChange from "./components/user/forgot/change.component";
 import Profile from "./components/user/profile.component";
+
 
 import Mediums from "./components/mediums.component";
 import Medium from "./components/medium.component";
@@ -69,6 +71,7 @@ export default function App() {
               <Route path="/user/forgot" exact component={ForgotIndex} />
               <Route path="/user/forgot/retrieve" exact component={ForgotRetrieve} />
               <Route path="/user/forgot/code" exact component={ForgotCode} />
+              <Route path="/user/forgot/change" exact component={ForgotChange} /> 
               <Route path="/user/profile" exact component={Profile} />
 
             </Switch>

@@ -124,7 +124,7 @@ export default function Register() {
                 onChange={e => setUsernameObject({ ...usernameObject, email: e.target.value })} />   
             <br />
                         
-            <label>Security Queston 1: </label>
+            {/* <label>Security Queston 1: </label>
             <select useRef="userInput"
                     required
                     value={usernameObject.question1.id}
@@ -169,7 +169,7 @@ export default function Register() {
             
             <label>Answer: </label>
             <input value={usernameObject.question2.answer} 
-                onChange={e => setUsernameObject({ ...usernameObject, question2: { answer: e.target.value} })} />
+                onChange={e => setUsernameObject({ ...usernameObject, question2: { answer: e.target.value} })} />*/}
             <br />
 
             <button onClick={() => signUp()}>Sign Up</button>
