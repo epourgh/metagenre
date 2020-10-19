@@ -7,19 +7,13 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 function getWindowParam() {
     var url_string = window.location.href;
     var url = new URL(url_string);
-    const id = url.searchParams.get("id").toString();
-    // const title = capitalizeFirstLetter(url.searchParams.get("title").toString());
-    
+    const id = url.searchParams.get("id").toString();    
     return id;
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export default function Medium() {
     
-    const { backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const { backendUrl, loggedIn} = useContext(GlobalContext)
     const id = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([]);
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);

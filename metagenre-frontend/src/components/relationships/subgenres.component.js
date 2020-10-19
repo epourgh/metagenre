@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 
 function getWindowParam() {
@@ -19,9 +18,9 @@ function capitalizeFirstLetter(string) {
 
 export default function RelationshipsSubgenres() {
     
-    const { backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const { backendUrl, loggedIn} = useContext(GlobalContext)
     const [id, title] = getWindowParam();
-    const [genre, setGenre] =  useState({
+    const [genre] =  useState({
         id: id,
         title: title
     });
@@ -66,13 +65,12 @@ export default function RelationshipsSubgenres() {
             .then(response => {
                 if (userPickedContainer.length > 0) {
 
-                    let i = 0;
                     let found;
                     let userVoted;
 
                     response.data.forEach(item => {
 
-                        found = userPickedContainer.find(element => element == item.subgenreId);
+                        found = userPickedContainer.find(element => element === item.subgenreId);
 
                         console.log('FOUND')
                         console.log(found)
@@ -138,9 +136,9 @@ export default function RelationshipsSubgenres() {
 
         let userPickLength = userPickedSubgenresLength;
 
-        if (symbol == '+') {
+        if (symbol === '+') {
             userPickLength += 1;
-        } else if (symbol == '-') {
+        } else if (symbol === '-') {
             userPickLength -= 1;
         }
         console.log(`user pick length: ${userPickLength}`)
@@ -163,27 +161,25 @@ export default function RelationshipsSubgenres() {
     }
 
     const RenderSubgenre = () => {
-        { 
-            return subgenresFiltered.map(subgenre => {
-                    if(subgenre.voted === 1) {
+        return subgenresFiltered.map(subgenre => {
+                if(subgenre.voted === 1) {
+                    return (
+                        <li className="userVotedForThis">
+                            <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p>{" "}
+                        </li>
+                    );
+                } else {
+                    if (userPickedSubgenresLength === 3) {
+                        return <li><p><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p></li>;
+                    } else {
                         return (
-                            <li className="userVotedForThis">
-                                <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
+                            <li>
+                                <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p>{" "}
                             </li>
                         );
-                    } else {
-                        if (userPickedSubgenresLength === 3) {
-                            return <li><p><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p></li>;
-                        } else {
-                            return (
-                                <li>
-                                    <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</a>{" "}
-                                </li>
-                            );
-                        }
                     }
-                })
-        }
+                }
+            })
     }
 
     return (
@@ -211,7 +207,7 @@ export default function RelationshipsSubgenres() {
                             votedSubgenres.map(subgenre => {
                                 return (
                                     <li className="userVotedForThis">
-                                        <a href="#" onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></a>{" "}
+                                        <p onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></p>{" "}
                                     </li>
                                 )
                             })

@@ -14,7 +14,7 @@ function getWindowParam() {
 
 export default function Genre() {
     
-    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext)
     const [id, type] = getWindowParam();
     const [mediumsGenres, setMediumsGenres] = useState([{name: ''}]);
     const [genreSubgenres, setGenreSubgenres] =  useState([{subgenreName: ''}]);
@@ -23,7 +23,7 @@ export default function Genre() {
 
     useEffect(() => {
         getMediumsGenres();
-        if (type == 'genre') {
+        if (type === 'genre') {
             getGenreSubgenres();
         }
     }, [id, type])

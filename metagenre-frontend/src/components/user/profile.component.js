@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 
 export default function Profile() {
@@ -10,9 +9,6 @@ export default function Profile() {
     useEffect(() => {
         getUserMediumsGenresVotes();
     }, []);
-    console.log('mediums')
-    console.log(mediums)
-
     const getUserMediumsGenresVotes = () => {
 
         fetch(`${backendUrl}/userBooleanMediums/${loggedIn.id}`)
@@ -26,6 +22,7 @@ export default function Profile() {
                 }
             });
     }
+
     function timeDifference(previous) {
 
         previous = new Date(previous);

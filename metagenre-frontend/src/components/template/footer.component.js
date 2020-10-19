@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export default function footer() {
   return (
-    <div class="footer">
+    <div className="footer">
       <h3>2020 <strong>METAGENRE</strong></h3>
         <br />
         <div className="footer-credits">

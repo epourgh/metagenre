@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +19,7 @@ export default function Banner() {
 
   const changeNavStyling = (argu) => {
     console.log(showNavStyle)
-    if (searchValue !== '' && argu=='hamburger') {
+    if (searchValue !== '' && argu === 'hamburger') {
       setSearchValue('')
       nameHandler('remove');
       setShowNavStyle('navbarShow')
@@ -27,7 +27,7 @@ export default function Banner() {
       setSearchValue('')
       nameHandler('remove');
       setShowNavStyle('navbar')
-    } else if(showNavStyle=='navbar') {
+    } else if(showNavStyle === 'navbar') {
       setShowNavStyle('navbarShow')
     } else {
       setShowNavStyle('navbar')
@@ -38,7 +38,7 @@ export default function Banner() {
 
     console.log(searchArg);
     
-    let searchTerm = (searchArg == 'remove') ? '' : searchValue;
+    let searchTerm = (searchArg === 'remove') ? '' : searchValue;
 
     let tempMedium = [];
     let i = 0;
@@ -113,7 +113,7 @@ export default function Banner() {
         <div className="column-header-1">
             <h1>
               <Link to="/" className="navbar-brand">
-                <img src={`/images/logo/nodes.svg`} className="logo" width="25" /> Metagenre
+                <img src={`/images/logo/nodes.svg`} alt="banner logo" className="logo" width="25" /> Metagenre
                 </Link>
             </h1>
         </div>
@@ -121,9 +121,9 @@ export default function Banner() {
           <hr className="banner-hr" />
           <div className="row">
             <div className="column-header-mobile">
-              <a onClick={() => changeNavStyling('hamburger')}>
+              <span onClick={() => changeNavStyling('hamburger')}>
                 <FontAwesomeIcon className="navbar-hamburger" icon={faBars}/>
-              </a>
+              </span>
             </div>
             <div className = "column-header-mobile">
               <form onKeyUp={e => nameHandler('search')} onSubmit={nameHandler}>
@@ -142,12 +142,12 @@ export default function Banner() {
       <nav className={`row`}>
         <ul className={`column ${(activeSearchRows !== 0 || searchValue !== '')?'search-container':''}`}>
           {
-            mediums.filter(medium => medium.active == 1).map(medium => <RenderSearchResult medium={medium} />)
+            mediums.filter(medium => medium.active === 1).map(medium => <RenderSearchResult medium={medium} />)
           }
-          <li className={`${(activeSearchRows == 0 && searchValue !== '')?'nav-item':''}`}>
-            <Link>{
-              `${(activeSearchRows == 0 && searchValue !== '')?'no results':''}`
-            }</Link>
+          <li className={`${(activeSearchRows === 0 && searchValue !== '')?'nav-item':''}`}>
+            <p className="font-on-dark-bg">{
+              `${(activeSearchRows === 0 && searchValue !== '')?'no results':''}`
+            }</p>
           </li>
         </ul>
       </nav>

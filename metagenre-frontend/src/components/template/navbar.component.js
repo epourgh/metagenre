@@ -1,21 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalState';
 
 // (loggedIn.id !== 'N/A')
 
 export default function Navbar() {
-  const {
-    loggedIn,
-    setLoggedIn,
-    showNavStyle
-  } = useContext(GlobalContext)
+  const { loggedIn, setLoggedIn, showNavStyle } = useContext(GlobalContext)
   const loggedInNavbar = (loggedIn.id !== 0) ? userNav() : notLoggedInNav();
   
-
-  useEffect(() => {
-    console.log(showNavStyle)
-  }, ([]));
 
   const signOut = () => {
     if (loggedIn.id !== 0) {
@@ -35,7 +27,7 @@ export default function Navbar() {
       return (
           <span>
               <li className="navbar-item"><Link to="/user/profile">{ loggedIn.username.toUpperCase() }</Link></li>
-              <li className="navbar-item"><a onClick={() => signOut()}>SIGN OUT</a></li>
+              <li className="navbar-item"><span onClick={() => signOut()}>SIGN OUT</span></li>
           </span>
       )
   }

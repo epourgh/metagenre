@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalState';
 const md5 = require("md5");
 
@@ -14,7 +13,7 @@ function getWindowParam() {
 
 export default function ForgotIndex() {
     const id = getWindowParam();
-    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext)
     const [passwordObject, setPasswordObject] = useState({
         password: '',
         password2: ''    

@@ -1,9 +1,8 @@
-import React, { useState, useContext, createContext } from 'react';
+import React from 'react';
 import { GlobalProvider } from './context/GlobalState';
 
 import './styles/main.scss';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {useRoutes} from 'hookrouter';
 
 import Home from "./components/home.component";
 import Mail from "./components/mail.component";
@@ -27,21 +26,6 @@ import RelationshipsSubgenres from "./components/relationships/subgenres.compone
 import Series from "./components/collections/series.component";
 import Creator from "./components/collections/creator.component";
 import Genre from "./components/collections/genre.component";
-/*
-const routes = {
-  "/home": () => <Home />,
-  "/mediums": () => <Mediums />,
-  "/medium": () => <Medium />,
-  "/login": () => <Login />,
-  "/register": () => <Register />,
-  "/forgot": () => <ForgotIndex />,
-  "/relationships": () => <RelationshipsIndex />,
-  "/relationships/subgenres": () => <RelationshipsSubgenres />,
-  "/series": () => <Series />,
-  "/creator": () => <Creator />,
-  "/genre": () => <Genre />
-};
-*/
 
 export default function App() {
 

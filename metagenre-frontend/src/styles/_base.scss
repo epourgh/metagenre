@@ -89,7 +89,7 @@ a:hover {
   cursor: not-allowed;
 }
 
-.listGenreStyling .userVotedForThis a {
+.listGenreStyling .userVotedForThis a, .listGenreStyling .userVotedForThis p {
   border: 1px solid $userVote;
   background: $userVote;
 }
@@ -320,6 +320,10 @@ input::placeholder {
 
 .banner-hr {
   display: none;
+}
+
+.font-on-dark-bg {
+  color: $white
 }
 
 .column-body, .column-sidebar {

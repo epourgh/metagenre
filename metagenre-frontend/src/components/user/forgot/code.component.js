@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalState';
 
 function getWindowParam() {
@@ -12,11 +11,11 @@ function getWindowParam() {
 
 export default function ForgotIndex() {
   const id = getWindowParam();
-  const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+  const {backendUrl} = useContext(GlobalContext)
   const [code, setCode] = useState('');
 
   const reset = () => {
-    if (typeof code != undefined || code != '') {
+    if (typeof code !== undefined || code !== '') {
       fetch(`${backendUrl}/retrieve/update?userId=${id}&inputChecksum=${code}`)
         .then(res => {
             console.log(res);

@@ -13,7 +13,7 @@ function getWindowParam() {
 
 export default function Series() {
     
-    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext)
     const [id] = getWindowParam();
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
     console.log(id)
@@ -21,7 +21,7 @@ export default function Series() {
     useEffect(() => {
         getCreatorsSeries();
     }, [])
-
+    
     const getCreatorsSeries = () => {
         fetch(`${backendUrl}/series/${id}`)
             .then(response => response.json())
@@ -32,7 +32,7 @@ export default function Series() {
             }
         });
     }
-
+    
     const RenderSeries = () => {
 
         if (mediumsCreatorsSeries.length > 1) {

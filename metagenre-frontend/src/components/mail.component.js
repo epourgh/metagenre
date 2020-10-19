@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
 
 export default function Mail() {
-  const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+  const {backendUrl} = useContext(GlobalContext)
 
   const sendMail = () => {
 
@@ -19,7 +18,7 @@ export default function Mail() {
   return (
         <>
           <br /> <br /><br /><br /> <br /><br />
-          <a onClick={() => sendMail()}>sent</a>
+          <button onClick={() => sendMail()}>sent</button>
         </>
   );
 }

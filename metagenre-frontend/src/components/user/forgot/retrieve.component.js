@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalState';
 
 export default function ForgotIndex() {
@@ -7,7 +6,7 @@ export default function ForgotIndex() {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
 
   const retrieve = () => {
-    if (typeof usernameOrEmail != undefined || usernameOrEmail != '') {
+    if (typeof usernameOrEmail !== undefined || usernameOrEmail !== '') {
       fetch(`${backendUrl}/retrieve/password?usernameOrEmail=${usernameOrEmail}`)
         .then(res => console.log(res))
         .catch(err => console.log(err))

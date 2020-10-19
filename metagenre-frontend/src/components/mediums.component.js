@@ -26,12 +26,8 @@ function capitalizeFirstLetter(string) {
 
 export default function Medium() {
   
-  const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+  const {backendUrl, loggedIn} = useContext(GlobalContext)
   const [mediums, setMediums] = useState([]);
-  const [medium, setMedium] = useState({
-    title: '',
-    mediumType: ''
-  });
   const [mediumsGenresObject, setMediumsGenresObject] = useState([]);
   const paramsMediumType = getWindowParam();
 
