@@ -21,13 +21,6 @@ export default function Genre() {
 
     console.log(id)
 
-    useEffect(() => {
-        getMediumsGenres();
-        if (type === 'genre') {
-            getGenreSubgenres();
-        }
-    }, [id, type])
-
     const getMediumsGenres = () => {
         fetch(`${backendUrl}/${type}sMediums?${type}Id=${id}`)
             .then(response => response.json())
@@ -49,6 +42,14 @@ export default function Genre() {
                 }
             });
     }
+
+    useEffect(() => {
+        getMediumsGenres();
+        if (type === 'genre') {
+            getGenreSubgenres(); 
+        }
+    }, [id, type]) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     const RenderMediums = () => {
 

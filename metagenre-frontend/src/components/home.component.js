@@ -2,13 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 export default function RelationshipsIndex() {
     
-    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext)
     const [frontPageMediums, setFrontPageMediums] = useState([]);
     const [tree, setTree] = useState('0');
     const [curatedGalleryClass, setCuratedGalleryClass] = useState('items');
@@ -19,12 +15,12 @@ export default function RelationshipsIndex() {
 
     useEffect(() => {
         getGenres();
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         document.getElementById('items').scrollLeft = snapshot;
         console.log('position saved')
-    })
+    }) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getGenres = (stringParam) => {
         const container = {};
@@ -91,6 +87,7 @@ export default function RelationshipsIndex() {
         }
     }
 
+    /*
     const FrontPageGallery = () => {
         return (
             <>
@@ -103,7 +100,6 @@ export default function RelationshipsIndex() {
                             return (                
                                 <div className="gallery">
                                     <div className="imageContainer">
-                                        {/* target="_blank"  */}
                                         <a href={`/medium?id=${frontPageMedium.id}`}>
                                             <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
                                         </a>
@@ -128,7 +124,7 @@ export default function RelationshipsIndex() {
                 </div>
             </>
         )
-    }
+    }*/
 
     const clickedLink = (e, id) => {
         e.stopPropagation()
@@ -191,12 +187,12 @@ export default function RelationshipsIndex() {
                                         <div className="imageContainer">
                                             {/* target="_blank"  */}
                                             <a href={`/medium?id=${frontPageMedium.id}`}>
-                                                <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} />
+                                                <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} alt="front page thumbnail" />
                                             </a>
                                             <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
                                         </div>
                                         <h2 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
-                                            <a>{frontPageMedium.title}</a>
+                                            {frontPageMedium.title}
                                         </h2>
                                         <p>{frontPageMedium.shortDesc}</p>
                                         <br />
@@ -224,7 +220,7 @@ export default function RelationshipsIndex() {
                 <h1>About Metagenre</h1>
                 <br/><hr/>
                 <div className="paragraph-crunch">
-                    <img src={`./images/logo/nodes.svg`} width="100" className="paragraph-icon"/>
+                    <img src={`./images/logo/nodes.svg`} width="100" className="paragraph-icon" alt="metagenre symbolism"/>
                     <p>Vote on the genres for your favorite entertainment mediums. Users can vote for either pre-existing genres or create genres of their own to vote on. Currently mediums can only be voted on through their pages, with the most popular being shown on the curated gallery of this page (right below) and within the medium category on the navbar (i.e., Games).</p> 
                 </div>
             </div>

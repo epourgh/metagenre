@@ -18,20 +18,19 @@ export default function Series() {
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
     console.log(id)
 
-    useEffect(() => {
-        getCreatorsSeries();
-    }, [])
     
     const getCreatorsSeries = () => {
         fetch(`${backendUrl}/series/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                console.log(response.data.length)
-                if (response.data.length > 0) {
-                    setMediumsCreatorsSeries(response.data)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response.data.length)
+            if (response.data.length > 0) {
+                setMediumsCreatorsSeries(response.data)
             }
         });
     }
+    
+    useEffect(getCreatorsSeries(), [])
     
     const RenderSeries = () => {
 

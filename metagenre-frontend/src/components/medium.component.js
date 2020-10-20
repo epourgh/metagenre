@@ -43,12 +43,10 @@ export default function Medium() {
         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
         console.log('-----mediumssubgenres')
         getMediumsGenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
-        // getMediumsGenres('mediumsGenres');
-        // getMediumsGenres('mediumsSubgenres');
         getSimilarMediums();
         getExternalLinks();
         getCreatorsSeries();
-    }, [id])
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect((event) => {
         checkMediumsGenres();
@@ -147,7 +145,6 @@ export default function Medium() {
             .then(response => {
                 if (userPickedContainer.length > 0) {
 
-                    let i = 0;
                     let found;
                     let userVoted;
 
@@ -156,9 +153,9 @@ export default function Medium() {
                     response.data.forEach(item => {
                         
                         if (mediumsGenres === 'mediumsGenres') {
-                            found = userPickedContainer.find(element => element == item.genreId);
+                            found = userPickedContainer.find(element => element === item.genreId);
                         } else {
-                            found = userPickedContainer.find(element => element == item.subgenreId);
+                            found = userPickedContainer.find(element => element === item.subgenreId);
                         }
 
                         console.log('FOUND')
@@ -208,7 +205,7 @@ export default function Medium() {
 
     }
 
-
+    /*
     const getMediumsGenres = (stringParam) => {
 
         fetch(`${backendUrl}/${stringParam}/view/${id}`)
@@ -225,10 +222,11 @@ export default function Medium() {
             
             });
     }
+    */
 
     const checkMediumsGenres = () => {
         console.log(`${mediumsGenres.length} && ${mediumsSubgenres.length}`)
-        if (mediumsGenres.length == 0 && mediumsSubgenres.length == 0) {
+        if (mediumsGenres.length === 0 && mediumsSubgenres.length === 0) {
             setNoGenresOrSubgenresNotification('No one has voted on genres or subgneres yet ')
             setNoGenres('None');
         } else {
@@ -359,57 +357,53 @@ export default function Medium() {
     }
 
     const RenderMediumsGenre = () => {
-
-        {
-            return mediumsGenres.map(mediumGenre => {
-                if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
-                    return (
-                        <li>
-                            <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
-                        </li>
-                    )
-                } else if (mediumGenre.voted === 1) {
-                    return (
-                        <li className="userVotedForThis">
-                            <a onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '-')}><b>{mediumGenre.name }</b> | {mediumGenre.votes}</a> {" "}
-                        </li>
-                    )
-                } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
-                    return (
-                        <li>
-                            <a onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</a > {" "}
-                        </li>
-                    )
-                }
-            })
-        }
+        return mediumsGenres.map(mediumGenre => {
+            if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
+                return (
+                    <li>
+                        <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
+                    </li>
+                )
+            } else if (mediumGenre.voted === 1) {
+                return (
+                    <li className="userVotedForThis">
+                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '-')}><b>{mediumGenre.name }</b> | {mediumGenre.votes}</p> {" "}
+                    </li>
+                )
+            } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
+                return (
+                    <li>
+                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
+                    </li>
+                )
+            }
+            return null;
+        })
     }
 
     const RenderMediumsSubgenre = () => {
-
-        {
-            return mediumsSubgenres.map(mediumGenre => {
-                if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
-                    return (
-                        <li>
-                            <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
-                        </li>
-                    )
-                } else if (mediumGenre.voted === 1) {
-                    return (
-                        <li className="userVotedForThis">
-                            <a onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '-')}><b>{mediumGenre.name}</b> | {mediumGenre.votes}</a> {" "}
-                        </li>
-                    )
-                } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
-                    return (
-                        <li>
-                            <a onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</a > {" "}
-                        </li>
-                    )
-                }
-            })
-        }
+        return mediumsSubgenres.map(mediumGenre => {
+            if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
+                return (
+                    <li>
+                        <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
+                    </li>
+                )
+            } else if (mediumGenre.voted === 1) {
+                return (
+                    <li className="userVotedForThis">
+                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '-')}><b>{mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
+                    </li>
+                )
+            } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
+                return (
+                    <li>
+                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
+                    </li>
+                )
+            }
+            return null;
+        })
     }
 
 
@@ -430,7 +424,7 @@ export default function Medium() {
                         <div className="column-body">
                             <div className="row">
                                 <div className="column-medium-1">
-                                    <img src={`./images/medium/${id}/frontPageThumbnail.png`} width="150" />
+                                    <img src={`./images/medium/${id}/frontPageThumbnail.png`} alt="Main Thumnail" width="150" />
                                 </div>
                                 <div className="column-medium-2">
                                     <h1><b>{mediumsDetails[0] ? <>{mediumsDetails[0].title}</>:null}</b></h1>
@@ -484,17 +478,17 @@ export default function Medium() {
                                     <br />
 
                                     <p className="smallFont">
-                                        { extLinks.metacritic ? <a target="_blank" href={`https://www.metacritic.com/${extLinks.metacritic}`}>Metacritic</a> : null }{" "}
-                                        { extLinks.imdb ? <a target="_blank" href={`https://www.imdb.com/title/${extLinks.imdb}`}>IMDB</a> : null }{" "}
-                                        { extLinks.opencritic ? <a target="_blank" href={`https://www.opencritic.com/game/${extLinks.opencritic}`}>Opencritic</a> : null }{" "}
-                                        { extLinks.rateyourmusic ? <a target="_blank" href={`https://rateyourmusic.com/artist/${extLinks.rateyourmusic}`}>RateYourMusic</a> : null }{" "}
-                                        <a target="_blank" href={`https://www.amazon.com/s?k=${ extLinks.amazon ? extLinks.amazon : mediumsDetails[0] ? mediumsDetails[0].title : null }`}>Amazon</a>{" "}
-                                        <a target="_blank" href={`https://www.ebay.com/sch/i.html?_nkw=${ extLinks.ebay ? extLinks.ebay : mediumsDetails[0] ? mediumsDetails[0].title : null }`}>eBay</a>{" "}
-                                        { extLinks.goodreads ? <a target="_blank" href={`https://www.goodreads.com/book/show/${extLinks.goodreads}`}>Goodreads</a> : null }{" "}
-                                        <a target="_blank" href={`https://www.youtube.com/results?search_query=${ extLinks.youtube ? extLinks.youtube : mediumsDetails[0] ? mediumsDetails[0].title : null }`}>YouTube</a>{" "}
-                                        { extLinks.wiki ? <a target="_blank" href={`https://en.wikipedia.org/wiki/${extLinks.wiki}`}>Wikipedia</a> : null }{" "}
-                                        { extLinks.howlongtobeat ? <a target="_blank" href={`https://howlongtobeat.com/game?id=${extLinks.howlongtobeat}`}>HowLongToBeat</a> : null }{" "}
-                                        { extLinks.fandomPrefix ? <a target="_blank" href={`https://${extLinks.fandomPrefix}.fandom.com/wiki/${extLinks.fandomSuffix}`}>Fandom</a> : null }{" "}
+                                        { extLinks.metacritic ? <a href={`https://www.metacritic.com/${extLinks.metacritic}`} target="_blank" rel="noopener noreferrer">Metacritic</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.imdb ? <a href={`https://www.imdb.com/title/${extLinks.imdb}`} target="_blank" rel="noopener noreferrer">IMDB</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.opencritic ? <a href={`https://www.opencritic.com/game/${extLinks.opencritic}`} target="_blank" rel="noopener noreferrer">Opencritic</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.rateyourmusic ? <a href={`https://rateyourmusic.com/artist/${extLinks.rateyourmusic}`} target="_blank" rel="noopener noreferrer">RateYourMusic</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.amazon.com/s?k=${ extLinks.amazon ? extLinks.amazon : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">Amazon</a>{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.ebay.com/sch/i.html?_nkw=${ extLinks.ebay ? extLinks.ebay : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">eBay</a>{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.goodreads ? <a href={`https://www.goodreads.com/book/show/${extLinks.goodreads}`} target="_blank" rel="noopener noreferrer">Goodreads</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.youtube.com/results?search_query=${ extLinks.youtube ? extLinks.youtube : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">YouTube</a>{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.wiki ? <a href={`https://en.wikipedia.org/wiki/${extLinks.wiki}`} target="_blank" rel="noopener noreferrer">Wikipedia</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.howlongtobeat ? <a href={`https://howlongtobeat.com/game?id=${extLinks.howlongtobeat}`} target="_blank" rel="noopener noreferrer">HowLongToBeat</a> : null }{" "} {/*eslint-disable-line*/} 
+                                        { extLinks.fandomPrefix ? <a href={`https://${extLinks.fandomPrefix}.fandom.com/wiki/${extLinks.fandomSuffix}`} target="_blank" rel="noopener noreferrer">Fandom</a> : null }{" "} {/*eslint-disable-line*/} 
                                     </p>
                             <br />
 
@@ -526,7 +520,7 @@ export default function Medium() {
 
                             
                                 {
-                                    pictureCount[4]?<div className="selectedImage"><div className="imageContainer"><a onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${pictureCount[4]}`} width="400" /></a><div className="imageContainerTopRight imageContainerTopClose"><b><a onClick={() => enlargePicture('')}><FontAwesomeIcon icon={faTimes}/></a></b></div></div></div>:null
+                                    pictureCount[4]?<div className="selectedImage"><div className="imageContainer"><span onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${pictureCount[4]}`} width="400" alt="enlarged gallery" /></span><div className="imageContainerTopRight imageContainerTopClose"><b><span onClick={() => enlargePicture('')}><FontAwesomeIcon icon={faTimes}/></span></b></div></div></div>:null
                                 }
                                 
 
@@ -534,14 +528,14 @@ export default function Medium() {
                                 <ul className="imageGallery">
                                     { 
                                         [...Array(pictureCount[0])].map((e, i) => {
-                                            return <li><a onClick={() => enlargePicture(`galleryPic_${i}.png`)}><img src={`./images/medium/${id}/galleryPic_${i}.png`} width="100" /></a>{' '}</li>
+                                            return <li><span onClick={() => enlargePicture(`galleryPic_${i}.png`)}><img src={`./images/medium/${id}/galleryPic_${i}.png`} width="100" alt="gallery selection" /></span>{' '}</li>
                                         })
                                     }
                                     {
                                         pictureCount[2] === 1 ? (
                                             <li>
                                                 <div className="morePictures">
-                                                    <a onClick={() => seePictures()} className="smallFont">{pictureCount[3]}</a>
+                                                    <span onClick={() => seePictures()} className="smallFont">{pictureCount[3]}</span>
                                                 </div>
                                             </li>
                                         ) : null

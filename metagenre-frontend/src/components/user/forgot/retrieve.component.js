@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import { GlobalContext } from '../../../context/GlobalState';
 
 export default function ForgotIndex() {
-  const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+  const {backendUrl} = useContext(GlobalContext)
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
 
   const retrieve = () => {

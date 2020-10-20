@@ -23,8 +23,7 @@ export default function Register() {
         }
     });
 
-    useEffect(() => {
-
+    const getSecurityQuestions = () => {
         console.log('fetching...');
 
         fetch(`${backendUrl}/securityQuestions`)
@@ -40,8 +39,9 @@ export default function Register() {
             })
 
         console.log(questions);
+    }
 
-    }, []);
+    useEffect(getSecurityQuestions(), []);
 
   
   const signUp = () => {

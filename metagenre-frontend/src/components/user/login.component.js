@@ -15,7 +15,7 @@ export default function Login() {
   
     const signIn = () => {
 
-        if (typeof username.username != undefined && typeof username.password != undefined) {
+        if (typeof username.username !== undefined && typeof username.password !== undefined) {
             fetch(`${backendUrl}/username/login?username=${username.username}&password=${username.password}`)
                 .then(response => response.json())
                 .then(response => {
@@ -41,7 +41,7 @@ export default function Login() {
     }
 
     const signOut = () => {
-        if (loggedIn.id != 0) {
+        if (loggedIn.id !== 0) {
             localStorage.removeItem('loginId');
             localStorage.removeItem('loginUsername');
             localStorage.removeItem('loginDisplay');

@@ -30,16 +30,6 @@ export default function RelationshipsSubgenres() {
     const [genresSubgenres, setGenresSubgenres] = useState([]);
     const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
     const [votedSubgenres, setVotedSubgenres] = useState([]);
-    
-
-    useEffect(() => {
-        getGenreSubgenres();
-    }, [])
-
-    useEffect(() => {
-        getGenreSubgenres();
-        searchHandler();
-    }, [userPickedSubgenresLength])
 
     const getGenreSubgenres = (() => {
 
@@ -129,6 +119,11 @@ export default function RelationshipsSubgenres() {
          setSubgenresFiltered(tempSubgenres)
          setMessage((j === 0)?'Currently nothing to show.':'')
     }
+
+
+    useEffect(getGenreSubgenres(), [])
+    useEffect(getGenreSubgenres(), [userPickedSubgenresLength])
+    useEffect(searchHandler(), [userPickedSubgenresLength])
 
 
     const voteSubgenreIntoGenre = (e, genreId, subgenreId, symbol) => {

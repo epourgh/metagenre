@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function RelationshipsIndex() {
     
-    const {loggedIn, setLoggedIn} = useContext(GlobalContext)
     const [genres, setGenres] = useState([]);
     const [genresFiltered, setGenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');

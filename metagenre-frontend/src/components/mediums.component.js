@@ -31,12 +31,6 @@ export default function Medium() {
   const [mediumsGenresObject, setMediumsGenresObject] = useState([]);
   const paramsMediumType = getWindowParam();
 
-
-  useEffect(() => {
-    getMediums();
-    getMediumsGenres();
-  }, [paramsMediumType]);
-
   const getMediums = () => {
     fetch(`${backendUrl}/mediums/genreless?mediumType=${paramsMediumType}`)
       .then(response => response.json())
@@ -50,7 +44,7 @@ export default function Medium() {
         .then(response => response.json())
         .then(response => {
         if (response.data.length > 0) {
-            response.data.map(mediumGenre => {
+            response.data.forEach(mediumGenre => {
 
               let mediumsIdToString = mediumGenre.mediumsId;
               
@@ -121,6 +115,8 @@ export default function Medium() {
 
   }
 
+  useEffect(getMediums(), [paramsMediumType]);
+  useEffect(getMediumsGenres(), [paramsMediumType]);
 
     // const addMedium = () => {
       
@@ -177,7 +173,7 @@ export default function Medium() {
               <div key={medium.id} className="individualStyling row">
 
                 <div className="column1">
-                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} width="150"/>
+                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="front page thumbnail" width="150"/>
                 </div>
                 <div className="column2">
 
@@ -238,7 +234,7 @@ export default function Medium() {
             return (
               <div key={medium.id} className="individualStyling row">
                 <div className="column1">
-                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} width="150"/>
+                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="Front Page Thumbnail" width="150"/>
                 </div>
                 <div className="column2">
                   <h3><b><Link to={`/medium?id=${medium.id}`}>{capitalizeFirstLetter(medium.title)}</Link></b></h3>                

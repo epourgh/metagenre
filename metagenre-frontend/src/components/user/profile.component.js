@@ -6,22 +6,21 @@ export default function Profile() {
     const {backendUrl, loggedIn, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
     
-    useEffect(() => {
-        getUserMediumsGenresVotes();
-    }, []);
+    
     const getUserMediumsGenresVotes = () => {
-
+        
         fetch(`${backendUrl}/userBooleanMediums/${loggedIn.id}`)
-            .then(response => response.json())
-            .then(response => {
-                console.log('response.data')
-                console.log(response.data);
-                if (response.data !== undefined) {
-                    setUserMediumsGenres(response.data);
-                    console.log(userMediumsGenres);
-                }
-            });
+        .then(response => response.json())
+        .then(response => {
+            console.log('response.data')
+            console.log(response.data);
+            if (response.data !== undefined) {
+                setUserMediumsGenres(response.data);
+                console.log(userMediumsGenres);
+            }
+        });
     }
+    useEffect(getUserMediumsGenresVotes(), []);
 
     function timeDifference(previous) {
 
@@ -89,6 +88,8 @@ export default function Profile() {
                             } else if (userMediumsGenre.category === 'relationships') {
                                 return (<><hr class="greyLine" /><p className="smallFont"><b><a href={`./genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId].name} (genre)</a> x <a href={`./genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId].name} (subgenre)</a></b><i class="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></>);
                             }
+
+                            return null;
 
                         })
                     }

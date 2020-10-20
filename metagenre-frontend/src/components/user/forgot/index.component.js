@@ -1,9 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../../../context/GlobalState';
 
 export default function ForgotIndex() {
-  const {loggedIn, setLoggedIn} = useContext(GlobalContext)
 
   return (
     <>
