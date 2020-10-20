@@ -5,7 +5,7 @@ const connection = require('../connection');
 router.get('/mediumsDetails/:id', (req, res) => {
 
     const SELECT_MEDIUM_DETAILS = `
-    SELECT m.title, md.shortDesc, md.description, mp.numberOfGalleryPics, mr.platformId1, mr.year, mr.month, mr.day, mr.platformId2, mr.platformId3, mr.platformId4, mr.platformId5, mr.regionId1, mr.regionId2, mr.regionId3, mr.regionId4, mr.regionId5, mr.unabridged, mr.remaster, mr.remake, mr.directorsCut
+    SELECT mr.id, m.title, md.shortDesc, md.description, mp.numberOfGalleryPics, mr.platformId1, mr.year, mr.month, mr.day, mr.platformId2, mr.platformId3, mr.platformId4, mr.platformId5, mr.regionId1, mr.regionId2, mr.regionId3, mr.regionId4, mr.regionId5, mr.unabridged, mr.remaster, mr.remake, mr.directorsCut
     FROM metagenre.mediumsDetails as md, metagenre.mediumsPictures as mp, metagenre.mediums as m, metagenre.mediumsReleases as mr
     WHERE md.mediumId = ${req.params.id}
     AND mp.mediumId = ${req.params.id}

@@ -72,7 +72,7 @@ export default function RelationshipsIndex() {
 
         if (window.screen.width > 1000) {
             return (
-                <li>
+                <li key="subgenre3">
                     <b>
                         <p>SUBGENRE</p>
                         <hr className="genre-line"/>
@@ -112,7 +112,7 @@ export default function RelationshipsIndex() {
                                         <ul className="listGenreStyling">
                                             {
                                                 frontPageMedium.genres.map(genre => {
-                                                return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                                return (<li key={genre.name}><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
                                                 })
                                             }
                                         </ul>
@@ -199,7 +199,7 @@ export default function RelationshipsIndex() {
                                         <ul className="listGenreStyling">
                                             {
                                                 frontPageMedium.genres.map(genre => {
-                                                return (<li><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                                return (<li key={`${frontPageMedium.title}-${genre.name}`}><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
                                                 })
                                             }
                                         </ul>
@@ -240,19 +240,19 @@ export default function RelationshipsIndex() {
                 </div>
                 <div className="tree">
                     <ul>
-                        <li>
+                        <li key="medium">
                             <b>
                                 <p>MEDIUM</p>
                             </b>
                             <ul> 
-                                <li>    
+                                <li key="genre">    
                                     <b>
                                         <p>GENRE</p>
                                         <hr className="genre-line"/>
                                         <p>votes: 20 (+{tree} subgenre votes)</p>
                                     </b>
                                     <ul>
-                                        <li>
+                                        <li key="subgenre1">
                                             <b>
                                                 <p>SUBGENRE</p>
                                                 <hr className="genre-line"/>
@@ -260,7 +260,7 @@ export default function RelationshipsIndex() {
                                                 
                                             </b>
                                         </li>
-                                        <li>
+                                        <li key="subgenre2">
                                             <b>
                                                 <p>SUBGENRE</p>
                                                 <hr className="genre-line"/>

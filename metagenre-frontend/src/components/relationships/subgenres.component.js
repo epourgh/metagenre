@@ -31,6 +31,15 @@ export default function RelationshipsSubgenres() {
     const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
     const [votedSubgenres, setVotedSubgenres] = useState([]);
 
+    useEffect(() => {
+        getGenreSubgenres()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        getGenreSubgenres();
+        searchHandler();
+    }, [userPickedSubgenresLength]) // eslint-disable-line react-hooks/exhaustive-deps
+
     const getGenreSubgenres = (() => {
 
         const userPickedContainer = [];
@@ -121,11 +130,6 @@ export default function RelationshipsSubgenres() {
     }
 
 
-    useEffect(getGenreSubgenres(), [])
-    useEffect(getGenreSubgenres(), [userPickedSubgenresLength])
-    useEffect(searchHandler(), [userPickedSubgenresLength])
-
-
     const voteSubgenreIntoGenre = (e, genreId, subgenreId, symbol) => {
         e.preventDefault();
 
@@ -193,25 +197,23 @@ export default function RelationshipsSubgenres() {
                 <br />
                 <hr />
                 <ul className="listGenreStyling">
-                <br />
-                <p><b>Number of genres voted:</b> {userPickedSubgenresLength}/3</p>
-                <p>
+                    <br />
+                    <p><b>Number of genres voted:</b> {userPickedSubgenresLength}/3</p>
                     <ul>
                         <li><b>Voted Subgenres:</b></li>
                         {
                             votedSubgenres.map(subgenre => {
                                 return (
-                                    <li className="userVotedForThis">
+                                    <li key={subgenre.subgenreId} className="userVotedForThis">
                                         <p onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></p>{" "}
                                     </li>
                                 )
                             })
                         }
                     </ul>
-                </p>
-                <b>Search Results:</b>{" "}
-                {message}
-                <RenderSubgenre />
+                    <b>Search Results:</b>{" "}
+                    {message}
+                    <RenderSubgenre />
                 </ul>
 
             </div>

@@ -33,15 +33,12 @@ export default function Medium() {
         genreType: 'genre'
     });
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
-    console.log(id)
 
     useEffect(() => {
         getMediumsDetails();
         getPlatforms();
         getRegions();
-        console.log('-----mediumsgenres')
         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        console.log('-----mediumssubgenres')
         getMediumsGenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
         getSimilarMediums();
         getExternalLinks();
@@ -56,7 +53,6 @@ export default function Medium() {
         fetch(`${backendUrl}/mediumsDetails/${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data);
                 setMediumsDetails(response.data);
                 setPictureCount((response.data[0].numberOfGalleryPics > 3) ? [3, response.data[0].numberOfGalleryPics, 1, 'more photos', ''] : [response.data[0].numberOfGalleryPics, response.data[0].numberOfGalleryPics, 0, '', '']);
             });
@@ -82,7 +78,6 @@ export default function Medium() {
         fetch(`${backendUrl}/similar/${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data);
                 if (response.data[0][0] !== undefined) {
                     setSimilarTitle('Similar Voted Mediums:');
                     setSimilar(response.data.map(content => {
@@ -96,8 +91,6 @@ export default function Medium() {
         fetch(`${backendUrl}/mediumExternalLinks/${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log('response.data')
-                console.log(response.data);
                 if (response.data !== undefined) {
                     setExtLinks(response.data[0])
                 }
@@ -109,7 +102,6 @@ export default function Medium() {
         fetch(`${backendUrl}/mediumsCreatorsSeries/view/${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data.length)
                 if (response.data.length > 0) {
                     setMediumsCreatorsSeries(response.data)
             }
@@ -123,7 +115,6 @@ export default function Medium() {
         fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data)
                 if (response.data !== undefined) {
                     if (mediumsGenres === 'mediumsGenres') {
                         response.data.forEach(item => {
@@ -134,7 +125,6 @@ export default function Medium() {
                             userPickedContainer.push(item.subgenreId);
                         })
                     }
-                    console.log(userPickedContainer)
                 }
             });
 
@@ -148,8 +138,6 @@ export default function Medium() {
                     let found;
                     let userVoted;
 
-                    console.log(mediumsGenres);
-
                     response.data.forEach(item => {
                         
                         if (mediumsGenres === 'mediumsGenres') {
@@ -158,8 +146,6 @@ export default function Medium() {
                             found = userPickedContainer.find(element => element === item.subgenreId);
                         }
 
-                        console.log('FOUND')
-                        console.log(found)
                         userVoted = (found !== undefined)? 1:0;
 
                         let content = {
@@ -199,10 +185,6 @@ export default function Medium() {
                     
                 }
             });
-
-        console.log('/////////////')
-        console.log(mediumsGenresContainer)
-
     }
 
     /*
@@ -211,7 +193,6 @@ export default function Medium() {
         fetch(`${backendUrl}/${stringParam}/view/${id}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.data.length)
                 if (response.data.length > 0) {
                     if (stringParam === 'mediumsGenres') {
                         setMediumsGenres(response.data)
@@ -225,7 +206,6 @@ export default function Medium() {
     */
 
     const checkMediumsGenres = () => {
-        console.log(`${mediumsGenres.length} && ${mediumsSubgenres.length}`)
         if (mediumsGenres.length === 0 && mediumsSubgenres.length === 0) {
             setNoGenresOrSubgenresNotification('No one has voted on genres or subgneres yet ')
             setNoGenres('None');
@@ -241,7 +221,6 @@ export default function Medium() {
 
         fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
             .then(response => {
-                console.log(response)
                 getMediumsGenresMultiple(routeString, routeString2);
                 // getMediumsGenres(routeString);
             })
@@ -256,14 +235,10 @@ export default function Medium() {
             && medium.genreName !== ''
             && typeof id != undefined) {
 
-            console.log(`name=${medium.genreName}&mediumId=${id}&genreType=${medium.genreType}`);
-
             const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
             fetch(`${backendUrl}/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
                 .then(update => {
-                    console.log(update.url)
-
                     if (medium.genreType === 'genre') {
                         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
                         // getMediumsGenres('mediumsGenres');
@@ -288,7 +263,7 @@ export default function Medium() {
                     <ul>
                         {
                             mediumsCreatorsSeries.map(mediumCreatorsSeries => {
-                                return(<li><b><Link to={`medium?id=${mediumCreatorsSeries.mediumId}&title=${mediumCreatorsSeries.title}`}>{mediumCreatorsSeries.title}</Link></b> ({mediumCreatorsSeries.year}) by <Link to={`creator?id=${mediumCreatorsSeries.creatorId}`}>{mediumCreatorsSeries.creatorName}</Link> </li>);
+                                return(<li key={mediumCreatorsSeries.mediumId}><b><Link to={`medium?id=${mediumCreatorsSeries.mediumId}&title=${mediumCreatorsSeries.title}`}>{mediumCreatorsSeries.title}</Link></b> ({mediumCreatorsSeries.year}) by <Link to={`creator?id=${mediumCreatorsSeries.creatorId}`}>{mediumCreatorsSeries.creatorName}</Link> </li>);
                             })
                         }
                     </ul>
@@ -309,7 +284,7 @@ export default function Medium() {
                         <h3>{similarTitle}</h3>
                         {
                             similar.filter(content => content !== undefined).map(content => {
-                                return(<p><Link to={`./medium?id=${content.id}&title=${content.title}`}>{content.title}</Link>: {content.percentage}%</p>);
+                                return(<p key={content.id}><Link to={`./medium?id=${content.id}&title=${content.title}`}>{content.title}</Link>: {content.percentage}%</p>);
                             })
                         }
                     </div>
@@ -329,7 +304,7 @@ export default function Medium() {
             return (
                 <div>
                     <b className="smallFont">Suggest: </b>
-                    <select useRef="userInput"
+                    <select useref="userInput"
                             required
                             value={medium.genreType}
                             onChange={e => setMedium({  ...medium, genreType: e.target.value })}>
@@ -360,19 +335,19 @@ export default function Medium() {
         return mediumsGenres.map(mediumGenre => {
             if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
                 return (
-                    <li>
+                    <li key={mediumGenre.id}>
                         <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
                     </li>
                 )
             } else if (mediumGenre.voted === 1) {
                 return (
-                    <li className="userVotedForThis">
+                    <li  key={mediumGenre.id} className="userVotedForThis">
                         <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '-')}><b>{mediumGenre.name }</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
             } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
                 return (
-                    <li>
+                    <li key={mediumGenre.id}>
                         <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsGenres', 'userBooleanMediumsGenres', mediumGenre.votes, mediumGenre.genreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
@@ -385,19 +360,19 @@ export default function Medium() {
         return mediumsSubgenres.map(mediumGenre => {
             if ((mediumGenre.voted === 0 || loggedIn.id === 0) && userpickedGenresLength === 3) {
                 return (
-                    <li>
+                    <li key={mediumGenre.subgenreId}>
                         <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
                     </li>
                 )
             } else if (mediumGenre.voted === 1) {
                 return (
-                    <li className="userVotedForThis">
+                    <li key={mediumGenre.subgenreId} className="userVotedForThis">
                         <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '-')}><b>{mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
             } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
                 return (
-                    <li>
+                    <li key={mediumGenre.subgenreId}>
                         <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
@@ -412,7 +387,6 @@ export default function Medium() {
     }
 
     const seePictures = () => {
-        console.log(mediumsGenres)
         pictureCount[3] = (pictureCount[3] === 'more photos') ? 'collapse photos' : 'more photos';
         setPictureCount([pictureCount[1], pictureCount[0], 1, pictureCount[3], pictureCount[4]])
     }
@@ -431,41 +405,41 @@ export default function Medium() {
                                     {
                                         mediumsDetails.map(mediumsDetail => {
                                             return(
-                                                <p className="smallFont">
+                                                <p key={mediumsDetail.id} className="smallFont">
                                                     {
-                                                        mediumsDetail.regionId1 && regions.length >= 1 ? <>{`${regions[mediumsDetail.regionId1 - 1].acronym}`}</>:null
+                                                        mediumsDetail.regionId1 && regions.length >= 1 ? <span key={1}>{`${regions[mediumsDetail.regionId1 - 1].acronym}`}</span>:null
                                                     }
                                                     {
-                                                        mediumsDetail.regionId2 && regions.length >= 1 ? <>{`/${regions[mediumsDetail.regionId2 - 1].acronym}`}</> :null
+                                                        mediumsDetail.regionId2 && regions.length >= 1 ? <span key={2}>{`/${regions[mediumsDetail.regionId2 - 1].acronym}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.regionId3 && regions.length >= 1 ? <>{`/${regions[mediumsDetail.regionId3 - 1].acronym}`}</> :null
+                                                        mediumsDetail.regionId3 && regions.length >= 1 ? <span key={3}>{`/${regions[mediumsDetail.regionId3 - 1].acronym}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.regionId4 && regions.length >= 1 ? <>{`/${regions[mediumsDetail.regionId4 - 1].acronym}`}</> :null
+                                                        mediumsDetail.regionId4 && regions.length >= 1 ? <span key={4}>{`/${regions[mediumsDetail.regionId4 - 1].acronym}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.regionId5 && regions.length >= 1 ? <>{`/${regions[mediumsDetail.regionId5 - 1].acronym}`}{" "}</> :null
+                                                        mediumsDetail.regionId5 && regions.length >= 1 ? <span key={5}>{`/${regions[mediumsDetail.regionId5 - 1].acronym}`}{" "}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.platformId1 && platforms.length >= 1 ? <>{`${platforms[mediumsDetail.platformId1 - 1].name}`}</>:null
+                                                        mediumsDetail.platformId1 && platforms.length >= 1 ? <span key={6}>{`${platforms[mediumsDetail.platformId1 - 1].name}`}</span>:null
                                                     }
                                                     {
-                                                        mediumsDetail.platformId2 && platforms.length >= 1 ? <>{`/${platforms[mediumsDetail.platformId2 - 1].name}`}</> :null
+                                                        mediumsDetail.platformId2 && platforms.length >= 1 ? <span key={7}>{`/${platforms[mediumsDetail.platformId2 - 1].name}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.platformId3 && platforms.length >= 1 ? <>{`/${platforms[mediumsDetail.platformId3 - 1].name}`}</> :null
+                                                        mediumsDetail.platformId3 && platforms.length >= 1 ? <span key={8}>{`/${platforms[mediumsDetail.platformId3 - 1].name}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.platformId4 && platforms.length >= 1 ? <>{`/${platforms[mediumsDetail.platformId4 - 1].name}`}</> :null
+                                                        mediumsDetail.platformId4 && platforms.length >= 1 ? <span key={9}>{`/${platforms[mediumsDetail.platformId4 - 1].name}`}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.platformId5 && platforms.length >= 1 ? <>{`/${platforms[mediumsDetail.platformId5 - 1].name}`}{" "}</> :null
+                                                        mediumsDetail.platformId5 && platforms.length >= 1 ? <span key={10}>{`/${platforms[mediumsDetail.platformId5 - 1].name}`}{" "}</span> :null
                                                     }
                                                     {
-                                                        mediumsDetail.year ? <> {
+                                                        mediumsDetail.year ? <span key={11}> {
                                                             `(${months[mediumsDetail.month]} ${mediumsDetail.day}, ${mediumsDetail.year})`
-                                                        } </> : null 
+                                                        } </span> : null 
                                                     }
                                                 </p>
                                             )
@@ -501,13 +475,13 @@ export default function Medium() {
                                     <b>{noGenresOrSubgenresNotification} for {mediumsDetails[0] ? <>{mediumsDetails[0].title}:</>:<>medium:</>}</b>
                                     </p> 
                                 <ul className="listGenreStyling">
-                                    <li className="genreCategory"><b>genres:</b></li>
+                                    <li key={0} className="genreCategory"><b>genres:</b></li>
                                     <RenderMediumsGenre />
                                 </ul>
                                 
                                 
                                 <ul className="listGenreStyling">
-                                    <li className="genreCategory"><b>subgenres:</b></li>
+                                    <li key={0} className="genreCategory"><b>subgenres:</b></li>
 
                                     <RenderMediumsSubgenre />
                                 </ul>
@@ -528,12 +502,12 @@ export default function Medium() {
                                 <ul className="imageGallery">
                                     { 
                                         [...Array(pictureCount[0])].map((e, i) => {
-                                            return <li><span onClick={() => enlargePicture(`galleryPic_${i}.png`)}><img src={`./images/medium/${id}/galleryPic_${i}.png`} width="100" alt="gallery selection" /></span>{' '}</li>
+                                            return <li key={i}><span onClick={() => enlargePicture(`galleryPic_${i}.png`)}><img src={`./images/medium/${id}/galleryPic_${i}.png`} width="100" alt="gallery selection" /></span>{' '}</li>
                                         })
                                     }
                                     {
                                         pictureCount[2] === 1 ? (
-                                            <li>
+                                            <li key={0}>
                                                 <div className="morePictures">
                                                     <span onClick={() => seePictures()} className="smallFont">{pictureCount[3]}</span>
                                                 </div>
@@ -558,7 +532,7 @@ export default function Medium() {
                             <p className="smallFont">{noGenres}</p>
                             {
                                 mediumsGenres.map(mediumGenre => {
-                                    return (<li className="smallFont"><a href={`./genre?type=genre&id=${mediumGenre.genreId}`}>{mediumGenre.name}</a> {" "}</li>);
+                                    return (<li key={mediumGenre.genreId} className="smallFont"><a href={`./genre?type=genre&id=${mediumGenre.genreId}`}>{mediumGenre.name}</a> {" "}</li>);
                                 })
                             }
                             <br />
@@ -566,7 +540,7 @@ export default function Medium() {
                             <p className="smallFont">{noGenres}</p>
                             {
                                 mediumsSubgenres.map(mediumSubgenre => {
-                                    return (<li className="smallFont"><a href={`./genre?type=subgenre&id=${mediumSubgenre.subgenreId}`}>{mediumSubgenre.name }</a> {" "}</li>);
+                                    return (<li key={mediumSubgenre.subgenreId} className="smallFont"><a href={`./genre?type=subgenre&id=${mediumSubgenre.subgenreId}`}>{mediumSubgenre.name }</a> {" "}</li>);
                                 })
                             }
                         </div>

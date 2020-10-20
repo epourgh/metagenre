@@ -31,6 +31,12 @@ export default function Medium() {
   const [mediumsGenresObject, setMediumsGenresObject] = useState([]);
   const paramsMediumType = getWindowParam();
 
+
+  useEffect(() => {
+      getMediums()
+      getMediumsGenres()
+  }, [paramsMediumType]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const getMediums = () => {
     fetch(`${backendUrl}/mediums/genreless?mediumType=${paramsMediumType}`)
       .then(response => response.json())
@@ -69,7 +75,6 @@ export default function Medium() {
         }
         })
         .catch(err => console.error(err))
-    
 
     fetch(`${backendUrl}/mediumsSubgenresView?mediumType=${paramsMediumType}`)
         .then(response => response.json())
@@ -115,8 +120,6 @@ export default function Medium() {
 
   }
 
-  useEffect(getMediums(), [paramsMediumType]);
-  useEffect(getMediumsGenres(), [paramsMediumType]);
 
     // const addMedium = () => {
       

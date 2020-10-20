@@ -23,6 +23,11 @@ export default function Register() {
         }
     });
 
+
+    useEffect(() => {
+        getSecurityQuestions()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
     const getSecurityQuestions = () => {
         console.log('fetching...');
 
@@ -40,9 +45,6 @@ export default function Register() {
 
         console.log(questions);
     }
-
-    useEffect(getSecurityQuestions(), []);
-
   
   const signUp = () => {
 

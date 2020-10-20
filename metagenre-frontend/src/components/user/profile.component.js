@@ -6,6 +6,10 @@ export default function Profile() {
     const {backendUrl, loggedIn, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
     
+
+    useEffect(() => {
+        getUserMediumsGenresVotes()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
     
     const getUserMediumsGenresVotes = () => {
         
@@ -20,7 +24,6 @@ export default function Profile() {
             }
         });
     }
-    useEffect(getUserMediumsGenresVotes(), []);
 
     function timeDifference(previous) {
 
