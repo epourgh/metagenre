@@ -24,10 +24,7 @@ export default function RelationshipsIndex() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-
-
         document.getElementById('items').scrollLeft = snapshot;
-        console.log('position saved')
     }) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getGenres = (stringParam) => {
@@ -60,7 +57,6 @@ export default function RelationshipsIndex() {
                     let container2 = [];
 
                     for (var key in container) {
-                        console.log(container[key])
                         container2.push(container[key])
                     }
                     setFrontPageMediums(container2)
@@ -112,14 +108,12 @@ export default function RelationshipsIndex() {
 
     const clickedLink = (e, id) => {
         e.stopPropagation()
-        console.log('hi')
         window.location = `/medium?id=${id}`;
     }
 
 
     const mouseDownFunction = (e) => {
         e.preventDefault();
-        console.log(snapshot)
         setIsDown(true);
         setCuratedGalleryClass('items active')
         setStartX(e.pageX - document.getElementById('items').offsetLeft);

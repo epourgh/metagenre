@@ -13,9 +13,6 @@ function getWindowParam() {
   
   const mediumType = url.searchParams.get("medium").toString();
   
-  console.log(mediumType)
-
-  
   return mediumType;
 }
 
@@ -28,96 +25,84 @@ export default function Medium() {
   
   const {backendUrl, loggedIn} = useContext(GlobalContext)
   const [mediums, setMediums] = useState([]);
+  const [mediumsGenres, setMediumsGenres] = useState({genres: [], subgenres: []});
   const [mediumsGenresObject, setMediumsGenresObject] = useState([]);
   const paramsMediumType = getWindowParam();
 
 
   useEffect(() => {
       getMediums()
-      getMediumsGenres()
   }, [paramsMediumType]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    organizeMediumsGenres()
+  }, [mediumsGenres]) // eslint-disable-line react-hooks/exhaustive-deps  
+
   const getMediums = () => {
-    fetch(`${backendUrl}/mediums/genreless?mediumType=${paramsMediumType}`)
-      .then(response => response.json())
-      .then(response => setMediums(response.data))
-      .catch(err => console.error(err))
+    Promise.all([
+      fetch(`${backendUrl}/mediums/genreless?mediumType=${paramsMediumType}`),
+      fetch(`${backendUrl}/mediumsGenresView?mediumType=${paramsMediumType}`),
+      fetch(`${backendUrl}/mediumsSubgenresView?mediumType=${paramsMediumType}`)
+    ])
+    .then(([res1, res2, res3]) => Promise.all([res1.json(), res2.json(), res3.json()]))
+    .then(([data1, data2, data3]) => {
+      setMediums(data1.data)
+      setMediumsGenres({
+          genres: data2.data, 
+          subgenres: data3.data
+      })
+    });
   }
 
-  const getMediumsGenres = () => {
+  const organizeMediumsGenres = () => {
     const container = {};
-    fetch(`${backendUrl}/mediumsGenresView?mediumType=${paramsMediumType}`)
-        .then(response => response.json())
-        .then(response => {
-        if (response.data.length > 0) {
-            response.data.forEach(mediumGenre => {
+    if(mediumsGenres.genres.length > 0 && mediumsGenres.subgenres.length > 0) {
 
-              let mediumsIdToString = mediumGenre.mediumsId;
-              
-              if (container[mediumsIdToString] === undefined) {
-                  
-                  container[mediumsIdToString] = {
-                      genresVoted: [],
-                      subgenresVoted: [],
-                  };
-                  container[mediumsIdToString].title = capitalizeFirstLetter(mediumGenre.title);
-                  container[mediumsIdToString].id = mediumGenre.mediumsId;
-
-              }
-
-              let holder = {}
-              holder.id = mediumGenre.id;
-              holder.name = mediumGenre.name;
-              holder.votes = mediumGenre.votes;
-              container[mediumsIdToString].genresVoted.push(holder);
-              
-            });
+      const orgFunction = (mediumGenre, contentType) => {
+        let mediumsIdToString = mediumGenre.mediumsId;
+        
+        if (container[mediumsIdToString] === undefined) {
+            
+            container[mediumsIdToString] = {
+                genresVoted: [],
+                subgenresVoted: [],
+            };
+            container[mediumsIdToString].title = capitalizeFirstLetter(mediumGenre.title);
+            container[mediumsIdToString].id = mediumGenre.mediumsId;
+  
         }
-        })
-        .catch(err => console.error(err))
+  
+        let holder = {}
+        holder.id = mediumGenre.id;
+        holder.name = mediumGenre.name;
+        holder.votes = mediumGenre.votes;
+        if (contentType === 'genres') {
+          container[mediumsIdToString].genresVoted.push(holder);
+        } else {
+          container[mediumsIdToString].subgenresVoted.push(holder);
+        }
 
-    fetch(`${backendUrl}/mediumsSubgenresView?mediumType=${paramsMediumType}`)
-        .then(response => response.json())
-        .then(response => {
-            if (response.data.length > 0) {
-                response.data.map(mediumSubgenre => {
+        return container;
+      } 
 
-                    let mediumsIdToString = mediumSubgenre.mediumsId;
+      mediumsGenres.genres.forEach(mediumGenre => {
+        return orgFunction(mediumGenre, 'genres')        
+      });
 
-                    if (container[mediumsIdToString] === undefined) {
-                        container[mediumsIdToString] = {
-                            genresVoted: [],
-                            subgenresVoted: [],
-                        };
-                        container[mediumsIdToString].title = capitalizeFirstLetter(mediumSubgenre.title);
-                        container[mediumsIdToString].id = mediumSubgenre.mediumsId;
-                    }
+      mediumsGenres.subgenres.map(mediumSubgenre => {
+        return orgFunction(mediumSubgenre, 'subgenres')
+      });
 
-                    let holder = {}
-                    holder.id = mediumSubgenre.id;
-                    holder.name = mediumSubgenre.name;
-                    holder.votes = mediumSubgenre.votes;
-                    holder.subgenreId = mediumSubgenre.subgenreId;
-                    container[mediumsIdToString].subgenresVoted.push(holder);
-                    return container;
-                })
+      console.log(container)
+    }
 
-              }
+    let container2 = [];
 
-              console.log(container);
+    for (var key in container) {
+      container2.push(container[key])
+    }
 
-              let container2 = [];
-
-              for (var key in container) {
-                console.log(container[key])
-                container2.push(container[key])
-              }
-
-              setMediumsGenresObject(container2);
-
-        })
-        .catch(err => console.error(err))
-
+    setMediumsGenresObject(container2);
   }
 
 
@@ -248,13 +233,6 @@ export default function Medium() {
           })
         }
       </div>
-      {/* <div>
-        <input value={medium.title} 
-                onChange={e => setMedium({ ...medium, title: e.target.value })} />
-        <input value={medium.mediumType} 
-                onChange={e => setMedium({ ...medium, mediumType: e.target.value })} />
-        <button onClick={() => addMedium()}>Add Medium</button>
-      </div> */}
     </div>
   )
 }
