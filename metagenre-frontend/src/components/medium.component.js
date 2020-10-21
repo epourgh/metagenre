@@ -32,14 +32,25 @@ export default function Medium() {
         genreName: '',
         genreType: 'genre'
     });
+    const [mediumsGenresMultiple, setMediumsGenresMultiple] = useState({
+        items: [], 
+        mediumsGenresView: []
+    });
+
+    const [mediumsSubgenresMultiple, setMediumsSubgenresMultiple] = useState({
+        items: [], 
+        mediumsGenresView: []
+    });
+
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
 
     useEffect(() => {
         getMediumsDetails();
         getPlatforms();
         getRegions();
-        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        getMediumsGenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
+        getBothMediumsGenresAndSubgenresMultiple('mediumsGenres', 'userBooleanMediumsGenres', 'mediumsSubgenres', 'userBooleanMediumsSubgenres')
+        // getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+        // getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
         getSimilarMediums();
         getExternalLinks();
         getCreatorsSeries();
@@ -48,6 +59,16 @@ export default function Medium() {
     useEffect((event) => {
         checkMediumsGenres();
     })
+
+    useEffect(() => {
+        organizeMediumsGenresMultiple(mediumsGenresMultiple, 'mediumsGenres');
+    }, [mediumsGenresMultiple])
+
+
+    useEffect(() => {
+        organizeMediumsGenresMultiple(mediumsSubgenresMultiple, 'mediumsSubgenres');
+    }, [mediumsSubgenresMultiple])
+    
 
     const getMediumsDetails = () => {
         fetch(`${backendUrl}/mediumsDetails/${id}`)
@@ -110,81 +131,126 @@ export default function Medium() {
 
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
 
+        Promise.all([
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
+        ])
+        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+        .then(([data1, data2]) => {
+            setMediumsGenresMultiple({
+                items: data1.data, 
+                mediumsGenresView: data2.data
+            })            
+        });
+    }
+
+    const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
+
+        Promise.all([
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
+        ])
+        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+        .then(([data1, data2]) => {
+            setMediumsSubgenresMultiple({
+                items: data1.data, 
+                mediumsGenresView: data2.data
+            })            
+        });
+    }
+
+
+    const getBothMediumsGenresAndSubgenresMultiple = (mediumsGenres, userBooleanMediumsGenres, mediumsSubenres, userBooleanMediumsSungenres) => {
+
+        Promise.all([
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${mediumsGenres}/view/${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsSungenres}?userId=${loggedIn.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
+        ])
+        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
+        .then(([data1, data2, data3, data4]) => {
+            setMediumsGenresMultiple({
+                items: data1.data, 
+                mediumsGenresView: data2.data
+            })
+            setMediumsSubgenresMultiple({
+                items: data3.data, 
+                mediumsGenresView: data4.data
+            })                      
+        });
+    }
+
+    const organizeMediumsGenresMultiple = (mediumsGenresMultipleArg, mediumsGenres) => {
+
         const userPickedContainer = [];
 
-        fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${loggedIn.id}&mediumId=${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.data !== undefined) {
-                    if (mediumsGenres === 'mediumsGenres') {
-                        response.data.forEach(item => {
-                            userPickedContainer.push(item.genreId);
-                        })
-                    } else {
-                        response.data.forEach(item => {
-                            userPickedContainer.push(item.subgenreId);
-                        })
-                    }
-                }
-            });
+        if (mediumsGenresMultipleArg.items.length > 0) {
+            if (mediumsGenres === 'mediumsGenres') {
+                mediumsGenresMultipleArg.items.forEach(item => {
+                    userPickedContainer.push(item.genreId);
+                })
+            } else {
+                mediumsGenresMultipleArg.items.forEach(item => {
+                    userPickedContainer.push(item.subgenreId);
+                })
+            }
+        }
 
         const mediumsGenresContainer = [];
 
-        fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (userPickedContainer.length > 0) {
+ 
+        if (userPickedContainer.length > 0) {
 
-                    let found;
-                    let userVoted;
+            let found;
+            let userVoted;
 
-                    response.data.forEach(item => {
-                        
-                        if (mediumsGenres === 'mediumsGenres') {
-                            found = userPickedContainer.find(element => element === item.genreId);
-                        } else {
-                            found = userPickedContainer.find(element => element === item.subgenreId);
-                        }
-
-                        userVoted = (found !== undefined)? 1:0;
-
-                        let content = {
-                            id: item.id,
-                            title: item.title,
-                            name: item.name,
-                            votes: item.votes,
-                            voted: userVoted
-                        }
-
-                        if (mediumsGenres === 'mediumsGenres') {
-                            content.genreId = item.genreId;
-                        } else {
-                            content.subgenreId = item.subgenreId;
-                        }
-
-                        mediumsGenresContainer.push(content);
-                    })
-
-                    if (mediumsGenres === 'mediumsGenres') {
-                        setMediumsGenres(mediumsGenresContainer)
-                    } else {
-                        setMediumsSubgenres(mediumsGenresContainer)
-                    }
-
-                    setUserPickedGenresLength(userPickedContainer.length);
-
+            mediumsGenresMultipleArg.mediumsGenresView.forEach(item => {
+                
+                if (mediumsGenres === 'mediumsGenres') {
+                    found = userPickedContainer.find(element => element === item.genreId);
                 } else {
-
-                    if (mediumsGenres === 'mediumsGenres') {
-                        setMediumsGenres(response.data)
-                    } else {
-                        setMediumsSubgenres(response.data)
-                    }
-
-                    setUserPickedGenresLength(3);
-                    
+                    found = userPickedContainer.find(element => element === item.subgenreId);
                 }
-            });
+
+                userVoted = (found !== undefined)? 1:0;
+
+                let content = {
+                    id: item.id,
+                    title: item.title,
+                    name: item.name,
+                    votes: item.votes,
+                    voted: userVoted
+                }
+
+                if (mediumsGenres === 'mediumsGenres') {
+                    content.genreId = item.genreId;
+                } else {
+                    content.subgenreId = item.subgenreId;
+                }
+
+                mediumsGenresContainer.push(content);
+            })
+
+            if (mediumsGenres === 'mediumsGenres') {
+                setMediumsGenres(mediumsGenresContainer)
+            } else {
+                setMediumsSubgenres(mediumsGenresContainer)
+            }
+
+            setUserPickedGenresLength(userPickedContainer.length);
+
+        } else {
+
+            if (mediumsGenres === 'mediumsGenres') {
+                setMediumsGenres(mediumsGenresMultipleArg.mediumsGenresView)
+            } else {
+                setMediumsSubgenres(mediumsGenresMultipleArg.mediumsGenresView)
+            }
+
+            setUserPickedGenresLength(3);
+            
+        }
     }
 
     /*
@@ -228,6 +294,20 @@ export default function Medium() {
 
     }
 
+ 
+    const voteMediumSubgenre = (mediumGenresId, routeString, routeString2, mediumGenreVotes, genreId, symbol) => {
+
+        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
+            .then(response => {
+                getMediumsSubgenresMultiple(routeString, routeString2);
+                // getMediumsGenres(routeString);
+            })
+            .catch(err => console.log(err))
+
+    }
+
 
     const addGenreToMedium = () => {
  
@@ -243,7 +323,7 @@ export default function Medium() {
                         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
                         // getMediumsGenres('mediumsGenres');
                     } else if (medium.genreType === 'subgenre') {
-                        getMediumsGenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
+                        getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
                     }
 
                 })
@@ -367,13 +447,13 @@ export default function Medium() {
             } else if (mediumGenre.voted === 1) {
                 return (
                     <li key={mediumGenre.subgenreId} className="userVotedForThis">
-                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '-')}><b>{mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
+                        <p onClick={() => voteMediumSubgenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '-')}><b>{mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
             } else if (mediumGenre.voted === undefined || userpickedGenresLength < 3) {
                 return (
                     <li key={mediumGenre.subgenreId}>
-                        <p onClick={() => voteMediumGenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
+                        <p onClick={() => voteMediumSubgenre(mediumGenre.id, 'mediumsSubgenres', 'userBooleanMediumsSubgenres', mediumGenre.votes, mediumGenre.subgenreId, '+')}><b> {mediumGenre.name}</b> | {mediumGenre.votes}</p> {" "}
                     </li>
                 )
             }
