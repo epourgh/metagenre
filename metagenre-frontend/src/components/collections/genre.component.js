@@ -60,7 +60,7 @@ export default function Genre() {
                         {
                             mediumsGenres.map(mediumGenre => {
                                 return(
-                                    <li>
+                                    <li key={mediumGenre.mediumId}>
                                         <Link to={`/medium?id=${mediumGenre.mediumId}`}>{mediumGenre.title}</Link>
                                     </li>
                                 );
@@ -84,7 +84,7 @@ export default function Genre() {
                         {
                             genreSubgenres.map(mediumGenre => {
                                 return(
-                                    <li>
+                                    <li key={mediumGenre.subgenreId}>
                                         <Link to={`/genre?type=subgenre&id=${mediumGenre.subgenreId}`}>{mediumGenre.subgenreName}</Link>
                                     </li>
                                 );

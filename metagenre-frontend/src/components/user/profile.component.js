@@ -79,17 +79,17 @@ export default function Profile() {
 
     const RenderUserMediumsGenres = () => {
         if (mediums[0].id !== 0 && genres[0].id !== 0 && subgenres[0].id !== 0) {
-            
+
             return (
                 <>
                     {
                         userMediumsGenres.map(userMediumsGenre => {
                             if (userMediumsGenre.category === 'genres') {
-                                return (<><hr class="greyLine"/><p className="smallFont"><a href={`./medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {genres[userMediumsGenre.genreId].name}(genre) {" "} <i class="greyFont">{timeDifference(userMediumsGenre.date)}</i></p></>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine"/><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {genres[userMediumsGenre.genreId].name}(genre) {" "} <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i></p></span>);
                             } else if (userMediumsGenre.category === 'subgenres') {
-                                return (<><hr class="greyLine" /><p className="smallFont"><a href={`./medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {subgenres[userMediumsGenre.subgenreId].name}(subgenre) <i class="greyFont">{timeDifference(userMediumsGenre.date)}</i>{" "}</p></>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {subgenres[userMediumsGenre.subgenreId].name}(subgenre) <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
                             } else if (userMediumsGenre.category === 'relationships') {
-                                return (<><hr class="greyLine" /><p className="smallFont"><b><a href={`./genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId].name} (genre)</a> x <a href={`./genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId].name} (subgenre)</a></b><i class="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><b><a href={`/genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId].name} (genre)</a> x <a href={`/genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId].name} (subgenre)</a></b><i className="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
                             }
 
                             return null;

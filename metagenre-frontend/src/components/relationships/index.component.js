@@ -63,7 +63,7 @@ export default function RelationshipsIndex() {
                     {
                         genresFiltered.map(genre => {
                             return (
-                                <li>
+                                <li key={genre.id}>
                                     <Link to={`/relationships/subgenres?id=${genre.id}&title=${genre.name}`}><b>{genre.name}</b></Link>{" "}
                                 </li>
                             );

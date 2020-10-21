@@ -163,16 +163,16 @@ export default function RelationshipsSubgenres() {
         return subgenresFiltered.map(subgenre => {
                 if(subgenre.voted === 1) {
                     return (
-                        <li className="userVotedForThis">
+                        <li className="userVotedForThis" key={subgenre.id}>
                             <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p>{" "}
                         </li>
                     );
                 } else {
                     if (userPickedSubgenresLength === 3) {
-                        return <li><p><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p></li>;
+                        return <li key={subgenre.id}><p><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p></li>;
                     } else {
                         return (
-                            <li>
+                            <li key={subgenre.id}>
                                 <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b> | {subgenre.votes}/{subgenre.total}</p>{" "}
                             </li>
                         );

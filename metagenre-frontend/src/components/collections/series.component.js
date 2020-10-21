@@ -17,8 +17,11 @@ export default function Series() {
     const [id] = getWindowParam();
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
     console.log(id)
-
     
+    useEffect(() => {
+        getCreatorsSeries()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
     const getCreatorsSeries = () => {
         fetch(`${backendUrl}/series/${id}`)
         .then(response => response.json())
@@ -30,8 +33,6 @@ export default function Series() {
         });
     }
     
-    useEffect(getCreatorsSeries(), [])
-    
     const RenderSeries = () => {
 
         if (mediumsCreatorsSeries.length > 1) {
@@ -42,7 +43,7 @@ export default function Series() {
                     <ul>
                         {
                             mediumsCreatorsSeries.map(mediumCreatorsSeries => {
-                                return(<li><b><Link to={`./medium?id=${mediumCreatorsSeries.mediumId}&title=${mediumCreatorsSeries.title}`}>{mediumCreatorsSeries.title}</Link></b> ({mediumCreatorsSeries.year}) by <Link to={`creator?id=${mediumCreatorsSeries.creatorId}`}>{mediumCreatorsSeries.creatorName}</Link> </li>);
+                                return(<li key={mediumCreatorsSeries.mediumId}><b><Link to={`./medium?id=${mediumCreatorsSeries.mediumId}&title=${mediumCreatorsSeries.title}`}>{mediumCreatorsSeries.title}</Link></b> ({mediumCreatorsSeries.year}) by <Link to={`creator?id=${mediumCreatorsSeries.creatorId}`}>{mediumCreatorsSeries.creatorName}</Link> </li>);
                             })
                         }
                     </ul>

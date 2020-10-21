@@ -12,12 +12,20 @@ export default function RelationshipsIndex() {
     const [scrollLeft, setScrollLeft] = useState(0);
     const [startX, setStartX] = useState(0);
     const [snapshot, setSnapshot] = useState(1000);
+    const [renderTreeRow, setRenderTreeRow] = useState(<></>);
+
 
     useEffect(() => {
         getGenres();
+        let genreTotal = (window.screen.width > 1000)?'30':'20';
+        let renderRow = (window.screen.width > 1000)?<li><b><p>SUBGENRE</p><hr className="genre-line"/><p>votes: 10</p> </b></li>:<></>;
+        setTree(genreTotal);
+        setRenderTreeRow(renderRow);
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
+
+
         document.getElementById('items').scrollLeft = snapshot;
         console.log('position saved')
     }) // eslint-disable-line react-hooks/exhaustive-deps
@@ -63,32 +71,8 @@ export default function RelationshipsIndex() {
             });
 
     }
-
-    const RenderThirdTreeRow = () => {
-
-        const genreTotal = (window.screen.width > 1000)?'30':'20';
-
-        setTree(genreTotal);
-
-        if (window.screen.width > 1000) {
-            return (
-                <li key="subgenre3">
-                    <b>
-                        <p>SUBGENRE</p>
-                        <hr className="genre-line"/>
-                        <p>votes: 10</p>
-                    </b>
-                </li>
-            )
-        } else {
-            return (
-                <></>
-            )
-        }
-    }
-
     /*
-    const FrontPageGallery = () => {
+    const FrontPageGalleryGrid = () => {
         return (
             <>
                 <div className = "individualStyling individualHomePageStyling grid-cell">
@@ -167,7 +151,7 @@ export default function RelationshipsIndex() {
         
     }
 
-    const FrontPageGalleryAlternative = () => { 
+    const FrontPageGalleryScroll = () => { 
         
         return (
             <>
@@ -183,7 +167,7 @@ export default function RelationshipsIndex() {
                         {
                             frontPageMediums.map(frontPageMedium => {
                                 return(
-                                    <div className="item gallery">
+                                    <div className="item gallery" key={frontPageMedium.id}>
                                         <div className="imageContainer">
                                             {/* target="_blank"  */}
                                             <a href={`/medium?id=${frontPageMedium.id}`}>
@@ -199,7 +183,7 @@ export default function RelationshipsIndex() {
                                         <ul className="listGenreStyling">
                                             {
                                                 frontPageMedium.genres.map(genre => {
-                                                return (<li key={`${frontPageMedium.title}-${genre.name}`}><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
+                                                return (<li key={genre.mediumGenreId}><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
                                                 })
                                             }
                                         </ul>
@@ -240,19 +224,19 @@ export default function RelationshipsIndex() {
                 </div>
                 <div className="tree">
                     <ul>
-                        <li key="medium">
+                        <li>
                             <b>
                                 <p>MEDIUM</p>
                             </b>
                             <ul> 
-                                <li key="genre">    
+                                <li>    
                                     <b>
                                         <p>GENRE</p>
                                         <hr className="genre-line"/>
                                         <p>votes: 20 (+{tree} subgenre votes)</p>
                                     </b>
                                     <ul>
-                                        <li key="subgenre1">
+                                        <li>
                                             <b>
                                                 <p>SUBGENRE</p>
                                                 <hr className="genre-line"/>
@@ -260,14 +244,14 @@ export default function RelationshipsIndex() {
                                                 
                                             </b>
                                         </li>
-                                        <li key="subgenre2">
+                                        <li>
                                             <b>
                                                 <p>SUBGENRE</p>
                                                 <hr className="genre-line"/>
                                                 <p>votes: 10</p>
                                             </b>
                                         </li>
-                                        <RenderThirdTreeRow />
+                                        {renderTreeRow}
                                     </ul>
                                 </li>
                             </ul>
@@ -282,8 +266,8 @@ export default function RelationshipsIndex() {
 
     return (
         <div className="bodyContentStyling styleCenter">
-            <FrontPageGalleryAlternative /><br />
-            {/* <FrontPageGallery /><br /> */}
+            <FrontPageGalleryScroll /><br />
+            {/* <FrontPageGalleryGrid /><br /> */}
             <div className="grid-container">
                 <AboutMetagenre />
                 <RenderRelationships />
