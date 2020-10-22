@@ -198,38 +198,54 @@ router.get('/retrieve/password', (req, res) => {
 
 });
 
-router.get('/security/update', (req, res) => {
-    const { username, securityQuestionId, securityQuestionResponse } = req.query;
 
-    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
+router.get('/userSelectedSecurityQuestions/', (req, res) => {
 
-    connection.query(SELECT_USERNAME_QUERY, (err, results) => {
+    const { usernameOrEmail } = req.query;
+    
+    function validateEmail(elementValue) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailPattern.test(elementValue);
+    }
 
+    const queryFilter = (validateEmail(usernameOrEmail))?`email='${usernameOrEmail}'`:`username='${usernameOrEmail}'`;
+
+    const SELECT_USERNAME_BOOLEAN = `SELECT * FROM metagenre.usernames WHERE ${queryFilter};`;
+
+    connection.query(SELECT_USERNAME_BOOLEAN, (err, results) => {
+        console.log(results)
         if (err) {
             return res.send(err)
         } else {
-
-            if (
-                (results[0].securityQuestion1id === securityQuestionId && results[0].securityQuestion1answer == securityQuestionResponse) 
-                || (results[0].securityQuestion2id === securityQuestionId && results[0].securityQuestion2answer == securityQuestionResponse)
-                ) {
-
-                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.allowPasswordReset=1 WHERE u.username = ${username}`;
-
-                connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
-                    if (err) {
-                        return res.send(err)
-                    } else {
-                        return res.send('good')
-                    }
-                });
-
-            }
+            return res.json({
+                data: results
+            })
         }
     });
 
 });
 
+router.get('/userSelectedSecurityQuestions/check', (req, res) => {
+    const { id, sq1r, sq2r } = req.query;
+    
+    const SELECT_USERNAME_BOOLEAN = `SELECT * FROM metagenre.usernames WHERE id=${id} AND securityQuestion1answer='${sq1r}' AND securityQuestion2answer='${sq2r}';`;
+
+    connection.query(SELECT_USERNAME_BOOLEAN, (err, results) => {
+
+        if (results.length === 1) {
+            const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames SET requestPassword=0, allowPasswordReset=1 WHERE id=${id}`;
+
+            connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
+                if (err) {
+                    return res.send(err)
+                } else {
+                    return res.send('good')
+                }
+            });
+        }
+
+    });
+});
 
 router.get('/retrieve/update', (req, res) => {
     const { userId, inputChecksum } = req.query;

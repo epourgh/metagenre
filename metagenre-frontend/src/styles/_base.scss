@@ -486,3 +486,8 @@ input::placeholder {
     margin: 2em .5em;
   }
 }
+
+.oneTimeEmailCode,
+.securityQuestionInput {
+  background: $white
+}
