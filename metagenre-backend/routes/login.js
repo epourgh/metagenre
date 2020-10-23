@@ -70,17 +70,17 @@ router.get('/securityQuestions', (req, res) => {
 
 
 router.get('/username/add', (req, res) => {
-    const { username, password, email } = req.query;
+    const { username, displayName, password, email, securityQuestion1id, securityQuestion1answer, securityQuestion2id, securityQuestion2answer } = req.query;
 
     var emailedChecksum = createRandomAlphaNumChecksum(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
-    const INSERT_MEDIUM_QUERY = `INSERT INTO usernames (username, password, email, emailedChecksum, verified) VALUES('${username}', '${password}', '${email}', '${emailedChecksum}', 0)`;
+    const INSERT_MEDIUM_QUERY = `INSERT INTO usernames (username, password, displayName, email, emailedChecksum, securityQuestion1id, securityQuestion1answer, securityQuestion2id, securityQuestion2answer, verified) VALUES('${username}', '${password}', '${displayName}', '${email}', '${emailedChecksum}', ${securityQuestion1id}, '${securityQuestion1answer}', ${securityQuestion2id}, '${securityQuestion2answer}', 0)`;
 
     async function main() {
 
         infoObject.to = `${email}, doscaseal@gmail.com`;
-        infoObject.text = `Hi ${username}!\nYour one time verification code is: ${emailedChecksum}\n-Metagenre`;
-
+        infoObject.text = `Hi ${username}!\nYour one time verification code is: ${emailedChecksum}\nVerify your account here: http://localhost:3000/user/forgot/code\n-Metagenre`;
+        infoObject.html = `<p>Hi ${username}!</p><p>Your one time verification code is: <b>${emailedChecksum}</b></p><p>Verify your account <a href="http://localhost:3000/user/forgot/code?id=0&username=${username}&retrieve=verification">here</a></p><br> -Metagenre`
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport(transporterObject);
         
@@ -112,7 +112,7 @@ router.get('/username/add', (req, res) => {
 router.get('/verified/', (req, res) => {
     const { username, inputChecksum } = req.query;
 
-    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username = '${username}';`;
+    const SELECT_USERNAME_QUERY = `SELECT * FROM metagenre.usernames u WHERE u.username='${username}';`;
 
     connection.query(SELECT_USERNAME_QUERY, (err, results) => {
 
@@ -134,7 +134,7 @@ router.get('/verified/', (req, res) => {
     
                 main().catch(console.error);
     
-                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.verfied = 1 WHERE u.id = ${results[0].id}`;
+                const UPDATE_USERNAME_BOOLEAN = `UPDATE metagenre.usernames u SET u.verified = 1 WHERE u.id = ${results[0].id}`;
     
                 connection.query(UPDATE_USERNAME_BOOLEAN, (err, results) => {
                     if (err) {
@@ -175,7 +175,7 @@ router.get('/retrieve/password', (req, res) => {
             async function main() {
                 infoObject.to = `${results[0].email}, doscaseal@gmail.com`;
                 infoObject.text = `Hi ${results[0].username}! You have requested to change your password, but first you must verify you are updating your password with this code: ${emailedChecksum} http://localhost:3000/user/forgot/code -Metagenre`;
-                infoObject.html = `<p>Hi ${results[0].username}!</p><p>You have requested to change your password, but first you must verify you are updating your password with this code: <b>${emailedChecksum}</b></p><p><a href="http://localhost:3000/user/forgot/code?id=${results[0].id}">localhost:3000/user/forgot/code</a></p><br> -Metagenre`;
+                infoObject.html = `<p>Hi ${results[0].username}!</p><p>You have requested to change your password, but first you must verify you are updating your password with this code: <b>${emailedChecksum}</b></p><p><a href="http://localhost:3000/user/forgot/code?id=${results[0].id}&username=${results[0].username}&retrieve=password">localhost:3000/user/forgot/code</a></p><br> -Metagenre`;
                 let transporter = nodemailer.createTransport(transporterObject);
                 let info = await transporter.sendMail(infoObject);
                 console.log("Message sent: %s", info.messageId);

@@ -4,7 +4,7 @@ const md5 = require("md5");
 
 export default function Register() {
 
-    const {backendUrl, loggedIn} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext)
 
     const [ questions, setQuestions ] = useState([]);
     const [ usernameObject, setUsernameObject] = useState({
@@ -14,17 +14,22 @@ export default function Register() {
         displayName: '',
         email: '',
         question1: {
-            id: '',
+            id: 0,
             answer: ''
         },
         question2: {
-            id: '',
+            id: 0,
             answer: ''
         }
     });
 
+    useEffect(() => {
+        console.log(`${usernameObject.question1.id} | ${usernameObject.question1.answer} | ${usernameObject.question2.id} | ${usernameObject.question2.answer}`)
+    })
+
 
     useEffect(() => {
+
         getSecurityQuestions()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -82,7 +87,7 @@ export default function Register() {
         }
     
         if (typeof usernameObject.username != undefined && typeof usernameObject.password != undefined) {
-          fetch(`${backendUrl}/username/add?username=${usernameObject.username}&password=${hashedPassword}&email=${usernameObject.email}`)
+          fetch(`${backendUrl}/username/add?username=${usernameObject.username}&displayName=${usernameObject.displayName}&password=${hashedPassword}&email=${usernameObject.email}&securityQuestion1id=${usernameObject.question1.id}&securityQuestion1answer=${usernameObject.question1.answer}&securityQuestion2id=${usernameObject.question2.id}&securityQuestion2answer=${usernameObject.question2.answer}`)
             .then(res => console.log(res))
             .catch(err => console.log(err))
         }
@@ -93,99 +98,67 @@ export default function Register() {
 
   }
 
-  const Register = () => {
-    if (loggedIn.id === 0) {
-        return (
-            <>
-                <h2>Register</h2>
-                <br />
-
-                <label>Username: </label>
-                <input value={usernameObject.username} 
-                    onChange={e => setUsernameObject({ ...usernameObject, username: e.target.value })} />
-                <br />
-
-                <label>Password: </label>
-                <input value={usernameObject.password} 
-                    onChange={e => setUsernameObject({ ...usernameObject, password: e.target.value })} />
-                <br />
-
-
-                <label>Retype Password: </label>
-                <input value={usernameObject.password2} 
-                    onChange={e => setUsernameObject({ ...usernameObject, password2: e.target.value })} />
-                <br />
-
-                <label>Display Name: </label>
-                <input value={usernameObject.displayName} 
-                    onChange={e => setUsernameObject({ ...usernameObject, displayName: e.target.value })} />           
-                <br />
-
-                <label>email: </label>
-                <input value={usernameObject.email} 
-                    onChange={e => setUsernameObject({ ...usernameObject, email: e.target.value })} />   
-                <br />
-                            
-                {/* <label>Security Queston 1: </label>
-                <select useRef="userInput"
-                        required
-                        value={usernameObject.question1.id}
-                        onChange={e => setUsernameObject({ ...usernameObject, question1: { id: e.target.value} })}>
-                    {
-                        questions.map(function(question) {
-                            return (
-                                <option 
-                                    key={question.id}
-                                    value={question.id}>
-                                    {question.content}
-                                </option>
-                            )
-                        })
-                    }
-                </select>
-                <br />
-
-                <label>Answer: </label>
-                <input value={usernameObject.question1.answer} 
-                    onChange={e => setUsernameObject({ ...usernameObject, question1: { answer: e.target.value} })} />
-                <br />
-
-                <label>Security Queston 2: </label>
-                <select useRef="userInput"
-                        required
-                        value={usernameObject.question2.id}
-                        onChange={e => setUsernameObject({ ...usernameObject, question2: { id: e.target.value} })}>
-                    {
-                        questions.map(function(question) {
-                            return (
-                                <option 
-                                    key={question.id}
-                                    value={question.id}>
-                                    {question.content}
-                                </option>
-                            )
-                        })
-                    }
-                </select>
-                <br />
-                
-                <label>Answer: </label>
-                <input value={usernameObject.question2.answer} 
-                    onChange={e => setUsernameObject({ ...usernameObject, question2: { answer: e.target.value} })} />*/}
-                <br />
-
-                <button onClick={() => signUp()}>Sign Up</button>
-            </>
-        )
-    } else {
-        return <p>You're already loggined in.</p>
-    }
-  }
-
   return (
     <div className="bodyContentStyling">
         <div className="single-content-container">
-            <Register />
+            <h2>Register</h2>
+            <br />
+
+            <label>Username: </label>
+            <input value={usernameObject.username} 
+                onChange={e => setUsernameObject({ ...usernameObject, username: e.target.value })} />
+            <br />
+
+            <label>Password: </label>
+            <input value={usernameObject.password} 
+                onChange={e => setUsernameObject({ ...usernameObject, password: e.target.value })} />
+            <br />
+
+
+            <label>Retype Password: </label>
+            <input value={usernameObject.password2} 
+                onChange={e => setUsernameObject({ ...usernameObject, password2: e.target.value })} />
+            <br />
+
+            <label>Display Name: </label>
+            <input value={usernameObject.displayName} 
+                onChange={e => setUsernameObject({ ...usernameObject, displayName: e.target.value })} />           
+            <br />
+
+            <label>email: </label>
+            <input value={usernameObject.email} 
+                onChange={e => setUsernameObject({ ...usernameObject, email: e.target.value })} />   
+            <br />
+                        
+            <label>Security Queston 1: </label>
+            <select required
+                    onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, id: e.target.value} })}>
+                {
+                    questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
+                }
+            </select>
+            <br />
+
+            <label>Answer: </label>
+            <input value={usernameObject.question1.answer} 
+                onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, answer: e.target.value} })} />
+            <br />
+
+            <label>Security Queston 2: </label>
+            <select required
+                    onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, id: e.target.value} })}>
+                {
+                    questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
+                }
+            </select>
+            <br />
+            
+            <label>Answer: </label>
+            <input value={usernameObject.question2.answer} 
+                onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, answer: e.target.value} })} />
+            <br />
+
+            <button onClick={() => signUp()}>Sign Up</button>
         </div>
     </div>
   )
