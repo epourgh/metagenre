@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../connection');
+const jwt = require('jsonwebtoken');
+const verifyToken = require('../middleware/verify.js');
 
 router.get('/genresMediums/', (req, res) => {
 
@@ -151,30 +153,42 @@ router.get('/mediumsSubgenres/view/:id', (req, res) => {
     })
 });
 
+// http://localhost:4000/username/login?username=something&password=something
 
-router.get('/mediumsGenres/update/:id', (req, res) => {
-    const {date, votes, symbol, userId, mediumId, genreId} = req.query;
-    
-    const symbolMath = (symbol === '-')? '-':'+';
+router.get('/mediumsGenres/update/:id', verifyToken, (req, res) => {
 
-    let UPDATE_MEDIUMGENRE_QUERY = `UPDATE metagenre.mediumsGenres SET metagenre.mediumsGenres.votes=${votes}${symbolMath}1 WHERE metagenre.mediumsGenres.id = ${req.params.id};`;
-
-    if (symbolMath === '-') {
-        UPDATE_MEDIUMGENRE_QUERY += `DELETE FROM metagenre.userBooleanMediumsGenres 
-                                     WHERE userId = ${userId}
-                                     AND mediumId = ${mediumId}
-                                     AND genreId = ${genreId};`;
-    } else if (symbolMath === '+') {
-        UPDATE_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsGenres(date, userId, mediumId, genreId, voted) 
-                                     VALUES('${date}', ${userId}, ${mediumId}, ${genreId}, 1);`;
-    }
-    console.log(UPDATE_MEDIUMGENRE_QUERY)
-    connection.query(UPDATE_MEDIUMGENRE_QUERY, (err, results) => {
-        if (err) {
-            return res.send(err)
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err) {
+            res.sendStatus(403);
         } else {
-            return res.send('successfully added new mediumGenre')
+            const {date, votes, symbol, userId, mediumId, genreId} = req.query;
+            
+            const symbolMath = (symbol === '-')? '-':'+';
+        
+            let UPDATE_MEDIUMGENRE_QUERY = `UPDATE metagenre.mediumsGenres SET metagenre.mediumsGenres.votes=${votes}${symbolMath}1 WHERE metagenre.mediumsGenres.id = ${req.params.id};`;
+        
+            if (symbolMath === '-') {
+                UPDATE_MEDIUMGENRE_QUERY += `DELETE FROM metagenre.userBooleanMediumsGenres 
+                                            WHERE userId = ${userId}
+                                            AND mediumId = ${mediumId}
+                                            AND genreId = ${genreId};`;
+            } else if (symbolMath === '+') {
+                UPDATE_MEDIUMGENRE_QUERY += `INSERT INTO metagenre.userBooleanMediumsGenres(date, userId, mediumId, genreId, voted) 
+                                            VALUES('${date}', ${userId}, ${mediumId}, ${genreId}, 1);`;
+            }
+            console.log(UPDATE_MEDIUMGENRE_QUERY)
+            connection.query(UPDATE_MEDIUMGENRE_QUERY, (err, results) => {
+                if (err) {
+                    return res.send(err)
+                } else {
+                    res.json({
+                        message: 'successfully added new mediumGenre',
+                        authData
+                    });
+                }
+            });
         }
+
     });
 });
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../connection');
 const nodemailer = require("nodemailer");
+const jwt = require('jsonwebtoken');
 
 // create reusable transporter object using the default SMTP transport
 const transporterObject = {
@@ -27,6 +28,10 @@ createRandomAlphaNumChecksum = (length, chars) => {
     return result;
 }
 
+
+// @route   GET smtp
+// @desc    Test mailing service
+// @access  Public
 router.get('/mail/', (req, res) => {
 
     async function main() {
@@ -573,8 +578,7 @@ router.get('/username/login', (req, res) => {
     }
 
     console.log(password)
-    const SELECT_LOGIN_QUERY = `SELECT * FROM metagenre.usernames 
-                                                 WHERE metagenre.usernames.username = '${username}'`;
+    const SELECT_LOGIN_QUERY = `SELECT * FROM metagenre.usernames WHERE metagenre.usernames.username = '${username}'`;
     connection.query(SELECT_LOGIN_QUERY, (err, results) => {
         if (err) {
             return res.send(err)
@@ -582,12 +586,16 @@ router.get('/username/login', (req, res) => {
             console.log(results[0].password)
             console.log(compare(password, results[0].password));
             if(compare(password, results[0].password)) {
-                return res.json({
-                    data: results
-                })
+                jwt.sign({username: username, password: password}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+                    return res.json({
+                        data: results,
+                        token: token
+                    });
+                });
             }
         }
     });
+
 });
 
 module.exports = router;
