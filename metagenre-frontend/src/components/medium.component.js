@@ -285,7 +285,11 @@ export default function Medium() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => {
                 getMediumsGenresMultiple(routeString, routeString2);
                 // getMediumsGenres(routeString);

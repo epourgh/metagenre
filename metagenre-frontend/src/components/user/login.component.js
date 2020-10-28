@@ -21,9 +21,10 @@ export default function Login() {
                 .then(response => {
                     console.log(response);
                     if (response.data.length >= 1) {
-
                         localStorage.setItem('loginId', response.data[0].id)
                         localStorage.setItem('loginUsername', response.data[0].username)
+                        localStorage.setItem('token', response.token)
+                        
 
                         if (response.data[0].displayName !== null) {
                             localStorage.setItem('loginDisplay', response.data[0].displayName)

@@ -328,7 +328,7 @@ router.get('/username/login', (req, res) => {
             console.log(results[0].password)
             console.log(compare(password, results[0].password));
             if(compare(password, results[0].password)) {
-                jwt.sign({username: username, password: password}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+                jwt.sign({username: username, password: password}, 'secretkey', { expiresIn: '600s' }, (err, token) => {
                     return res.json({
                         data: results,
                         token: token
