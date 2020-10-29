@@ -289,12 +289,11 @@ export default function Medium() {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
+        }).then(response => {
+            getMediumsGenresMultiple(routeString, routeString2);
+            // getMediumsGenres(routeString);
         })
-            .then(response => {
-                getMediumsGenresMultiple(routeString, routeString2);
-                // getMediumsGenres(routeString);
-            })
-            .catch(err => console.log(err))
+        .catch(err => console.log(err))
 
     }
 
@@ -303,12 +302,14 @@ export default function Medium() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`)
-            .then(response => {
-                getMediumsSubgenresMultiple(routeString, routeString2);
-                // getMediumsGenres(routeString);
-            })
-            .catch(err => console.log(err))
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(response => {
+            getMediumsSubgenresMultiple(routeString, routeString2);
+            // getMediumsGenres(routeString);
+        }).catch(err => console.log(err))
 
     }
 
@@ -321,17 +322,18 @@ export default function Medium() {
 
             const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-            fetch(`${backendUrl}/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`)
-                .then(update => {
-                    if (medium.genreType === 'genre') {
-                        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-                        // getMediumsGenres('mediumsGenres');
-                    } else if (medium.genreType === 'subgenre') {
-                        getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
-                    }
-
-                })
-                .catch(err => console.log(err))
+            fetch(`${backendUrl}/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }).then(update => {
+                if (medium.genreType === 'genre') {
+                    getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+                    // getMediumsGenres('mediumsGenres');
+                } else if (medium.genreType === 'subgenre') {
+                    getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
+                }
+            }).catch(err => console.log(err))
         }
     }
 
