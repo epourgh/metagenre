@@ -4,6 +4,8 @@ const connection = require('../connection');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/verify.js');
 
+router.use(express.json());
+
 router.get('/genresMediums/', (req, res) => {
 
     const {genreId} = req.query;
@@ -154,13 +156,13 @@ router.get('/mediumsSubgenres/view/:id', (req, res) => {
 });
 
 
-router.get('/mediumsGenres/update/:id', verifyToken, (req, res) => {
+router.post('/mediumsGenres/update/:id', verifyToken, (req, res) => {
 
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err) {
             res.sendStatus(403);
         } else {
-            const {date, votes, symbol, userId, mediumId, genreId} = req.query;
+            const {date, votes, symbol, userId, mediumId, genreId} = req.body;
             
             const symbolMath = (symbol === '-')? '-':'+';
         
@@ -191,13 +193,13 @@ router.get('/mediumsGenres/update/:id', verifyToken, (req, res) => {
     });
 });
 
-router.get('/mediumsSubgenres/update/:id', verifyToken,  (req, res) => {
+router.post('/mediumsSubgenres/update/:id', verifyToken,  (req, res) => {
     
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err) {
             res.sendStatus(403);
         } else {
-            const {date, votes, symbol, userId, mediumId, genreId} = req.query;
+            const {date, votes, symbol, userId, mediumId, genreId} = req.body;
 
             const symbolMath = (symbol === '-') ? '-' : '+';
 
@@ -271,12 +273,12 @@ router.get('/mediumsSubgenres/update/:id', verifyToken,  (req, res) => {
     });
 });
 
-router.get('/mediumsGenresChecker', verifyToken,  (req, res) => {
+router.post('/mediumsGenresChecker', verifyToken,  (req, res) => {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err) {
             res.sendStatus(403);
         } else {
-            const {date, genreName, userId, mediumId, mediumType} = req.query;
+            const {date, genreName, userId, mediumId, mediumType} = req.body;
 
             const genres = mediumType === 'genre' ? 'genres' : 'subgenres';
             const subgenres = mediumType === 'genre' ? 'subgenres' : 'genres';

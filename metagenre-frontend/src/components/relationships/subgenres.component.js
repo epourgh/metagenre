@@ -141,8 +141,6 @@ export default function RelationshipsSubgenres() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        console.log(`${backendUrl}/relationships?date=${date}&genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
-
         let jsonifiedParams = {
             date: date,
             genreId: genreId,

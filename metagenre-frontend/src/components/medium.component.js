@@ -285,11 +285,25 @@ export default function Medium() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`, {
+        let jsonifiedParams = {
+            date: date,
+            votes: mediumGenreVotes,
+            symbol: symbol,
+            userId: loggedIn.id,
+            mediumId: id,
+            genreId: genreId,
+        }
+
+        let options = {
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(response => {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(jsonifiedParams)
+        }
+
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}`, options).then(response => {
             getMediumsGenresMultiple(routeString, routeString2);
             // getMediumsGenres(routeString);
         })
@@ -302,11 +316,25 @@ export default function Medium() {
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}?date=${date}&votes=${mediumGenreVotes}&symbol=${symbol.toString()}&userId=${loggedIn.id}&mediumId=${id}&genreId=${genreId}`, {
+        let jsonifiedParams = {
+            date: date,
+            votes: mediumGenreVotes,
+            symbol: symbol,
+            userId: loggedIn.id,
+            mediumId: id,
+            genreId: genreId,
+        }
+
+        let options = {
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(response => {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(jsonifiedParams)
+        }
+
+        fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}`, options).then(response => {
             getMediumsSubgenresMultiple(routeString, routeString2);
             // getMediumsGenres(routeString);
         }).catch(err => console.log(err))
@@ -322,11 +350,24 @@ export default function Medium() {
 
             const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-            fetch(`${backendUrl}/mediumsGenresChecker?date=${date}&genreName=${medium.genreName}&userId=${loggedIn.id}&mediumId=${id}&mediumType=${medium.genreType}`, {
+            let jsonifiedParams = {
+                date: date,
+                genreName: medium.genreName,
+                userId: loggedIn.id,
+                mediumId: id,
+                mediumType: medium.genreType
+            }
+
+            let options = {
+                method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            }).then(update => {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(jsonifiedParams)
+            }
+
+            fetch(`${backendUrl}/mediumsGenresChecker`, options).then(update => {
                 if (medium.genreType === 'genre') {
                     getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
                     // getMediumsGenres('mediumsGenres');
