@@ -5,12 +5,17 @@ const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/verify.js');
 
 
-router.get('/relationships', verifyToken, (req, res) => {
+
+router.use(express.json());
+router.post('/relationships', verifyToken, (req, res) => {
+
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err) {
             res.sendStatus(403);
         } else {
-            const { date, genreId, subgenreId, userId, symbol } = req.query;
+            
+            const { date, genreId, subgenreId, userId, symbol } = req.body;
+
 
             const symbolMath = (symbol === '-') ? '-' : '+';
 

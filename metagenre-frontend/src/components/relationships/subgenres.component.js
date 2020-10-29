@@ -143,18 +143,27 @@ export default function RelationshipsSubgenres() {
 
         console.log(`${backendUrl}/relationships?date=${date}&genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`)
 
-        fetch(`${backendUrl}/relationships?date=${date}&genreId=${genreId}&subgenreId=${subgenreId}&userId=${loggedIn.id}&symbol=${symbol.toString()}`, {
+        let jsonifiedParams = {
+            date: date,
+            genreId: genreId,
+            subgenreId: subgenreId,
+            userId: loggedIn.id,
+            symbol: symbol
+        }
+
+        let options = {
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(jsonifiedParams)
+        }
+
+        fetch(`${backendUrl}/relationships`, options)
             .then(response => response.json())
             .then(response => {
-                 if (response.data.length > 0) {
-                     console.log(response.data[0])
-                 } else {
-                     console.log('doesn\'t exist');
-                 }
+                console.log(` RESPONSE: ${response.data}`)
             })
             .catch(err => console.error(err))
 
