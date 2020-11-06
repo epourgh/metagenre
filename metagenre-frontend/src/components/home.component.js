@@ -24,7 +24,7 @@ export default function RelationshipsIndex() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        document.getElementById('items').scrollLeft = snapshot;
+        document.getElementById('items').scrollLeft = (typeof snapshot === null )?0:snapshot;
     }) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getGenres = (stringParam) => {
