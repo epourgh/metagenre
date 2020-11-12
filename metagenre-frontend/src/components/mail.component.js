@@ -1,8 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
 export default function Mail() {
-  const {backendUrl} = useContext(GlobalContext)
+  const {backendUrl} = useContext(GlobalContext) || 0;
+  const [value, setValue] = useState('');
 
   const sendMail = () => {
 
@@ -12,13 +13,18 @@ export default function Mail() {
         // getMediumsGenres(routeString);
       })
       .catch(err => console.log(err))
+      
+      setValue('');
 
   }
 
   return (
         <>
           <br /> <br /><br /><br /> <br /><br />
-          <button onClick={() => sendMail()}>sent</button>
+          <form onSubmit={() => sendMail()}>
+            <textarea value={value} onChange={e => setValue(e.target.value)}/>
+            <button>sent</button>
+          </form>
         </>
   );
 }

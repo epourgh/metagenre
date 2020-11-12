@@ -1,13 +1,17 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from '../App';
 import {shallow} from 'enzyme';
-import Banner from './components/template/banner.component';
+import Banner from '../components/template/banner.component';
 
+let shallowDiv;
+
+beforeEach(() => {
+  shallowDiv = shallow(<App />);
+});
 
 it('shows banner', () => {
-  const shallowDiv = shallow(<App />);
   expect(shallowDiv.find(Banner).length).toEqual(1);
 });
 
