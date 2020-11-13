@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
 export default function Login() {
     
@@ -9,7 +9,7 @@ export default function Login() {
         password: ''
     });
     
-    const {backendUrl, loggedIn, setLoggedIn} = useContext(GlobalContext)
+    const {backendUrl, setLoggedIn, userCredentials, dispatch} = useContext(GlobalContext)
 
     console.log(localStorage)
   
@@ -35,30 +35,34 @@ export default function Login() {
                             username: localStorage.getItem('loginUsername'),
                             display: localStorage.getItem('loginDisplay')
                         })
+                        dispatch({type: ACTIONS.SIGN_IN, 
+                                payload: {
+                                    id: localStorage.getItem('loginId'),
+                                    username: localStorage.getItem('loginUsername'),
+                                    display: localStorage.getItem('loginDisplay')
+                                }});
                     }
                 })
                 .catch(err => console.log(err))
         }
+
+
     }
 
     const signOut = () => {
-        if (loggedIn.id !== 0) {
-            localStorage.removeItem('loginId');
-            localStorage.removeItem('loginUsername');
-            localStorage.removeItem('loginDisplay');
+        if (userCredentials.id !== 0) {
+            localStorage.removeItem('reducer-id');
+            localStorage.removeItem('reducer-username');
+            localStorage.removeItem('reducer-display');
 
-            setLoggedIn({
-                id: 0,
-                username: 'Currently not logged in.',
-                display: ''
-            })
+            dispatch({type: ACTIONS.SIGN_OUT});
         }
     }
 
     function userNav() {
         return (
             <p>
-                <b>user id:</b> { loggedIn.id }, <b>display name:</b> { loggedIn.display }, <b>username:</b> { loggedIn.username }
+                <b>user id:</b> { userCredentials.id }, <b>display name:</b> { userCredentials.display }, <b>username:</b> { userCredentials.username }
                 <p><button onClick={() => signOut()}>Sign Out</button></p>
             </p>
         )
@@ -67,7 +71,7 @@ export default function Login() {
     function notLoggedInNav() {
         return (
             <div className="single-content-container">
-                <p>{ loggedIn.username }</p>
+                <p>{ userCredentials.username }</p>
 
                 <input value={username.username} 
                        onChange={e => setUsername({ ...username, username: e.target.value })} />
@@ -77,13 +81,11 @@ export default function Login() {
                 <button onClick={() => signIn()}>Sign In</button>
                 <br />
                 <p><Link to="/user/register" className="nav-link">Sign Up</Link> | <Link to="/user/forgot" className="nav-link">Forgot Password</Link></p>
-            
-                    
             </div>
         )
     }
 
-    const loggedInNavbar = (loggedIn.id !== 0) ? userNav() : notLoggedInNav();
+    const loggedInNavbar = (userCredentials.id !== "0") ? userNav() : notLoggedInNav();
 
     return (
         <div className="bodyContentStyling">

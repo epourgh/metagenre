@@ -1,32 +1,29 @@
 import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
 // (loggedIn.id !== 'N/A')
 
 export default function Navbar() {
-  const { loggedIn, setLoggedIn, showNavStyle } = useContext(GlobalContext)
-  const loggedInNavbar = (loggedIn.id !== 0) ? userNav() : notLoggedInNav();
+  const { showNavStyle, userCredentials, dispatch } = useContext(GlobalContext)
+  const loggedInNavbar = (userCredentials.id !== "0") ? userNav() : notLoggedInNav();
   
 
   const signOut = () => {
-    if (loggedIn.id !== 0) {
-      localStorage.removeItem('loginId');
-      localStorage.removeItem('loginUsername');
-      localStorage.removeItem('loginDisplay');
+    if (userCredentials.id !== 0) {
+      
+      localStorage.removeItem('reducer-id');
+      localStorage.removeItem('reducer-username');
+      localStorage.removeItem('reducer-display');
 
-      setLoggedIn({
-        id: 0,
-        username: 'Currently not logged in.',
-        display: '-'
-      })
+      dispatch({type: ACTIONS.SIGN_OUT});
     }
   }
 
   function userNav() {
-      return (
+       return (
           <span>
-              <li className="navbar-item"><Link to="/user/profile">{ loggedIn.username.toUpperCase() }</Link></li>
+              <li className="navbar-item"><Link to="/user/profile">{ userCredentials.username }</Link></li>
               <li className="navbar-item"><span onClick={() => signOut()}>SIGN OUT</span></li>
           </span>
       )
