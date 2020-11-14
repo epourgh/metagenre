@@ -9,7 +9,7 @@ export default function Login() {
         password: ''
     });
     
-    const {backendUrl, setLoggedIn, userCredentials, dispatch} = useContext(GlobalContext)
+    const {backendUrl, userCredentials, dispatch} = useContext(GlobalContext)
 
     console.log(localStorage)
   
@@ -29,12 +29,7 @@ export default function Login() {
                         if (response.data[0].displayName !== null) {
                             localStorage.setItem('loginDisplay', response.data[0].displayName)
                         }
-
-                        setLoggedIn({
-                            id: localStorage.getItem('loginId'),
-                            username: localStorage.getItem('loginUsername'),
-                            display: localStorage.getItem('loginDisplay')
-                        })
+                        
                         dispatch({type: ACTIONS.SIGN_IN, 
                                 payload: {
                                     id: localStorage.getItem('loginId'),

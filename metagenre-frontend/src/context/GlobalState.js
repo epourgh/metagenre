@@ -50,12 +50,6 @@ export const GlobalProvider = ({ children }) => {
   const backendUrl = 'http://localhost:4000';
 
   const [userCredentials, dispatch] = useReducer(reducer, []);
-
-  const [loggedIn, setLoggedIn] = useState({
-      id: parseInt(localStorage.getItem('loginId')) || 0,
-      username: localStorage.getItem('loginUsername') || 'Currently not logged in.',
-      display: localStorage.getItem('loginDisplay') || '-'
-  })
   
   useEffect(() => {
 
@@ -113,8 +107,6 @@ export const GlobalProvider = ({ children }) => {
     <GlobalContext.Provider value={
       {
         backendUrl,
-        loggedIn,
-        setLoggedIn,
         mediums,
         setMediums,
         genres,
