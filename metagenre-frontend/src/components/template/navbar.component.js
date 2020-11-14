@@ -1,5 +1,4 @@
 import React, {useContext} from 'react';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
@@ -7,7 +6,7 @@ import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
 export default function Navbar() {
   const { showNavStyle, userCredentials, dispatch } = useContext(GlobalContext)
-  let loggedInNavbar = (userCredentials.id !== 0 && typeof userCredentials !== null) ? userNav() : notLoggedInNav();
+  let loggedInNavbar = (userCredentials.id !== 0 && userCredentials !== null) ? userNav() : notLoggedInNav();
 
   const signOut = () => {
     if (userCredentials.id !== 0) {
