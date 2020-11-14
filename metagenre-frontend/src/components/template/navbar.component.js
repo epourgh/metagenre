@@ -7,8 +7,7 @@ import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
 export default function Navbar() {
   const { showNavStyle, userCredentials, dispatch } = useContext(GlobalContext)
-  let loggedInNavbar = (userCredentials.id !== 0) ? userNav() : notLoggedInNav();
-  
+  let loggedInNavbar = (userCredentials.id !== 0 && typeof userCredentials !== null) ? userNav() : notLoggedInNav();
 
   const signOut = () => {
     if (userCredentials.id !== 0) {
@@ -20,6 +19,7 @@ export default function Navbar() {
       dispatch({type: ACTIONS.SIGN_OUT});
     }
   }
+
   function userNav() {
        return (
           <span>

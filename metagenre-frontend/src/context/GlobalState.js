@@ -52,7 +52,7 @@ export const GlobalProvider = ({ children }) => {
   const [userCredentials, dispatch] = useReducer(reducer, []);
 
   const [loggedIn, setLoggedIn] = useState({
-      id: localStorage.getItem('loginId') || 0,
+      id: parseInt(localStorage.getItem('loginId')) || 0,
       username: localStorage.getItem('loginUsername') || 'Currently not logged in.',
       display: localStorage.getItem('loginDisplay') || '-'
   })
@@ -63,7 +63,7 @@ export const GlobalProvider = ({ children }) => {
     getGenres();
     getSubgenres();
 
-    const reducerInitState =  {id: localStorage.getItem('reducer-id') || 0, 
+    const reducerInitState =  {id: parseInt(localStorage.getItem('reducer-id')) || 0, 
                                username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
                                display: localStorage.getItem('reducer-display') || '-'};
 
