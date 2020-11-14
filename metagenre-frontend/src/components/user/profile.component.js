@@ -3,7 +3,7 @@ import { GlobalContext } from '../../context/GlobalState';
 
 export default function Profile() {
     
-    const {backendUrl, loggedIn, mediums, genres, subgenres} = useContext(GlobalContext)
+    const {backendUrl, userCredentials, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
     
 
@@ -13,7 +13,7 @@ export default function Profile() {
     
     const getUserMediumsGenresVotes = () => {
         
-        fetch(`${backendUrl}/userBooleanMediums/${loggedIn.id}`)
+        fetch(`${backendUrl}/userBooleanMediums/${userCredentials.id}`)
         .then(response => response.json())
         .then(response => {
             console.log('response.data')
@@ -59,19 +59,19 @@ export default function Profile() {
     }
 
     const RenderUserDisplay = () => {
-        if (loggedIn.display !== '-') {
+        if (userCredentials.display !== '-') {
             return (
                 <>
-                    <h1><b>{loggedIn.display}'s Profile</b></h1>
-                    <p className="smallFont greyFont"><i>@{loggedIn.username}</i></p> 
-                    <p className="smallFont greyFont"><i>USER #{loggedIn.id}</i></p> 
+                    <h1><b>{userCredentials.display}'s Profile</b></h1>
+                    <p className="smallFont greyFont"><i>@{userCredentials.username}</i></p> 
+                    <p className="smallFont greyFont"><i>USER #{userCredentials.id}</i></p> 
                 </>
             )
         } else {
             return (
                 <>
-                    <h1><b>@{loggedIn.username}'s Profile</b></h1>
-                    <p className="smallFont greyFont"><i>USER #{loggedIn.id}</i></p>
+                    <h1><b>@{userCredentials.username}'s Profile</b></h1>
+                    <p className="smallFont greyFont"><i>USER #{userCredentials.id}</i></p>
                 </>
             )
         }

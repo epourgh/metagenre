@@ -23,7 +23,7 @@ function capitalizeFirstLetter(string) {
 
 export default function Medium() {
   
-  const {backendUrl, loggedIn} = useContext(GlobalContext)
+  const {backendUrl, userCredentials} = useContext(GlobalContext)
   const [mediums, setMediums] = useState([]);
   const [mediumsGenres, setMediumsGenres] = useState({genres: [], subgenres: []});
   const [mediumsGenresObject, setMediumsGenresObject] = useState([]);
@@ -189,7 +189,7 @@ export default function Medium() {
 
   const LoggedInNotification = () => {
 
-    if(loggedIn.id === 0) {
+    if(userCredentials.id === 0) {
       return (
         <div className="individualStyling individualMediumStyling row warning-alert">
           Need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.

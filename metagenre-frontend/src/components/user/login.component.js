@@ -85,7 +85,7 @@ export default function Login() {
         )
     }
 
-    const loggedInNavbar = (userCredentials.id !== "0") ? userNav() : notLoggedInNav();
+    const loggedInNavbar = (userCredentials.id !== 0) ? userNav() : notLoggedInNav();
 
     return (
         <div className="bodyContentStyling">

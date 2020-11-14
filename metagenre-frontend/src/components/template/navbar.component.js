@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
@@ -6,7 +7,7 @@ import { GlobalContext, ACTIONS } from '../../context/GlobalState';
 
 export default function Navbar() {
   const { showNavStyle, userCredentials, dispatch } = useContext(GlobalContext)
-  const loggedInNavbar = (userCredentials.id !== "0") ? userNav() : notLoggedInNav();
+  let loggedInNavbar = (userCredentials.id !== 0) ? userNav() : notLoggedInNav();
   
 
   const signOut = () => {
@@ -19,7 +20,6 @@ export default function Navbar() {
       dispatch({type: ACTIONS.SIGN_OUT});
     }
   }
-
   function userNav() {
        return (
           <span>

@@ -18,7 +18,7 @@ function capitalizeFirstLetter(string) {
 
 export default function RelationshipsSubgenres() {
     
-    const { backendUrl, loggedIn} = useContext(GlobalContext)
+    const { backendUrl, userCredentials} = useContext(GlobalContext)
     const [id, title] = getWindowParam();
     const [genre] =  useState({
         id: id,
@@ -49,7 +49,7 @@ export default function RelationshipsSubgenres() {
 
     const getGenreSubgenres = (() => {
         Promise.all([
-        fetch(`${backendUrl}/userBooleanRelationships?userId=${loggedIn.id}&genreId=${genre.id}`),
+        fetch(`${backendUrl}/userBooleanRelationships?userId=${userCredentials.id}&genreId=${genre.id}`),
         fetch(`${backendUrl}/genreSubgenresDesc?genreId=${genre.id}`)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
@@ -145,7 +145,7 @@ export default function RelationshipsSubgenres() {
             date: date,
             genreId: genreId,
             subgenreId: subgenreId,
-            userId: loggedIn.id,
+            userId: userCredentials.id,
             symbol: symbol
         }
 
