@@ -1,30 +1,14 @@
 import React, { useState, createContext, useEffect, useReducer } from "react";
+import { reducer } from "./reducer";
 
 export const GlobalContext = createContext();
-
 
 export const ACTIONS = {
     SIGN_IN: 'sign-in',
     SIGN_OUT: 'sign-out'
 }
 
-function reducer(userCredentials, action) {
-    switch (action.type) {
-        case ACTIONS.SIGN_IN:
-            return signIn(action.payload);
-        case ACTIONS.SIGN_OUT:
-            return {
-              id: 0,
-              username: 'Currently not logged in.',
-              display: '-',
-              time: Date.now()
-            };    
-        default:
-            return userCredentials
-    }
-}
-
-function signIn(payload) {
+export function signIn(payload) {
   return {
     id: payload.id,
     username: payload.username,
