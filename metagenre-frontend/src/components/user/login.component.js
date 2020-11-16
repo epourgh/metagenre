@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext, ACTIONS } from '../../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalState';
+import { actionSignIn, actionSignOut } from '../../context/actions/index';
 
 export default function Login() {
     
@@ -30,12 +31,11 @@ export default function Login() {
                             localStorage.setItem('loginDisplay', response.data[0].displayName)
                         }
                         
-                        dispatch({type: ACTIONS.SIGN_IN, 
-                                payload: {
-                                    id: localStorage.getItem('loginId'),
-                                    username: localStorage.getItem('loginUsername'),
-                                    display: localStorage.getItem('loginDisplay')
-                                }});
+                        dispatch(actionSignIn({
+                            id: localStorage.getItem('loginId'),
+                            username: localStorage.getItem('loginUsername'),
+                            display: localStorage.getItem('loginDisplay')
+                        }));
                     }
                 })
                 .catch(err => console.log(err))
@@ -50,7 +50,7 @@ export default function Login() {
             localStorage.removeItem('reducer-username');
             localStorage.removeItem('reducer-display');
 
-            dispatch({type: ACTIONS.SIGN_OUT});
+            dispatch(actionSignOut());
         }
     }
 

@@ -1,5 +1,6 @@
 import { reducer } from "../reducer";
-import { ACTIONS } from '../GlobalState';
+import { actionSignIn, actionSignOut } from '../actions/index';
+import { ACTIONS } from '../actions/types';
 
 it('handles SIGN_IN actions', () => {
     const action = {
@@ -21,3 +22,34 @@ it('handles SIGN_IN actions', () => {
         username: 'something',
     });
 }) 
+
+
+it('handles actions with unknown type', () => {
+    const newState = reducer([], {type: 'something'})
+
+    expect(newState).toEqual([]);
+});
+
+describe('signing in', () => {
+
+    it('has correct type', () => {
+        const action = actionSignIn({
+            id: 11,
+            username: 'something',
+            display: 'Emerson Pourghaed'
+        });
+
+        expect(action.type).toEqual(ACTIONS.SIGN_IN);
+    })
+
+    it('has correct payload', () => {
+        const action = actionSignIn({
+            id: 11,
+            username: 'something',
+            display: 'Emerson Pourghaed'
+        });
+
+        expect(action.payload.id).toEqual(11); 
+    })
+
+});

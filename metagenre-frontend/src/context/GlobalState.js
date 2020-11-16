@@ -1,12 +1,8 @@
 import React, { useState, createContext, useEffect, useReducer } from "react";
 import { reducer } from "./reducer";
+import { ACTIONS } from './actions/types';
 
 export const GlobalContext = createContext();
-
-export const ACTIONS = {
-    SIGN_IN: 'sign-in',
-    SIGN_OUT: 'sign-out'
-}
 
 export function signIn(payload) {
   return {
