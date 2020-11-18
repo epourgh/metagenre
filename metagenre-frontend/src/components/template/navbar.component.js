@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext, ACTIONS } from '../../context/GlobalState';
+import { GlobalContext} from '../../context/GlobalState';
+import { actionSignOut } from '../../context/actions/index'
 
 // (loggedIn.id !== 'N/A')
 
@@ -15,7 +16,7 @@ export default function Navbar() {
       localStorage.removeItem('reducer-username');
       localStorage.removeItem('reducer-display');
 
-      dispatch({type: ACTIONS.SIGN_OUT});
+      dispatch(actionSignOut());
     }
   }
 

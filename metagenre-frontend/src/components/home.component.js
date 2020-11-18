@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
+import FrontPageMediumsDisplay from './frontPageMediums.component';
 
 export default function RelationshipsIndex() {
     
-    const {backendUrl} = useContext(GlobalContext)
+    const {backendUrl} = useContext(GlobalContext) || 'localhost:3000';
     const [frontPageMediums, setFrontPageMediums] = useState([]);
     const [tree, setTree] = useState('0');
     const [curatedGalleryClass, setCuratedGalleryClass] = useState('items');
@@ -24,7 +25,7 @@ export default function RelationshipsIndex() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        document.getElementById('items').scrollLeft = (snapshot === null )?0:snapshot;
+        document.getElementById('items').scrollLeft = snapshot || 0;
     }) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getGenres = (stringParam) => {
@@ -158,33 +159,7 @@ export default function RelationshipsIndex() {
                         onMouseLeave={(e) => mouseLeaveFunction(e)} 
                         onMouseUp={(e) => mouseUpFunction(e)}
                         onMouseMove={(e) => mouseMoveFunction(e)}>
-                        {
-                            frontPageMediums.map(frontPageMedium => {
-                                return(
-                                    <div className="item gallery" key={frontPageMedium.id}>
-                                        <div className="imageContainer">
-                                            {/* target="_blank"  */}
-                                            <a href={`/medium?id=${frontPageMedium.id}`}>
-                                                <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} alt="front page thumbnail" />
-                                            </a>
-                                            <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
-                                        </div>
-                                        <h2 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
-                                            {frontPageMedium.title}
-                                        </h2>
-                                        <p>{frontPageMedium.shortDesc}</p>
-                                        <br />
-                                        <ul className="listGenreStyling">
-                                            {
-                                                frontPageMedium.genres.map(genre => {
-                                                return (<li key={genre.mediumGenreId}><p><b>{genre.name}</b> | {genre.votes}</p>{" "}</li>)
-                                                })
-                                            }
-                                        </ul>
-                                    </div>
-                                )
-                            })
-                        }
+                        <FrontPageMediumsDisplay frontPageMediums={frontPageMediums} clickedLink={clickedLink} />
                     </div>
                 </main>
             </>
