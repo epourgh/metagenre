@@ -1,29 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState';
-import { useHistory } from "react-router-dom";
+import { Require as RequireAuthentication} from './auth/require.component'
 
 export default function Profile() {
     
     const {backendUrl, userCredentials, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
-    const history = useHistory()
-    
 
     useEffect(() => {
-
-        if(userCredentials.id === 0) {
-            history.push('/user/login')
-        }
-
         getUserMediumsGenresVotes()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-
-    useEffect(() => {
-        if(userCredentials.id === 0) {
-            history.push('/user/login')
-        }
-    }, [userCredentials])
     
     const getUserMediumsGenresVotes = () => {
         
@@ -122,6 +108,7 @@ export default function Profile() {
         <div className="bodyContentStyling">
            <div className="individualMediumStyling">
                <div className="row">
+                    <RequireAuthentication />
                     <RenderUserDisplay />
                     <br /> 
                     <h3>Recent genre tags:</h3>
