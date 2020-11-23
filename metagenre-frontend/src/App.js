@@ -57,8 +57,6 @@ export default function App() {
               <Route path="/user/forgot/change" exact component={ForgotChange} /> 
               <Route path="/user/profile" exact component={Profile} />
               <Route path="/user/security" exact component={Security} />
-              
-
             </Switch>
           </div>
           <Footer />

@@ -55,6 +55,12 @@ beforeEach(() => {
 });
 
 
-it('creates LI', () => {
+it('creates right amountof LI tags', () => {
     console.log(wrapped.find('li').length);
+    expect(wrapped.find('li').length).toEqual(5)
+});
+
+it('shows text for each LI tag', () => {
+    expect(wrapped.render().text()).toContain('game')
+    expect(wrapped.render().text()).toContain('film')
 });

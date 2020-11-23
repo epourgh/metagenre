@@ -1,5 +1,5 @@
-import { signIn } from "./GlobalState";
-import { ACTIONS } from './actions/types';
+import { signIn } from "../GlobalState";
+import { ACTIONS } from '../actions/types';
 
 export function reducer(userCredentials, action) {
   switch (action.type) {

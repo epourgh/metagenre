@@ -1,15 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState';
+import { useHistory } from "react-router-dom";
 
 export default function Profile() {
     
     const {backendUrl, userCredentials, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
+    const history = useHistory()
     
 
     useEffect(() => {
+
+        if(userCredentials.id === 0) {
+            history.push('/user/login')
+        }
+
         getUserMediumsGenresVotes()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+
+    useEffect(() => {
+        if(userCredentials.id === 0) {
+            history.push('/user/login')
+        }
+    }, [userCredentials])
     
     const getUserMediumsGenresVotes = () => {
         
