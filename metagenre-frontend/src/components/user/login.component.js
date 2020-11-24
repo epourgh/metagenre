@@ -10,7 +10,7 @@ export default function Login() {
         password: ''
     });
     
-    const {backendUrl, userCredentials, dispatch} = useContext(GlobalContext)
+    const {backendUrl, reducers, dispatch} = useContext(GlobalContext)
 
     console.log(localStorage)
   
@@ -45,7 +45,7 @@ export default function Login() {
     }
 
     const signOut = () => {
-        if (userCredentials.id !== 0) {
+        if (reducers.user.id !== 0) {
             localStorage.removeItem('reducer-id');
             localStorage.removeItem('reducer-username');
             localStorage.removeItem('reducer-display');
@@ -57,7 +57,7 @@ export default function Login() {
     function userNav() {
         return (
             <p>
-                <b>user id:</b> { userCredentials.id }, <b>display name:</b> { userCredentials.display }, <b>username:</b> { userCredentials.username }
+                <b>user id:</b> { reducers.user.id }, <b>display name:</b> { reducers.user.display }, <b>username:</b> { reducers.user.username }
                 <p><button onClick={() => signOut()}>Sign Out</button></p>
             </p>
         )
@@ -66,7 +66,7 @@ export default function Login() {
     function notLoggedInNav() {
         return (
             <div className="single-content-container">
-                <p>{ userCredentials.username }</p>
+                <p>{ reducers.user.username }</p>
 
                 <input value={username.username} 
                        onChange={e => setUsername({ ...username, username: e.target.value })} />
@@ -80,7 +80,7 @@ export default function Login() {
         )
     }
 
-    const loggedInNavbar = (userCredentials.id !== 0) ? userNav() : notLoggedInNav();
+    const loggedInNavbar = (reducers.user.id !== 0) ? userNav() : notLoggedInNav();
 
     return (
         <div className="bodyContentStyling">

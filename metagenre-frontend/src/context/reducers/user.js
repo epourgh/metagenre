@@ -1,7 +1,7 @@
 import { signIn } from "../GlobalState";
 import { ACTIONS } from '../actions/types';
 
-export function reducer(userCredentials, action) {
+export default function user(userCredentials, action) {
   switch (action.type) {
     case ACTIONS.SIGN_IN:
       return signIn(action.payload);

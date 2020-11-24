@@ -1,5 +1,7 @@
 import React, { useState, createContext, useEffect, useReducer } from "react";
-import { reducer } from "./reducers/reducer";
+import combineReducers from "./reducers/combineReducers"
+import user from "./reducers/user";
+
 import { ACTIONS } from './actions/types';
 
 export const GlobalContext = createContext();
@@ -29,7 +31,9 @@ export const GlobalProvider = ({ children }) => {
   // const backendUrl = '/api';
   const backendUrl = 'http://localhost:4000';
 
-  const [userCredentials, dispatch] = useReducer(reducer, []);
+  const [reducers, dispatch] = useReducer(combineReducers({
+    user: user
+  }), {user: []});
   
   useEffect(() => {
 
@@ -46,10 +50,10 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('reducer-id', userCredentials.id);
-    localStorage.setItem('reducer-username', userCredentials.username);
-    localStorage.setItem('reducer-display', userCredentials.display);
-  }, [userCredentials]);
+    localStorage.setItem('reducer-id', reducers.user.id);
+    localStorage.setItem('reducer-username', reducers.user.username);
+    localStorage.setItem('reducer-display', reducers.user.display);
+  }, [reducers]);
   
 
   const getMediums = () => {
@@ -93,7 +97,7 @@ export const GlobalProvider = ({ children }) => {
         subgenres,
         showNavStyle,
         setShowNavStyle,
-        userCredentials,
+        reducers,
         dispatch
       }
     }>

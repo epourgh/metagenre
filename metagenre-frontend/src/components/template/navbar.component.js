@@ -6,11 +6,11 @@ import { actionSignOut } from '../../context/actions/index'
 // (loggedIn.id !== 'N/A')
 
 export default function Navbar() {
-  const { showNavStyle, userCredentials, dispatch } = useContext(GlobalContext)
-  let loggedInNavbar = (userCredentials.id !== 0 && userCredentials !== null) ? userNav() : notLoggedInNav();
+  const { showNavStyle, reducers, dispatch } = useContext(GlobalContext)
+  let loggedInNavbar = (reducers.user.id !== 0 && reducers !== null) ? userNav() : notLoggedInNav();
 
   const signOut = () => {
-    if (userCredentials.id !== 0) {
+    if (reducers.user.id !== 0) {
       
       localStorage.removeItem('reducer-id');
       localStorage.removeItem('reducer-username');
@@ -23,7 +23,7 @@ export default function Navbar() {
   function userNav() {
        return (
           <span>
-              <li className="navbar-item"><Link to="/user/profile">{ userCredentials.username }</Link></li>
+              <li className="navbar-item"><Link to="/user/profile">{ reducers.user.username }</Link></li>
               <li className="navbar-item"><span onClick={() => signOut()}>SIGN OUT</span></li>
           </span>
       )

@@ -4,7 +4,7 @@ import { Require as RequireAuthentication} from './auth/require.component'
 
 export default function Profile() {
     
-    const {backendUrl, userCredentials, mediums, genres, subgenres} = useContext(GlobalContext)
+    const {backendUrl, reducers, mediums, genres, subgenres} = useContext(GlobalContext)
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ export default function Profile() {
     
     const getUserMediumsGenresVotes = () => {
         
-        fetch(`${backendUrl}/userBooleanMediums/${userCredentials.id}`)
+        fetch(`${backendUrl}/userBooleanMediums/${reducers.user.id}`)
         .then(response => response.json())
         .then(response => {
             console.log('response.data')
@@ -59,19 +59,19 @@ export default function Profile() {
     }
 
     const RenderUserDisplay = () => {
-        if (userCredentials.display !== '-') {
+        if (reducers.user.display !== '-') {
             return (
                 <>
-                    <h1><b>{userCredentials.display}'s Profile</b></h1>
-                    <p className="smallFont greyFont"><i>@{userCredentials.username}</i></p> 
-                    <p className="smallFont greyFont"><i>USER #{userCredentials.id}</i></p> 
+                    <h1><b>{reducers.user.display}'s Profile</b></h1>
+                    <p className="smallFont greyFont"><i>@{reducers.user.username}</i></p> 
+                    <p className="smallFont greyFont"><i>USER #{reducers.user.id}</i></p> 
                 </>
             )
         } else {
             return (
                 <>
-                    <h1><b>@{userCredentials.username}'s Profile</b></h1>
-                    <p className="smallFont greyFont"><i>USER #{userCredentials.id}</i></p>
+                    <h1><b>@{reducers.user.username}'s Profile</b></h1>
+                    <p className="smallFont greyFont"><i>USER #{reducers.user.id}</i></p>
                 </>
             )
         }
@@ -105,17 +105,19 @@ export default function Profile() {
 
 
     return (
-        <div className="bodyContentStyling">
-           <div className="individualMediumStyling">
-               <div className="row">
-                    <RequireAuthentication />
-                    <RenderUserDisplay />
-                    <br /> 
-                    <h3>Recent genre tags:</h3>
-                    <RenderUserMediumsGenres />
+        <>
+            <RequireAuthentication />
+            <div className="bodyContentStyling">
+            <div className="individualMediumStyling">
+                <div className="row">
+                        <RenderUserDisplay />
+                        <br /> 
+                        <h3>Recent genre tags:</h3>
+                        <RenderUserMediumsGenres />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
