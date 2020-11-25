@@ -1,10 +1,12 @@
 import React, { useState, createContext, useEffect, useReducer } from "react";
-import combineReducers from "./reducers/combineReducers"
+import combineReducers from "./reducers/combineReducers";
+import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
 
 import { ACTIONS } from './actions/types';
 
 export const GlobalContext = createContext();
+export const DispatchContext = createContext();
 
 export function signIn(payload) {
   return {
@@ -45,7 +47,7 @@ export const GlobalProvider = ({ children }) => {
                                username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
                                display: localStorage.getItem('reducer-display') || '-'};
 
-    dispatch({type: ACTIONS.SIGN_IN, payload: reducerInitState});
+    dispatchMiddleware(dispatch({type: ACTIONS.SIGN_IN, payload: reducerInitState}));
 
   }, []);
 
@@ -97,11 +99,12 @@ export const GlobalProvider = ({ children }) => {
         subgenres,
         showNavStyle,
         setShowNavStyle,
-        reducers,
-        dispatch
+        reducers
       }
     }>
-      {children}
+      <DispatchContext.Provider value={{dispatchMiddleware, dispatch}}>
+        {children}
+      </DispatchContext.Provider>
     </GlobalContext.Provider>
   );
 };

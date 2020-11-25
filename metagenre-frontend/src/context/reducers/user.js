@@ -1,11 +1,11 @@
 import { signIn } from "../GlobalState";
 import { ACTIONS } from '../actions/types';
 
-export default function user(userCredentials, action) {
+export default function user(userState, action) {
   switch (action.type) {
-    case ACTIONS.SIGN_IN:
+    case ACTIONS.USER.SIGN_IN:
       return signIn(action.payload);
-    case ACTIONS.SIGN_OUT:
+    case ACTIONS.USER.SIGN_OUT:
       return {
         id: 0,
         username: 'Currently not logged in.',
@@ -13,6 +13,6 @@ export default function user(userCredentials, action) {
         time: Date.now()
       };
     default:
-      return userCredentials;
+      return userState;
   }
 }

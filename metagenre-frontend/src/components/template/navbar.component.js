@@ -1,12 +1,13 @@
 import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext} from '../../context/GlobalState';
+import { GlobalContext, DispatchContext} from '../../context/GlobalState';
 import { actionSignOut } from '../../context/actions/index'
 
 // (loggedIn.id !== 'N/A')
 
 export default function Navbar() {
-  const { showNavStyle, reducers, dispatch } = useContext(GlobalContext)
+  const { dispatchMiddleware, dispatch } = useContext(DispatchContext)
+  const { showNavStyle, reducers } = useContext(GlobalContext)
   let loggedInNavbar = (reducers.user.id !== 0 && reducers !== null) ? userNav() : notLoggedInNav();
 
   const signOut = () => {
@@ -16,7 +17,7 @@ export default function Navbar() {
       localStorage.removeItem('reducer-username');
       localStorage.removeItem('reducer-display');
 
-      dispatch(actionSignOut());
+      dispatchMiddleware(dispatch)(actionSignOut());
     }
   }
 

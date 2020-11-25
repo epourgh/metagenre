@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext, DispatchContext } from '../../context/GlobalState';
 import { actionSignIn, actionSignOut } from '../../context/actions/index';
 
 export default function Login() {
@@ -9,8 +9,9 @@ export default function Login() {
         username: '',
         password: ''
     });
-    
-    const {backendUrl, reducers, dispatch} = useContext(GlobalContext)
+
+    const { dispatchMiddleware, dispatch } = useContext(DispatchContext)
+    const {backendUrl, reducers} = useContext(GlobalContext)
 
     console.log(localStorage)
   
@@ -30,12 +31,13 @@ export default function Login() {
                         if (response.data[0].displayName !== null) {
                             localStorage.setItem('loginDisplay', response.data[0].displayName)
                         }
-                        
-                        dispatch(actionSignIn({
+
+                        dispatchMiddleware(dispatch)(actionSignIn({
                             id: localStorage.getItem('loginId'),
                             username: localStorage.getItem('loginUsername'),
                             display: localStorage.getItem('loginDisplay')
                         }));
+                        
                     }
                 })
                 .catch(err => console.log(err))
@@ -50,7 +52,7 @@ export default function Login() {
             localStorage.removeItem('reducer-username');
             localStorage.removeItem('reducer-display');
 
-            dispatch(actionSignOut());
+            dispatchMiddleware(dispatch)(actionSignOut());
         }
     }
 

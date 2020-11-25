@@ -1,4 +1,9 @@
 export const ACTIONS = {
-    SIGN_IN: 'sign-in',
-    SIGN_OUT: 'sign-out'
+    USER: {
+        SIGN_IN: 'sign-in',
+        SIGN_OUT: 'sign-out'        
+    },
+    MEDIUM: {
+        FETCH: 'fetch'
+    }
 }
