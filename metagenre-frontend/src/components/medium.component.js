@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext, DispatchContext } from '../context/GlobalState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,9 +12,13 @@ function getWindowParam() {
 }
 
 export default function Medium() {
-    
-    const { backendUrl, userCredentials} = useContext(GlobalContext)
+
+    const { dispatchMiddleware, dispatch } = useContext(DispatchContext);
+    const { backendUrl, reducers } = useContext(GlobalContext);
+
     const id = getWindowParam();
+
+    // STATES
     const [mediumsGenres, setMediumsGenres] = useState([]);
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);
     const [mediumsSubgenres, setMediumsSubgenres] = useState([]);
@@ -49,14 +53,12 @@ export default function Medium() {
         getPlatforms();
         getRegions();
         getBothMediumsGenresAndSubgenresMultiple('mediumsGenres', 'userBooleanMediumsGenres', 'mediumsSubgenres', 'userBooleanMediumsSubgenres')
-        // getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        // getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
         getSimilarMediums();
         getExternalLinks();
         getCreatorsSeries();
-    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect((event) => {
+    useEffect(() => {  
         checkMediumsGenres();
     })
 
@@ -132,7 +134,7 @@ export default function Medium() {
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
 
         Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userCredentials.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${reducers.user.id}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
@@ -147,7 +149,7 @@ export default function Medium() {
     const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
 
         Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userCredentials.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${reducers.user.id}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
@@ -161,11 +163,11 @@ export default function Medium() {
 
 
     const getBothMediumsGenresAndSubgenresMultiple = (mediumsGenres, userBooleanMediumsGenres, mediumsSubenres, userBooleanMediumsSungenres) => {
-
+        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
         Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userCredentials.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsGenres}/view/${id}`),
-            fetch(`${backendUrl}/${userBooleanMediumsSungenres}?userId=${userCredentials.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsSungenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
         ])
         .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
@@ -289,7 +291,7 @@ export default function Medium() {
             date: date,
             votes: mediumGenreVotes,
             symbol: symbol,
-            userId: userCredentials.id,
+            userId: reducers.user.id,
             mediumId: id,
             genreId: genreId,
         }
@@ -320,7 +322,7 @@ export default function Medium() {
             date: date,
             votes: mediumGenreVotes,
             symbol: symbol,
-            userId: userCredentials.id,
+            userId: reducers.user.id,
             mediumId: id,
             genreId: genreId,
         }
@@ -353,7 +355,7 @@ export default function Medium() {
             let jsonifiedParams = {
                 date: date,
                 genreName: medium.genreName,
-                userId: userCredentials.id,
+                userId: reducers.user.id,
                 mediumId: id,
                 mediumType: medium.genreType
             }
@@ -427,7 +429,7 @@ export default function Medium() {
 
     const RenderUserInputRecommendGenre = () => {
 
-        if(userCredentials.id !== 0) {
+        if(reducers.user.id !== 0) {
             return (
                 <div>
                     <b className="smallFont">Suggest: </b>
@@ -460,7 +462,7 @@ export default function Medium() {
 
     const RenderMediumsGenre = () => {
         return mediumsGenres.map(mediumGenre => {
-            if ((mediumGenre.voted === 0 || userCredentials.id === 0) && userpickedGenresLength === 3) {
+            if ((mediumGenre.voted === 0 || reducers.user.id === 0) && userpickedGenresLength === 3) {
                 return (
                     <li key={mediumGenre.id}>
                         <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>
@@ -485,7 +487,7 @@ export default function Medium() {
 
     const RenderMediumsSubgenre = () => {
         return mediumsSubgenres.map(mediumGenre => {
-            if ((mediumGenre.voted === 0 || userCredentials.id === 0) && userpickedGenresLength === 3) {
+            if ((mediumGenre.voted === 0 || reducers.user.id === 0) && userpickedGenresLength === 3) {
                 return (
                     <li key={mediumGenre.subgenreId}>
                         <p><b>{mediumGenre.name }</b> | {mediumGenre.votes} {" "}</p>

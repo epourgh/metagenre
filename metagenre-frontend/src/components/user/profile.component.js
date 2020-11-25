@@ -4,7 +4,7 @@ import { Require as RequireAuthentication} from './auth/require.component'
 
 export default function Profile() {
     
-    const {backendUrl, reducers, mediums, genres, subgenres} = useContext(GlobalContext)
+    const {backendUrl, reducers, mediums, genres, subgenres} = useContext(GlobalContext);
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
 
     useEffect(() => {

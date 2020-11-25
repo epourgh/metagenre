@@ -10,10 +10,10 @@ export default function Login() {
         password: ''
     });
 
-    const { dispatchMiddleware, dispatch } = useContext(DispatchContext)
-    const {backendUrl, reducers} = useContext(GlobalContext)
+    const { dispatchMiddleware, dispatch } = useContext(DispatchContext);
+    const {backendUrl, reducers} = useContext(GlobalContext);
 
-    console.log(localStorage)
+    console.log(localStorage);
   
     const signIn = () => {
 

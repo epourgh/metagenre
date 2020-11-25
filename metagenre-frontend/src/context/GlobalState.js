@@ -3,19 +3,10 @@ import combineReducers from "./reducers/combineReducers";
 import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
 
-import { ACTIONS } from './actions/types';
+import { actionSignIn } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
-
-export function signIn(payload) {
-  return {
-    id: payload.id,
-    username: payload.username,
-    display: payload.display,
-    time: Date.now()
-  }
-}
 
 export const GlobalProvider = ({ children }) => {
 
@@ -47,7 +38,7 @@ export const GlobalProvider = ({ children }) => {
                                username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
                                display: localStorage.getItem('reducer-display') || '-'};
 
-    dispatchMiddleware(dispatch({type: ACTIONS.SIGN_IN, payload: reducerInitState}));
+    dispatchMiddleware(dispatch)(actionSignIn(reducerInitState));
 
   }, []);
 

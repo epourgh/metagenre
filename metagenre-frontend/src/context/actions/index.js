@@ -10,3 +10,10 @@ export function actionSignIn(information) {
 export function actionSignOut() {
     return { type: ACTIONS.USER.SIGN_OUT } 
 }
+
+export function actionFetch(fetching) {
+    return {
+        type: ACTIONS.MEDIUM.FETCH,
+        payload: fetching.url
+    }
+}

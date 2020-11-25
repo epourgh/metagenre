@@ -1,29 +1,13 @@
-const { useReducer } = require("react");
+// React hooks middleware suggestion: https://gist.github.com/astoilkov/013c513e33fe95fa8846348038d8fe42
+// Memoization Suggestion: https://medium.com/front-end-weekly/writing-redux-like-simple-middleware-for-react-hooks-b163724a7058
 
-const ACTIONS = {
-    INCREMENT: 'increment',
-    DECREMENT: 'decrement'
-}
+// Send fetch request 
+// Check if it's single or multiple
+// Set the states 
 
-function Reducer(state, action) {
-    switch (action.type) {
-        case ACTIONS.INCREMENT:
-            return { count: state.count + action.payload.count };
-        case ACTIONS.DECREMENT:
-            return { count: state.count - action.payload.count };
-        default:
-            return state
-    }
-}
 
-export default function App() {
-    const [state, dispatch] = useReducer(reducer, {count: 0});
-    const [count, setCount] = useState(0);
-
-    function increment() {
-        dispatch({type: ACTIONS.INCREMENT, payload: {numeber: count }}) // count comes from the JSX callback
-    }
-
-    // ...
-
-}
+dispatchMiddleware(dispatch)(actionSignIn({
+    id: localStorage.getItem('loginId'),
+    username: localStorage.getItem('loginUsername'),
+    display: localStorage.getItem('loginDisplay')
+}));
