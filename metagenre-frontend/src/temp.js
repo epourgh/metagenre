@@ -6,8 +6,36 @@
 // Set the states 
 
 
-dispatchMiddleware(dispatch)(actionSignIn({
-    id: localStorage.getItem('loginId'),
-    username: localStorage.getItem('loginUsername'),
-    display: localStorage.getItem('loginDisplay')
+dispatchMiddleware(dispatch)(actionFetch({
+    section: `mediumsGenres`,
+    url: `url`
 }));
+
+{
+    mediumsGenres: [], set 
+    userpickedGenresLength: 0, set
+    mediumsSubgenres: [], set
+    
+    mediumsCreatorsSeries: [], fetch single
+    similarTitle: [], fetch single
+    extLinks: [], fetch single
+    similar: [], fetch single
+    
+    mediumsDetails: [] && pictureCount: [0, 0, 0, '', ''], fetch single
+    pictureCount: [0, 0, 0, '', ''], set
+
+    platforms: [], fetch single
+    regions: [], fetch single
+    medium: { set
+            genreName: '',
+            genreType: 'genre'
+    },
+    mediumsGenresMultiple: { fetch multiple
+            items: [], 
+            mediumsGenresView: []
+    },
+    mediumsSubgenresMultiple: { fetch multiple
+            items: [], 
+            mediumsGenresView: []
+    }
+}
