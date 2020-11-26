@@ -49,6 +49,7 @@ export default function Medium() {
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
 
     useEffect(() => {
+        console.log(reducers)
         getMediumsDetails();
         getPlatforms();
         getRegions();

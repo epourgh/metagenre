@@ -17,3 +17,10 @@ export function actionFetch(fetching) {
         payload: fetching.url
     }
 }
+
+export function actionMediumInit(objectLiterals) {
+    return {
+        type: ACTIONS.MEDIUM.INIT, 
+        payload: objectLiterals
+    }
+}

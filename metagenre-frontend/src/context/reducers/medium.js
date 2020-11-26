@@ -1,10 +1,13 @@
 import { ACTIONS } from '../actions/types';
 
-export default function user(mediumState, action) {
+export default function user(state, action) {
   switch (action.type) {
     case ACTIONS.MEDIUM.FETCH:
-      return [action.payload];
+      let fetchedContent = action.payload;
+      return {...state, fetchedContent};
+    case ACTIONS.MEDIUM.INIT:
+      return action.payload
     default:
-      return mediumState;
+      return state;
   }
 }

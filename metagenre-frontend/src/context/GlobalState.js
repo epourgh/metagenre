@@ -2,8 +2,9 @@ import React, { useState, createContext, useEffect, useReducer } from "react";
 import combineReducers from "./reducers/combineReducers";
 import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
+import medium from "./reducers/medium";
 
-import { actionSignIn } from "./actions/index";
+import { actionSignIn, actionMediumInit } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
@@ -25,8 +26,9 @@ export const GlobalProvider = ({ children }) => {
   const backendUrl = 'http://localhost:4000';
 
   const [reducers, dispatch] = useReducer(combineReducers({
-    user: user
-  }), {user: []});
+    user: user,
+    medium: medium
+  }), {user: [], medium: {}});
   
   useEffect(() => {
 
@@ -34,11 +36,39 @@ export const GlobalProvider = ({ children }) => {
     getGenres();
     getSubgenres();
 
-    const reducerInitState =  {id: parseInt(localStorage.getItem('reducer-id')) || 0, 
+    const userInitState =  {id: parseInt(localStorage.getItem('reducer-id')) || 0, 
                                username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
                                display: localStorage.getItem('reducer-display') || '-'};
 
-    dispatchMiddleware(dispatch)(actionSignIn(reducerInitState));
+
+    const mediumInitState = {
+      mediumsGenres: [],
+      userpickedGenresLength: 0,
+      mediumsSubgenres: [],
+      mediumsCreatorsSeries: [],
+      similarTitle: [],
+      extLinks: [], 
+      similar: [], 
+      mediumsDetails: [], 
+      platforms: [], 
+      regions: [], 
+      pictureCount: [0, 0, 0, '', ''], 
+      medium: {
+              genreName: '',
+              genreType: 'genre'
+      },
+      mediumsGenresMultiple: {
+              items: [], 
+              mediumsGenresView: []
+      },
+      mediumsSubgenresMultiple: {
+              items: [], 
+              mediumsGenresView: []
+      }
+    };
+
+    dispatchMiddleware(dispatch)(actionSignIn(userInitState));
+    dispatchMiddleware(dispatch)(actionMediumInit(mediumInitState));
 
   }, []);
 

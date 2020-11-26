@@ -4,6 +4,7 @@ export const ACTIONS = {
         SIGN_OUT: 'sign-out'        
     },
     MEDIUM: {
+        INIT: 'initial-state',
         FETCH: 'fetch'
     }
 }
