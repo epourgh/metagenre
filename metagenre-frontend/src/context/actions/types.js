@@ -6,10 +6,10 @@ export const ACTIONS = {
     MEDIUM: {
         INIT: 'initial-state',
         SET: {
-            MEDIUM: 'set-medium',
-            MEDIUM_GENRES: 'set-medium-genres', 
-            MEDIUMS_SUBGENRES: 'set-mediums-subgenres',
-            USER_PICKED_GENRES_LENGTH: 'set-user-picked-genres-length',
+            MEDIUM: {
+                GENRE_NAME: 'set-medium-genre-name',
+                GENRE_TYPE: 'set-medium-genre-type'
+            },
             PICTURE_COUNT: 'set-picture-count',
         },
         FETCH: { 
