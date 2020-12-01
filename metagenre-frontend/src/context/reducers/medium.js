@@ -5,25 +5,36 @@ export default function user(state, action) {
     case ACTIONS.MEDIUM.INIT:
       return action.payload;
     case ACTIONS.MEDIUM.SET.MEDIUM.GENRE_NAME:
-      let fetchedContent = action.payload;
-      return {...state, fetchedContent}; 
-    case ACTIONS.MEDIUM.SET.MEDIUM.GENRE_TYPE:
-      let fetchedContent = action.payload;
-      return {...state, fetchedContent}; 
+      let name = action.payload;
+      return {...state, name: name}; 
     case ACTIONS.MEDIUM.SET.PICTURE_COUNT:
+      let pictureCount = action.payload;
+      return {...state, pictureCount: pictureCount}; 
+    case ACTIONS.MEDIUM.SET.MEDIUM.GENRE_TYPE:
+      let type = action.payload;
+      return {...state, type: type}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_CREATORS_SERIES:
-      let fetchedContent = action.payload;
-      return {...state, fetchedContent}; 
-    case ACTIONS.MEDIUM.FETCH.SINGLE.SIMILAR_TITLE:
-    case ACTIONS.MEDIUM.FETCH.SINGLE.EXT_LINKS:
+      let mediumsCreatorsSeries = action.payload;
+      return {...state, mediumsCreatorsSeries}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.SIMILAR:
+      // TODO: bundle similar and similar title
+      let similar = action.payload;
+      return {...state, similar: { title: 'Similar Voted Mediums:', mediums: similar}}; 
+    case ACTIONS.MEDIUM.FETCH.SINGLE.EXT_LINKS:
+      let extLinks = action.payload;
+      return {...state, extLinks}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_DETAILS:
+      let details = action.payload;
+      return {...state, details: details, pictureCount: (details[0].numberOfGalleryPics > 3) ? [3, details[0].numberOfGalleryPics, 1, 'more photos', ''] : [details[0].numberOfGalleryPics, details[0].numberOfGalleryPics, 0, '', '']}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.PLATFORMS:
+      let platforms = action.payload;
+      return {...state, platforms: platforms}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.REGIONS:
-      let fetchedContent = action.payload;
-      return {...state, fetchedContent}; 
+      let regions = action.payload;
+      return {...state, regions: regions}; 
     case ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_GENRES:
     case ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_SUBGENRES:
+      // TODO: remove function for both mediums genres and subgenres in component
       const userPickedContainer = [];
 
       if (action.payload[0].length > 0) {

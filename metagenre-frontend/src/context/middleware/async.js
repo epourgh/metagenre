@@ -13,14 +13,14 @@ export default function dispatchMiddleware(dispatch) {
                         })
                 });
 
-                return dispatch({type: action.type, payload: resultsObj })
+                return dispatch({ type: action.type, payload: resultsObj })
                 
             }
 
             fetch(action.payload.url)
                 .then(response => response.json())
                 .then(response => {
-                    return dispatch({type: action.type, payload: response.data })
+                    return dispatch({ type: action.type, payload: response.data })
                 })
 
         }
