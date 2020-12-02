@@ -23,9 +23,8 @@ export default function Medium() {
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);
     const [mediumsSubgenres, setMediumsSubgenres] = useState([]);
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
-    const [similarTitle, setSimilarTitle] = useState([]);
+    const [similar, setSimilar] = useState({title: '', content: []});
     const [extLinks, setExtLinks] = useState([]);
-    const [similar, setSimilar] = useState([]);
     const [mediumsDetails, setMediumsDetails] = useState([]);
     const [platforms, setPlatforms] = useState([]);
     const [regions, setRegions] = useState([]);
@@ -49,11 +48,11 @@ export default function Medium() {
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
 
     useEffect(() => {
-        console.log(reducers)
         getMediumsDetails();
         getPlatforms();
         getRegions();
-        getBothMediumsGenresAndSubgenresMultiple('mediumsGenres', 'userBooleanMediumsGenres', 'mediumsSubgenres', 'userBooleanMediumsSubgenres')
+        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+        getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
         getSimilarMediums();
         getExternalLinks();
         getCreatorsSeries();
@@ -103,10 +102,9 @@ export default function Medium() {
             .then(response => response.json())
             .then(response => {
                 if (response.data[0][0] !== undefined) {
-                    setSimilarTitle('Similar Voted Mediums:');
-                    setSimilar(response.data.map(content => {
+                    setSimilar({title: 'Similar Voted Mediums:', content: response.data.map(content => {
                         return content[0];
-                    }))
+                    })})
                 }
             });
     }
@@ -133,9 +131,9 @@ export default function Medium() {
     }
 
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
-
+        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
         Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${reducers.user.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
@@ -148,9 +146,9 @@ export default function Medium() {
     }
 
     const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
-
+        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
         Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${reducers.user.id}&mediumId=${id}`),
+            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
@@ -159,28 +157,6 @@ export default function Medium() {
                 items: data1.data, 
                 mediumsGenresView: data2.data
             })            
-        });
-    }
-
-
-    const getBothMediumsGenresAndSubgenresMultiple = (mediumsGenres, userBooleanMediumsGenres, mediumsSubenres, userBooleanMediumsSungenres) => {
-        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
-        Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
-            fetch(`${backendUrl}/${mediumsGenres}/view/${id}`),
-            fetch(`${backendUrl}/${userBooleanMediumsSungenres}?userId=${userId}&mediumId=${id}`),
-            fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
-        ])
-        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
-        .then(([data1, data2, data3, data4]) => {
-            setMediumsGenresMultiple({
-                items: data1.data, 
-                mediumsGenresView: data2.data
-            })
-            setMediumsSubgenresMultiple({
-                items: data3.data, 
-                mediumsGenresView: data4.data
-            })                      
         });
     }
 
@@ -406,14 +382,14 @@ export default function Medium() {
 
     const RenderSimilar = () => {
 
-        if (similarTitle !== '') {
+        if (similar.title !== '') {
             return (
                 <>
                     <br/><hr/><br/>
                     <div>
-                        <h3>{similarTitle}</h3>
+                        <h3>{similar.title}</h3>
                         {
-                            similar.filter(content => content !== undefined).map(content => {
+                            similar.content.filter(content => content !== undefined).map(content => {
                                 return(<p key={content.id}><Link to={`./medium?id=${content.id}&title=${content.title}`}>{content.title}</Link>: {content.percentage}%</p>);
                             })
                         }
