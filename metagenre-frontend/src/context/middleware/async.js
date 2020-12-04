@@ -15,18 +15,23 @@ export default function dispatchMiddleware(dispatch) {
 
                 return dispatch({ type: action.type, payload: resultsObj })
                 
+            } else {
+                console.log(`fetch through async: ${action.type}`);
+                console.log(`fetch through async: ${action.payload.url}`);
+                fetch(action.payload.url)
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response.data);
+                        return dispatch({ type: action.type, payload: response.data })
+                    })
             }
 
-            fetch(action.payload.url)
-                .then(response => response.json())
-                .then(response => {
-                    return dispatch({ type: action.type, payload: response.data })
-                })
 
+        } else {
+            console.log(`pass through async: ${action.type}`)
+            return dispatch(action);
         }
 
-        console.log(`pass throuh async: ${action.type}`)
-        return dispatch(action);
         
     }
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { GlobalContext, DispatchContext } from '../context/GlobalState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { actionMediumDetails } from '../context/actions/index';
 
 function getWindowParam() {
     var url_string = window.location.href;
@@ -25,12 +26,12 @@ export default function Medium() {
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
     const [similar, setSimilar] = useState({title: '', content: []});
     const [extLinks, setExtLinks] = useState([]);
-    const [mediumsDetails, setMediumsDetails] = useState([]);
     const [platforms, setPlatforms] = useState([]);
     const [regions, setRegions] = useState([]);
     const [noGenres, setNoGenres] = useState('');
-    const [pictureCount, setPictureCount] = useState([0, 0, 0, '', '']);
-    const [noGenresOrSubgenresNotification, setNoGenresOrSubgenresNotification] = useState('')
+    const [mediumDetails, setMediumDetails] = useState([{title: ''}]);
+    const [mediumPictureCount, setMediumPictureCount] = useState([0, 0, 0, '', '']);
+    const [noGenresOrSubgenresNotification, setNoGenresOrSubgenresNotification] = useState('');
     const [medium, setMedium] = useState({
         genreName: '',
         genreType: 'genre'
@@ -45,10 +46,25 @@ export default function Medium() {
         mediumsGenresView: []
     });
 
-    const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
-
+    const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
     useEffect(() => {
         getMediumsDetails();
+    }, [])
+
+    useEffect(() => {
+        console.log(reducers);
+
+        if (typeof reducers.medium.details !== "undefined") {
+            console.log(`typeof: ${reducers.medium.details}`)
+            setMediumDetails(reducers.medium.details)
+        }
+        
+        if (typeof reducers.medium.pictureCount !== "undefined") {
+            console.log(`typeof: ${reducers.medium.pictureCount}`)
+            setMediumPictureCount(reducers.medium.pictureCount)
+        }
+
         getPlatforms();
         getRegions();
         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
@@ -73,12 +89,18 @@ export default function Medium() {
     
 
     const getMediumsDetails = () => {
+
+        dispatchMiddleware(dispatch)(actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
+
+
+        /*
         fetch(`${backendUrl}/mediumsDetails/${id}`)
             .then(response => response.json())
             .then(response => {
                 setMediumsDetails(response.data);
-                setPictureCount((response.data[0].numberOfGalleryPics > 3) ? [3, response.data[0].numberOfGalleryPics, 1, 'more photos', ''] : [response.data[0].numberOfGalleryPics, response.data[0].numberOfGalleryPics, 0, '', '']);
+                setMediumPictureCount((response.data[0].numberOfGalleryPics > 3) ? [3, response.data[0].numberOfGalleryPics, 1, 'more photos', ''] : [response.data[0].numberOfGalleryPics, response.data[0].numberOfGalleryPics, 0, '', '']);
             });
+        */
     }
 
     const getPlatforms = () => {
@@ -156,7 +178,7 @@ export default function Medium() {
             setMediumsSubgenresMultiple({
                 items: data1.data, 
                 mediumsGenresView: data2.data
-            })            
+            })
         });
     }
 
@@ -489,12 +511,12 @@ export default function Medium() {
 
 
     const enlargePicture = (i) => {
-        setPictureCount([pictureCount[0], pictureCount[1], 1, pictureCount[3], i])
+        setMediumPictureCount([mediumPictureCount[0], mediumPictureCount[1], 1, mediumPictureCount[3], i])
     }
 
     const seePictures = () => {
-        pictureCount[3] = (pictureCount[3] === 'more photos') ? 'collapse photos' : 'more photos';
-        setPictureCount([pictureCount[1], pictureCount[0], 1, pictureCount[3], pictureCount[4]])
+        mediumPictureCount[3] = (mediumPictureCount[3] === 'more photos') ? 'collapse photos' : 'more photos';
+        setMediumPictureCount([mediumPictureCount[1], mediumPictureCount[0], 1, mediumPictureCount[3], mediumPictureCount[4]])
     }
 
     return (
@@ -507,9 +529,9 @@ export default function Medium() {
                                     <img src={`./images/medium/${id}/frontPageThumbnail.png`} alt="Main Thumnail" width="150" />
                                 </div>
                                 <div className="column-medium-2">
-                                    <h1><b>{mediumsDetails[0] ? <>{mediumsDetails[0].title}</>:null}</b></h1>
+                                    <h1><b>{mediumDetails[0] ? <>{mediumDetails[0].title}</>:null}</b></h1>
                                     {
-                                        mediumsDetails.map(mediumsDetail => {
+                                        mediumDetails.map(mediumsDetail => {
                                             return(
                                                 <p key={mediumsDetail.id} className="smallFont">
                                                     {
@@ -553,7 +575,7 @@ export default function Medium() {
 
                                     }
             
-                                    <p className="smallFont">{mediumsDetails.shortDesc}</p>
+                                    <p className="smallFont">{mediumDetails.shortDesc}</p>
 
                                     <br />
 
@@ -562,10 +584,10 @@ export default function Medium() {
                                         { extLinks.imdb ? <a href={`https://www.imdb.com/title/${extLinks.imdb}`} target="_blank" rel="noopener noreferrer">IMDB</a> : null }{" "} {/*eslint-disable-line*/} 
                                         { extLinks.opencritic ? <a href={`https://www.opencritic.com/game/${extLinks.opencritic}`} target="_blank" rel="noopener noreferrer">Opencritic</a> : null }{" "} {/*eslint-disable-line*/} 
                                         { extLinks.rateyourmusic ? <a href={`https://rateyourmusic.com/artist/${extLinks.rateyourmusic}`} target="_blank" rel="noopener noreferrer">RateYourMusic</a> : null }{" "} {/*eslint-disable-line*/} 
-                                        <a href={`https://www.amazon.com/s?k=${ extLinks.amazon ? extLinks.amazon : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">Amazon</a>{" "} {/*eslint-disable-line*/} 
-                                        <a href={`https://www.ebay.com/sch/i.html?_nkw=${ extLinks.ebay ? extLinks.ebay : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">eBay</a>{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.amazon.com/s?k=${ extLinks.amazon ? extLinks.amazon : mediumDetails[0] ? mediumDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">Amazon</a>{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.ebay.com/sch/i.html?_nkw=${ extLinks.ebay ? extLinks.ebay : mediumDetails[0] ? mediumDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">eBay</a>{" "} {/*eslint-disable-line*/} 
                                         { extLinks.goodreads ? <a href={`https://www.goodreads.com/book/show/${extLinks.goodreads}`} target="_blank" rel="noopener noreferrer">Goodreads</a> : null }{" "} {/*eslint-disable-line*/} 
-                                        <a href={`https://www.youtube.com/results?search_query=${ extLinks.youtube ? extLinks.youtube : mediumsDetails[0] ? mediumsDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">YouTube</a>{" "} {/*eslint-disable-line*/} 
+                                        <a href={`https://www.youtube.com/results?search_query=${ extLinks.youtube ? extLinks.youtube : mediumDetails[0] ? mediumDetails[0].title : null }`} target="_blank" rel="noopener noreferrer">YouTube</a>{" "} {/*eslint-disable-line*/} 
                                         { extLinks.wiki ? <a href={`https://en.wikipedia.org/wiki/${extLinks.wiki}`} target="_blank" rel="noopener noreferrer">Wikipedia</a> : null }{" "} {/*eslint-disable-line*/} 
                                         { extLinks.howlongtobeat ? <a href={`https://howlongtobeat.com/game?id=${extLinks.howlongtobeat}`} target="_blank" rel="noopener noreferrer">HowLongToBeat</a> : null }{" "} {/*eslint-disable-line*/} 
                                         { extLinks.fandomPrefix ? <a href={`https://${extLinks.fandomPrefix}.fandom.com/wiki/${extLinks.fandomSuffix}`} target="_blank" rel="noopener noreferrer">Fandom</a> : null }{" "} {/*eslint-disable-line*/} 
@@ -578,7 +600,7 @@ export default function Medium() {
                             <div className="genreVoteBody">
                                 <br />
                                 <p className="smallFont">
-                                    <b>{noGenresOrSubgenresNotification} for {mediumsDetails[0] ? <>{mediumsDetails[0].title}:</>:<>medium:</>}</b>
+                                    <b>{noGenresOrSubgenresNotification} for {mediumDetails[0] ? <>{mediumDetails[0].title}:</>:<>medium:</>}</b>
                                     </p> 
                                 <ul className="listGenreStyling">
                                     <li key={0} className="genreCategory"><b>genres:</b></li>
@@ -600,22 +622,22 @@ export default function Medium() {
 
                             
                                 {
-                                    pictureCount[4]?<div className="selectedImage"><div className="imageContainer"><span onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${pictureCount[4]}`} width="400" alt="enlarged gallery" /></span><div className="imageContainerTopRight imageContainerTopClose"><b><span onClick={() => enlargePicture('')}><FontAwesomeIcon icon={faTimes}/></span></b></div></div></div>:null
+                                    mediumPictureCount[4]?<div className="selectedImage"><div className="imageContainer"><span onClick={() => enlargePicture('')}><img src={`./images/medium/${id}/${mediumPictureCount[4]}`} width="400" alt="enlarged gallery" /></span><div className="imageContainerTopRight imageContainerTopClose"><b><span onClick={() => enlargePicture('')}><FontAwesomeIcon icon={faTimes}/></span></b></div></div></div>:null
                                 }
                                 
 
 
                                 <ul className="imageGallery">
                                     { 
-                                        [...Array(pictureCount[0])].map((e, i) => {
+                                        [...Array(mediumPictureCount[0])].map((e, i) => {
                                             return <li key={i}><span onClick={() => enlargePicture(`galleryPic_${i}.png`)}><img src={`./images/medium/${id}/galleryPic_${i}.png`} width="100" alt="gallery selection" /></span>{' '}</li>
                                         })
                                     }
                                     {
-                                        pictureCount[2] === 1 ? (
+                                        mediumPictureCount[2] === 1 ? (
                                             <li key={0}>
                                                 <div className="morePictures">
-                                                    <span onClick={() => seePictures()} className="smallFont">{pictureCount[3]}</span>
+                                                    <span onClick={() => seePictures()} className="smallFont">{mediumPictureCount[3]}</span>
                                                 </div>
                                             </li>
                                         ) : null

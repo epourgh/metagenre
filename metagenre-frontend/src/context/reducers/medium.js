@@ -1,9 +1,38 @@
 import { ACTIONS } from '../actions/types';
 
-export default function user(state, action) {
+function initMedium(state, payload) {
+  return {
+    ... state,
+    mediumsGenres: [],
+    userpickedGenresLength: 0,
+    mediumsSubgenres: [],
+    mediumsCreatorsSeries: [],
+    similarTitle: [],
+    extLinks: [], 
+    similar: [], 
+    details: [{title: ''}], 
+    platforms: [], 
+    regions: [], 
+    pictureCount: [0, 0, 0, '', ''], 
+    medium: {
+      genreName: '',
+      genreType: 'genre'
+    },
+    mediumsGenresMultiple: {
+      items: [], 
+      mediumsGenresView: []
+    },
+    mediumsSubgenresMultiple: {
+            items: [], 
+            mediumsGenresView: []
+    }
+  }
+}
+
+export default function medium(state, action) {
   switch (action.type) {
     case ACTIONS.MEDIUM.INIT:
-      return action.payload;
+      return initMedium(state, action.payload);
     case ACTIONS.MEDIUM.SET.MEDIUM.GENRE_NAME:
       let name = action.payload;
       return {...state, name: name}; 
@@ -17,7 +46,6 @@ export default function user(state, action) {
       let mediumsCreatorsSeries = action.payload;
       return {...state, mediumsCreatorsSeries}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.SIMILAR:
-      // TODO: bundle similar and similar title
       let similar = action.payload;
       return {...state, similar: { title: 'Similar Voted Mediums:', mediums: similar}}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.EXT_LINKS:
@@ -34,7 +62,6 @@ export default function user(state, action) {
       return {...state, regions: regions}; 
     case ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_GENRES:
     case ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_SUBGENRES:
-      // TODO: remove function for both mediums genres and subgenres in component
       const userPickedContainer = [];
 
       if (action.payload[0].length > 0) {

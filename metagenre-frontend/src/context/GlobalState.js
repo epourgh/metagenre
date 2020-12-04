@@ -28,9 +28,11 @@ export const GlobalProvider = ({ children }) => {
   const [reducers, dispatch] = useReducer(combineReducers({
     user: user,
     medium: medium
-  }), {user: [], medium: {}});
+  }), {user: [], medium: []});
   
   useEffect(() => {
+
+    console.log('passed global useeffect []')
 
     getMediums();
     getGenres();
@@ -40,7 +42,7 @@ export const GlobalProvider = ({ children }) => {
                                username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
                                display: localStorage.getItem('reducer-display') || '-'};
 
-
+    
     const mediumInitState = {
       mediumsGenres: [],
       userpickedGenresLength: 0,
@@ -48,8 +50,8 @@ export const GlobalProvider = ({ children }) => {
       mediumsCreatorsSeries: [],
       similarTitle: [],
       extLinks: [], 
-      similar: [], 
-      mediumsDetails: [], 
+      similar: [],  
+      details: [{title: ''}], 
       platforms: [], 
       regions: [], 
       pictureCount: [0, 0, 0, '', ''], 
@@ -73,6 +75,8 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    console.log('passed global useeffect [reducers]')
+
     localStorage.setItem('reducer-id', reducers.user.id);
     localStorage.setItem('reducer-username', reducers.user.username);
     localStorage.setItem('reducer-display', reducers.user.display);

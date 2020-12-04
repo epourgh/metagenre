@@ -24,3 +24,10 @@ export function actionMediumInit(objectLiterals) {
         payload: objectLiterals
     }
 }
+
+export function actionMediumDetails(link) {
+    return {
+        type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_DETAILS,
+        payload: link
+    }
+}
