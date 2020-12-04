@@ -1,14 +1,15 @@
 import { ACTIONS } from './types';
 
-export function actionSignIn(information) {
-    return {
-        type: ACTIONS.USER.SIGN_IN,
-        payload: information
+export const actionUser = {
+    signIn: function(information) {
+        return {
+            type: ACTIONS.USER.SIGN_IN,
+            payload: information
+        }
+    },
+    signOut: function() {
+        return { type: ACTIONS.USER.SIGN_OUT } 
     }
-}
-
-export function actionSignOut() {
-    return { type: ACTIONS.USER.SIGN_OUT } 
 }
 
 export const actionMedium = {
@@ -18,22 +19,40 @@ export const actionMedium = {
             payload: objectLiterals
         }
     },    
-    actionMediumDetails: function(link) {
+    actionMediumDetails: function(fetchRequest) {
         return {
             type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_DETAILS,
-            payload: link
+            payload: fetchRequest
         }
     },    
-    actionPlatforms: function(link) {
+    actionPlatforms: function(fetchRequest) {
         return {
             type: ACTIONS.MEDIUM.FETCH.SINGLE.PLATFORMS,
-            payload: link
+            payload: fetchRequest
         }
     },    
-    actionRegions: function(link) {
+    actionRegions: function(fetchRequest) {
         return {
             type: ACTIONS.MEDIUM.FETCH.SINGLE.REGIONS,
-            payload: link
+            payload: fetchRequest
+        }
+    },
+    actionSimilar: function(fetchRequest) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.SIMILAR,
+            payload: fetchRequest
+        }
+    },
+    actionExternalLinks: function(fetchRequest) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.EXT_LINKS,
+            payload: fetchRequest
+        }
+    },
+    actionCreatorsSeries: function(fetchRequest) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_CREATORS_SERIES,
+            payload: fetchRequest
         }
     }
 };

@@ -9,7 +9,7 @@ function initMedium(state, payload) {
     mediumsCreatorsSeries: [],
     similarTitle: [],
     extLinks: [], 
-    similar: [], 
+    similar: {title: '', mediums: []}, 
     details: [{title: ''}], 
     platforms: [], 
     regions: [], 
@@ -46,8 +46,10 @@ export default function medium(state, action) {
       let mediumsCreatorsSeries = action.payload;
       return {...state, mediumsCreatorsSeries}; 
     case ACTIONS.MEDIUM.FETCH.SINGLE.SIMILAR:
+
       let similar = action.payload;
       return {...state, similar: { title: 'Similar Voted Mediums:', mediums: similar}}; 
+
     case ACTIONS.MEDIUM.FETCH.SINGLE.EXT_LINKS:
       let extLinks = action.payload;
       return {...state, extLinks}; 

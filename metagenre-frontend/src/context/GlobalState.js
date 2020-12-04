@@ -4,7 +4,7 @@ import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
 import medium from "./reducers/medium";
 
-import { actionSignIn, actionMedium } from "./actions/index";
+import { actionUser, actionMedium } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
@@ -50,7 +50,7 @@ export const GlobalProvider = ({ children }) => {
       mediumsCreatorsSeries: [],
       similarTitle: [],
       extLinks: [], 
-      similar: [],  
+      similar: [{title: '', mediums: []}],  
       details: [{title: ''}], 
       platforms: [], 
       regions: [], 
@@ -69,7 +69,7 @@ export const GlobalProvider = ({ children }) => {
       }
     };
 
-    dispatchMiddleware(dispatch)(actionSignIn(userInitState));
+    dispatchMiddleware(dispatch)(actionUser.signIn(userInitState));
     dispatchMiddleware(dispatch)(actionMedium.actionMediumInit(mediumInitState));
 
   }, []);

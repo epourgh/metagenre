@@ -24,7 +24,7 @@ export default function Medium() {
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);
     const [mediumsSubgenres, setMediumsSubgenres] = useState([]);
     const [mediumsCreatorsSeries, setMediumsCreatorsSeries] = useState([]);
-    const [similar, setSimilar] = useState({title: '', content: []});
+    const [similar, setSimilar] = useState({title: '', mediums: []});
     const [extLinks, setExtLinks] = useState([]);
     const [platforms, setPlatforms] = useState([]);
     const [regions, setRegions] = useState([]);
@@ -52,6 +52,9 @@ export default function Medium() {
         getMediumsDetails();
         getPlatforms();
         getRegions();
+        getSimilarMediums();
+        getExternalLinks();
+        getCreatorsSeries();
     }, [])
 
     useEffect(() => {
@@ -77,12 +80,21 @@ export default function Medium() {
             setRegions(reducers.medium.regions)
         }
         
+        if (typeof reducers.medium.similar !== "undefined") {
+            console.log(`typeof: `)
+            setSimilar(reducers.medium.similar)
+        }
+
+        if (typeof reducers.medium.extLinks !== "undefined") {
+            setExtLinks(reducers.medium.extLinks)
+        }
+
+        if (typeof reducers.medium.mediumsCreatorsSeries !== "undefined") {
+            setMediumsCreatorsSeries(reducers.medium.mediumsCreatorsSeries)
+        }       
         
         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
         getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
-        getSimilarMediums();
-        getExternalLinks();
-        getCreatorsSeries();
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {  
@@ -141,6 +153,10 @@ export default function Medium() {
     }
 
     const getSimilarMediums = () => {
+
+        dispatchMiddleware(dispatch)(actionMedium.actionSimilar({url: `${backendUrl}/similar/${id}`}));
+
+        /*
         fetch(`${backendUrl}/similar/${id}`)
             .then(response => response.json())
             .then(response => {
@@ -150,9 +166,14 @@ export default function Medium() {
                     })})
                 }
             });
+        */
     }
 
     const getExternalLinks = () => {
+
+        dispatchMiddleware(dispatch)(actionMedium.actionExternalLinks({url: `${backendUrl}/mediumExternalLinks/${id}`}));
+
+        /*
         fetch(`${backendUrl}/mediumExternalLinks/${id}`)
             .then(response => response.json())
             .then(response => {
@@ -160,10 +181,14 @@ export default function Medium() {
                     setExtLinks(response.data[0])
                 }
             });
+        */
     }
 
 
     const getCreatorsSeries = () => {
+        
+        dispatchMiddleware(dispatch)(actionMedium.actionCreatorsSeries({url: `${backendUrl}/mediumsCreatorsSeries/view/${id}`}));
+        /*
         fetch(`${backendUrl}/mediumsCreatorsSeries/view/${id}`)
             .then(response => response.json())
             .then(response => {
@@ -171,6 +196,7 @@ export default function Medium() {
                     setMediumsCreatorsSeries(response.data)
             }
         });
+        */
     }
 
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
@@ -432,8 +458,8 @@ export default function Medium() {
                     <div>
                         <h3>{similar.title}</h3>
                         {
-                            similar.content.filter(content => content !== undefined).map(content => {
-                                return(<p key={content.id}><Link to={`./medium?id=${content.id}&title=${content.title}`}>{content.title}</Link>: {content.percentage}%</p>);
+                            similar.mediums.filter(content => content !== undefined).map(content => {
+                                return(<p key={content[0].id}><Link to={`./medium?id=${content[0].id}&title=${content[0].title}`}>{content[0].title}</Link>: {content[0].percentage}%</p>);
                             })
                         }
                     </div>

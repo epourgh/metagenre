@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext, DispatchContext } from '../../context/GlobalState';
-import { actionSignIn, actionSignOut } from '../../context/actions/index';
+import { actionUser } from '../../context/actions/index';
 
 export default function Login() {
     
@@ -32,7 +32,7 @@ export default function Login() {
                             localStorage.setItem('loginDisplay', response.data[0].displayName)
                         }
 
-                        dispatchMiddleware(dispatch)(actionSignIn({
+                        dispatchMiddleware(dispatch)(actionUser.signIn({
                             id: localStorage.getItem('loginId'),
                             username: localStorage.getItem('loginUsername'),
                             display: localStorage.getItem('loginDisplay')
@@ -52,7 +52,7 @@ export default function Login() {
             localStorage.removeItem('reducer-username');
             localStorage.removeItem('reducer-display');
 
-            dispatchMiddleware(dispatch)(actionSignOut());
+            dispatchMiddleware(dispatch)(actionUser.signOut());
         }
     }
 
