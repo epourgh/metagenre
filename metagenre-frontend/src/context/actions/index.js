@@ -11,23 +11,29 @@ export function actionSignOut() {
     return { type: ACTIONS.USER.SIGN_OUT } 
 }
 
-export function actionFetch(fetching) {
-    return {
-        type: ACTIONS.MEDIUM.FETCH,
-        payload: fetching.url
+export const actionMedium = {
+    actionMediumInit: function(objectLiterals) {
+        return {
+            type: ACTIONS.MEDIUM.INIT, 
+            payload: objectLiterals
+        }
+    },    
+    actionMediumDetails: function(link) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_DETAILS,
+            payload: link
+        }
+    },    
+    actionPlatforms: function(link) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.PLATFORMS,
+            payload: link
+        }
+    },    
+    actionRegions: function(link) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.SINGLE.REGIONS,
+            payload: link
+        }
     }
-}
-
-export function actionMediumInit(objectLiterals) {
-    return {
-        type: ACTIONS.MEDIUM.INIT, 
-        payload: objectLiterals
-    }
-}
-
-export function actionMediumDetails(link) {
-    return {
-        type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_DETAILS,
-        payload: link
-    }
-}
+};

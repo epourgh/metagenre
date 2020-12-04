@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { GlobalContext, DispatchContext } from '../context/GlobalState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { actionMediumDetails } from '../context/actions/index';
+import { actionMedium } from '../context/actions/index';
 
 function getWindowParam() {
     var url_string = window.location.href;
@@ -50,6 +50,8 @@ export default function Medium() {
     
     useEffect(() => {
         getMediumsDetails();
+        getPlatforms();
+        getRegions();
     }, [])
 
     useEffect(() => {
@@ -65,8 +67,17 @@ export default function Medium() {
             setMediumPictureCount(reducers.medium.pictureCount)
         }
 
-        getPlatforms();
-        getRegions();
+        if (typeof reducers.medium.platforms !== "undefined") {
+            console.log(`typeof: ${reducers.medium.platforms}`)
+            setPlatforms(reducers.medium.platforms)
+        }
+
+        if (typeof reducers.medium.regions !== "undefined") {
+            console.log(`typeof: ${reducers.medium.regions}`)
+            setRegions(reducers.medium.regions)
+        }
+        
+        
         getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
         getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
         getSimilarMediums();
@@ -90,7 +101,7 @@ export default function Medium() {
 
     const getMediumsDetails = () => {
 
-        dispatchMiddleware(dispatch)(actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
+        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
 
 
         /*
@@ -104,19 +115,29 @@ export default function Medium() {
     }
 
     const getPlatforms = () => {
+
+        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));        
+        
+        /*
         fetch(`${backendUrl}/platforms`)
             .then(response => response.json())
             .then(response => {
                 setPlatforms(response.data);
             });
+        */
+
     }
 
     const getRegions = () => {
-    fetch(`${backendUrl}/regions`)
-        .then(response => response.json())
-        .then(response => {
-            setRegions(response.data);
-        });
+        dispatchMiddleware(dispatch)(actionMedium.actionRegions({url: `${backendUrl}/regions`}));
+    
+        /*
+        fetch(`${backendUrl}/regions`)
+            .then(response => response.json())
+            .then(response => {
+                setRegions(response.data);
+            });
+        */
     }
 
     const getSimilarMediums = () => {

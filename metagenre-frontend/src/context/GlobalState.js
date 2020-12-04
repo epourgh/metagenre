@@ -4,7 +4,7 @@ import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
 import medium from "./reducers/medium";
 
-import { actionSignIn, actionMediumInit } from "./actions/index";
+import { actionSignIn, actionMedium } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
@@ -70,7 +70,7 @@ export const GlobalProvider = ({ children }) => {
     };
 
     dispatchMiddleware(dispatch)(actionSignIn(userInitState));
-    dispatchMiddleware(dispatch)(actionMediumInit(mediumInitState));
+    dispatchMiddleware(dispatch)(actionMedium.actionMediumInit(mediumInitState));
 
   }, []);
 
