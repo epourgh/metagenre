@@ -36,16 +36,7 @@ export default function Medium() {
         genreName: '',
         genreType: 'genre'
     });
-    const [mediumsGenresMultiple, setMediumsGenresMultiple] = useState({
-        items: [], 
-        mediumsGenresView: []
-    });
-
-    const [mediumsSubgenresMultiple, setMediumsSubgenresMultiple] = useState({
-        items: [], 
-        mediumsGenresView: []
-    });
-
+    
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     useEffect(() => {
@@ -115,231 +106,42 @@ export default function Medium() {
         checkMediumsGenres();
     })
 
-    useEffect(() => {
-        organizeMediumsGenresMultiple(mediumsGenresMultiple, 'mediumsGenres');
-    }, [mediumsGenresMultiple])
-
-
-    useEffect(() => {
-        organizeMediumsGenresMultiple(mediumsSubgenresMultiple, 'mediumsSubgenres');
-    }, [mediumsSubgenresMultiple])
-    
-
     const getMediumsDetails = () => {
-
         dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
-
-
-        /*
-        fetch(`${backendUrl}/mediumsDetails/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                setMediumsDetails(response.data);
-                setMediumPictureCount((response.data[0].numberOfGalleryPics > 3) ? [3, response.data[0].numberOfGalleryPics, 1, 'more photos', ''] : [response.data[0].numberOfGalleryPics, response.data[0].numberOfGalleryPics, 0, '', '']);
-            });
-        */
     }
 
     const getPlatforms = () => {
 
-        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));        
-        
-        /*
-        fetch(`${backendUrl}/platforms`)
-            .then(response => response.json())
-            .then(response => {
-                setPlatforms(response.data);
-            });
-        */
-
+        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
     }
 
     const getRegions = () => {
         dispatchMiddleware(dispatch)(actionMedium.actionRegions({url: `${backendUrl}/regions`}));
-    
-        /*
-        fetch(`${backendUrl}/regions`)
-            .then(response => response.json())
-            .then(response => {
-                setRegions(response.data);
-            });
-        */
     }
 
     const getSimilarMediums = () => {
-
         dispatchMiddleware(dispatch)(actionMedium.actionSimilar({url: `${backendUrl}/similar/${id}`}));
-
-        /*
-        fetch(`${backendUrl}/similar/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.data[0][0] !== undefined) {
-                    setSimilar({title: 'Similar Voted Mediums:', content: response.data.map(content => {
-                        return content[0];
-                    })})
-                }
-            });
-        */
     }
 
     const getExternalLinks = () => {
-
         dispatchMiddleware(dispatch)(actionMedium.actionExternalLinks({url: `${backendUrl}/mediumExternalLinks/${id}`}));
-
-        /*
-        fetch(`${backendUrl}/mediumExternalLinks/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.data !== undefined) {
-                    setExtLinks(response.data[0])
-                }
-            });
-        */
     }
 
 
     const getCreatorsSeries = () => {
-        
         dispatchMiddleware(dispatch)(actionMedium.actionCreatorsSeries({url: `${backendUrl}/mediumsCreatorsSeries/view/${id}`}));
-        /*
-        fetch(`${backendUrl}/mediumsCreatorsSeries/view/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.data.length > 0) {
-                    setMediumsCreatorsSeries(response.data)
-            }
-        });
-        */
     }
 
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
         let userId = (reducers.user.id === undefined)?0:reducers.user.id;
         dispatchMiddleware(dispatch)(actionMedium.actionGenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsGenres}/view/${id}`]}));
-        /*
-        Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
-            fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
-        ])
-        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-        .then(([data1, data2]) => {
-            setMediumsGenresMultiple({
-                items: data1.data, 
-                mediumsGenresView: data2.data
-            })            
-        });
-        */
     }
 
     const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
         let userId = (reducers.user.id === undefined)?0:reducers.user.id;
 
         dispatchMiddleware(dispatch)(actionMedium.actionSubgenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsSubenres}/view/${id}`]}))
-
-        /*
-        Promise.all([
-            fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
-            fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
-        ])
-        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-        .then(([data1, data2]) => {
-            setMediumsSubgenresMultiple({
-                items: data1.data, 
-                mediumsGenresView: data2.data
-            })
-        });
-        */
     }
-
-    const organizeMediumsGenresMultiple = (mediumsGenresMultipleArg, mediumsGenres) => {
-
-        const userPickedContainer = [];
-
-        if (mediumsGenresMultipleArg.items.length > 0) {
-            if (mediumsGenres === 'mediumsGenres') {
-                mediumsGenresMultipleArg.items.forEach(item => {
-                    userPickedContainer.push(item.genreId);
-                })
-            } else {
-                mediumsGenresMultipleArg.items.forEach(item => {
-                    userPickedContainer.push(item.subgenreId);
-                })
-            }
-        }
-
-        const mediumsGenresContainer = [];
-
- 
-        if (userPickedContainer.length > 0) {
-
-            let found;
-            let userVoted;
-
-            mediumsGenresMultipleArg.mediumsGenresView.forEach(item => {
-                
-                if (mediumsGenres === 'mediumsGenres') {
-                    found = userPickedContainer.find(element => element === item.genreId);
-                } else {
-                    found = userPickedContainer.find(element => element === item.subgenreId);
-                }
-
-                userVoted = (found !== undefined)? 1:0;
-
-                let content = {
-                    id: item.id,
-                    title: item.title,
-                    name: item.name,
-                    votes: item.votes,
-                    voted: userVoted
-                }
-
-                if (mediumsGenres === 'mediumsGenres') {
-                    content.genreId = item.genreId;
-                } else {
-                    content.subgenreId = item.subgenreId;
-                }
-
-                mediumsGenresContainer.push(content);
-            })
-
-            if (mediumsGenres === 'mediumsGenres') {
-                setMediumsGenres(mediumsGenresContainer)
-            } else {
-                setMediumsSubgenres(mediumsGenresContainer)
-            }
-
-            setUserPickedGenresLength(userPickedContainer.length);
-
-        } else {
-
-            if (mediumsGenres === 'mediumsGenres') {
-                setMediumsGenres(mediumsGenresMultipleArg.mediumsGenresView)
-            } else {
-                setMediumsSubgenres(mediumsGenresMultipleArg.mediumsGenresView)
-            }
-
-            setUserPickedGenresLength(3);
-            
-        }
-    }
-
-    /*
-    const getMediumsGenres = (stringParam) => {
-
-        fetch(`${backendUrl}/${stringParam}/view/${id}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.data.length > 0) {
-                    if (stringParam === 'mediumsGenres') {
-                        setMediumsGenres(response.data)
-                    } else {
-                        setMediumsSubgenres(response.data)
-                    }
-                }
-            
-            });
-    }
-    */
 
     const checkMediumsGenres = () => {
         if (mediumsGenres.length === 0 && mediumsSubgenres.length === 0) {
