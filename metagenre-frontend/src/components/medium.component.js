@@ -36,112 +36,54 @@ export default function Medium() {
         genreName: '',
         genreType: 'genre'
     });
-    
+
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     useEffect(() => {
-        getMediumsDetails();
-        getPlatforms();
-        getRegions();
-        getSimilarMediums();
-        getExternalLinks();
-        getCreatorsSeries();
-        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
+        dispatchRequests.mediumsDetails();
+        dispatchRequests.platforms();
+        dispatchRequests.regions();
+        dispatchRequests.similarMediums();
+        dispatchRequests.extLinks();
+        dispatchRequests.creatorSeries();
+        dispatchRequests.mediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+        dispatchRequests.mediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
     }, [])
 
     useEffect(() => {
-        console.log(reducers);
-
-        if (typeof reducers.medium.details !== "undefined") {
-            // console.log(`typeof: ${reducers.medium.details}`)
-            setMediumDetails(reducers.medium.details)
-        }
-        
-        if (typeof reducers.medium.pictureCount !== "undefined") {
-            // console.log(`typeof: ${reducers.medium.pictureCount}`)
-            setMediumPictureCount(reducers.medium.pictureCount)
-        }
-
-        if (typeof reducers.medium.platforms !== "undefined") {
-            // console.log(`typeof: ${reducers.medium.platforms}`)
-            setPlatforms(reducers.medium.platforms)
-        }
-
-        if (typeof reducers.medium.regions !== "undefined") {
-            // console.log(`typeof: ${reducers.medium.regions}`)
-            setRegions(reducers.medium.regions)
-        }
-        
-        if (typeof reducers.medium.similar !== "undefined") {
-            // console.log(`typeof: `)
-            setSimilar(reducers.medium.similar)
-        }
-
-        if (typeof reducers.medium.extLinks !== "undefined") {
-            setExtLinks(reducers.medium.extLinks)
-        }
-
-        if (typeof reducers.medium.mediumsCreatorsSeries !== "undefined") {
-            setMediumsCreatorsSeries(reducers.medium.mediumsCreatorsSeries)
-        }
-
-        if (typeof reducers.medium.mediumsGenres !== "undefined") {
-            console.log('mediumGenres')
-            console.log(reducers.medium.mediumsGenres)
-           setMediumsGenres(reducers.medium.mediumsGenres)
-        }
-
-        if (typeof reducers.medium.mediumsSubgenres !== "undefined") {
-           setMediumsSubgenres(reducers.medium.mediumsSubgenres)
-        }
-
-        if (typeof reducers.medium.userPickedGenresLength !== "undefined") {
-           setUserPickedGenresLength(reducers.medium.userPickedGenresLength)
-        }
-
+        setMediumDetails((typeof reducers.medium.details !== "undefined")?reducers.medium.details:[{title: ''}]);
+        setMediumPictureCount((typeof reducers.medium.pictureCount !== "undefined")?reducers.medium.pictureCount:[0, 0, 0, '', '']);
+        setPlatforms((typeof reducers.medium.platforms !== "undefined")?reducers.medium.platforms:[]);
+        setRegions((typeof reducers.medium.regions !== "undefined")?reducers.medium.regions:[]);
+        setSimilar((typeof reducers.medium.similar !== "undefined")?reducers.medium.similar:{title: '', mediums: []});
+        setExtLinks((typeof reducers.medium.extLinks !== "undefined")?reducers.medium.extLinks:[]);
+        setMediumsCreatorsSeries((typeof reducers.medium.mediumsCreatorsSeries !== "undefined")?reducers.medium.mediumsCreatorsSeries:[]);
+        setMediumsGenres((typeof reducers.medium.mediumsGenres !== "undefined")?reducers.medium.mediumsGenres:[]);
+        setMediumsSubgenres((typeof reducers.medium.mediumsSubgenres !== "undefined")?reducers.medium.mediumsSubgenres:[]);
+        setUserPickedGenresLength((typeof reducers.medium.userPickedGenresLength !== "undefined")?reducers.medium.userPickedGenresLength:0);
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {  
         checkMediumsGenres();
     })
 
-    const getMediumsDetails = () => {
-        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
+    const dispatchRequests = {
+        mediumsDetails: () => dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`})),
+        platforms: () => dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`})),
+        regions: () => dispatchMiddleware(dispatch)(actionMedium.actionRegions({url: `${backendUrl}/regions`})),
+        similarMediums: () => dispatchMiddleware(dispatch)(actionMedium.actionSimilar({url: `${backendUrl}/similar/${id}`})),
+        extLinks: () => dispatchMiddleware(dispatch)(actionMedium.actionExternalLinks({url: `${backendUrl}/mediumExternalLinks/${id}`})),
+        creatorSeries: () => dispatchMiddleware(dispatch)(actionMedium.actionCreatorsSeries({url: `${backendUrl}/mediumsCreatorsSeries/view/${id}`})),
+        mediumsGenresMultiple: (mediumsGenres, userBooleanMediumsGenres) => {
+            let userId = (reducers.user.id === undefined)?0:reducers.user.id;
+            dispatchMiddleware(dispatch)(actionMedium.actionGenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsGenres}/view/${id}`]}));
+        },
+        mediumsSubgenresMultiple: (mediumsSubenres, userBooleanMediumsGenres) => {
+            let userId = (reducers.user.id === undefined)?0:reducers.user.id;
+            dispatchMiddleware(dispatch)(actionMedium.actionSubgenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsSubenres}/view/${id}`]}))
+        }
     }
 
-    const getPlatforms = () => {
-
-        dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`}));
-    }
-
-    const getRegions = () => {
-        dispatchMiddleware(dispatch)(actionMedium.actionRegions({url: `${backendUrl}/regions`}));
-    }
-
-    const getSimilarMediums = () => {
-        dispatchMiddleware(dispatch)(actionMedium.actionSimilar({url: `${backendUrl}/similar/${id}`}));
-    }
-
-    const getExternalLinks = () => {
-        dispatchMiddleware(dispatch)(actionMedium.actionExternalLinks({url: `${backendUrl}/mediumExternalLinks/${id}`}));
-    }
-
-
-    const getCreatorsSeries = () => {
-        dispatchMiddleware(dispatch)(actionMedium.actionCreatorsSeries({url: `${backendUrl}/mediumsCreatorsSeries/view/${id}`}));
-    }
-
-    const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
-        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
-        dispatchMiddleware(dispatch)(actionMedium.actionGenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsGenres}/view/${id}`]}));
-    }
-
-    const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
-        let userId = (reducers.user.id === undefined)?0:reducers.user.id;
-
-        dispatchMiddleware(dispatch)(actionMedium.actionSubgenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsSubenres}/view/${id}`]}))
-    }
 
     const checkMediumsGenres = () => {
         if (mediumsGenres.length === 0 && mediumsSubgenres.length === 0) {
@@ -176,7 +118,7 @@ export default function Medium() {
         }
 
         fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}`, options).then(response => {
-            getMediumsGenresMultiple(routeString, routeString2);
+            dispatchRequests.mediumsGenresMultiple(routeString, routeString2);
             // getMediumsGenres(routeString);
         })
         .catch(err => console.log(err))
@@ -207,7 +149,7 @@ export default function Medium() {
         }
 
         fetch(`${backendUrl}/${routeString}/update/${mediumGenresId}`, options).then(response => {
-            getMediumsSubgenresMultiple(routeString, routeString2);
+            dispatchRequests.mediumsSubgenresMultiple(routeString, routeString2);
             // getMediumsGenres(routeString);
         }).catch(err => console.log(err))
 
@@ -241,10 +183,10 @@ export default function Medium() {
 
             fetch(`${backendUrl}/mediumsGenresChecker`, options).then(update => {
                 if (medium.genreType === 'genre') {
-                    getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+                    dispatchRequests.mediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
                     // getMediumsGenres('mediumsGenres');
                 } else if (medium.genreType === 'subgenre') {
-                    getMediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
+                    dispatchRequests.mediumsSubgenresMultiple('mediumsSubgenres', 'userBooleanMediumsSubgenres');
                 }
             }).catch(err => console.log(err))
         }
