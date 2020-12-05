@@ -66,6 +66,9 @@ export default function medium(state, action) {
     case ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_SUBGENRES:
       const userPickedContainer = [];
 
+      console.log('--ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_GENRES--')
+      console.log(action.payload)
+
       if (action.payload[0].length > 0) {
         
         if (action.type.match(/-mediums-genres/i)) {
@@ -115,6 +118,8 @@ export default function medium(state, action) {
         })
 
         if (action.type.match(/-mediums-genres/i)) {
+          console.log('---mediumsGenresContainer--')
+          console.log(mediumsGenresContainer)
           return {... state, mediumsGenres: mediumsGenresContainer, userPickedGenresLength: userPickedContainer.length }
         } else {
           return {... state, mediumsSubgenres: mediumsGenresContainer, userPickedGenresLength: userPickedContainer.length }
@@ -123,9 +128,11 @@ export default function medium(state, action) {
       } else {
 
         if (action.type.match(/-mediums-genres/i)) {
-          return {... state, mediumsGenres: mediumsGenresContainer, userPickedGenresLength: 3 }
+          console.log('---mediumsGenresContainer--')
+          console.log(mediumsGenresContainer)
+          return {... state, mediumsGenres: action.payload[1], userPickedGenresLength: 3 }
         } else {
-          return {... state, mediumsGenres: mediumsGenresContainer, userPickedGenresLength: 3 }
+          return {... state, mediumsSubgenres: action.payload[1], userPickedGenresLength: 3 }
         }
 
       }

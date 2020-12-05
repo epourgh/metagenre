@@ -55,33 +55,35 @@ export default function Medium() {
         getSimilarMediums();
         getExternalLinks();
         getCreatorsSeries();
+        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+        getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
     }, [])
 
     useEffect(() => {
         console.log(reducers);
 
         if (typeof reducers.medium.details !== "undefined") {
-            console.log(`typeof: ${reducers.medium.details}`)
+            // console.log(`typeof: ${reducers.medium.details}`)
             setMediumDetails(reducers.medium.details)
         }
         
         if (typeof reducers.medium.pictureCount !== "undefined") {
-            console.log(`typeof: ${reducers.medium.pictureCount}`)
+            // console.log(`typeof: ${reducers.medium.pictureCount}`)
             setMediumPictureCount(reducers.medium.pictureCount)
         }
 
         if (typeof reducers.medium.platforms !== "undefined") {
-            console.log(`typeof: ${reducers.medium.platforms}`)
+            // console.log(`typeof: ${reducers.medium.platforms}`)
             setPlatforms(reducers.medium.platforms)
         }
 
         if (typeof reducers.medium.regions !== "undefined") {
-            console.log(`typeof: ${reducers.medium.regions}`)
+            // console.log(`typeof: ${reducers.medium.regions}`)
             setRegions(reducers.medium.regions)
         }
         
         if (typeof reducers.medium.similar !== "undefined") {
-            console.log(`typeof: `)
+            // console.log(`typeof: `)
             setSimilar(reducers.medium.similar)
         }
 
@@ -91,10 +93,22 @@ export default function Medium() {
 
         if (typeof reducers.medium.mediumsCreatorsSeries !== "undefined") {
             setMediumsCreatorsSeries(reducers.medium.mediumsCreatorsSeries)
-        }       
-        
-        getMediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        getMediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
+        }
+
+        if (typeof reducers.medium.mediumsGenres !== "undefined") {
+            console.log('mediumGenres')
+            console.log(reducers.medium.mediumsGenres)
+           setMediumsGenres(reducers.medium.mediumsGenres)
+        }
+
+        if (typeof reducers.medium.mediumsSubgenres !== "undefined") {
+           setMediumsSubgenres(reducers.medium.mediumsSubgenres)
+        }
+
+        if (typeof reducers.medium.userPickedGenresLength !== "undefined") {
+           setUserPickedGenresLength(reducers.medium.userPickedGenresLength)
+        }
+
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {  
@@ -201,6 +215,8 @@ export default function Medium() {
 
     const getMediumsGenresMultiple = (mediumsGenres, userBooleanMediumsGenres) => {
         let userId = (reducers.user.id === undefined)?0:reducers.user.id;
+        dispatchMiddleware(dispatch)(actionMedium.actionGenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsGenres}/view/${id}`]}));
+        /*
         Promise.all([
             fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsGenres}/view/${id}`)
@@ -212,10 +228,15 @@ export default function Medium() {
                 mediumsGenresView: data2.data
             })            
         });
+        */
     }
 
     const getMediumsSubgenresMultiple = (mediumsSubenres, userBooleanMediumsGenres) => {
         let userId = (reducers.user.id === undefined)?0:reducers.user.id;
+
+        dispatchMiddleware(dispatch)(actionMedium.actionSubgenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsSubenres}/view/${id}`]}))
+
+        /*
         Promise.all([
             fetch(`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`),
             fetch(`${backendUrl}/${mediumsSubenres}/view/${id}`)
@@ -227,6 +248,7 @@ export default function Medium() {
                 mediumsGenresView: data2.data
             })
         });
+        */
     }
 
     const organizeMediumsGenresMultiple = (mediumsGenresMultipleArg, mediumsGenres) => {

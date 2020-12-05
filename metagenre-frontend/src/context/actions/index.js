@@ -54,5 +54,17 @@ export const actionMedium = {
             type: ACTIONS.MEDIUM.FETCH.SINGLE.MEDIUMS_CREATORS_SERIES,
             payload: fetchRequest
         }
+    },
+    actionGenresMultiple: function(fetchRequest) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_GENRES,
+            payload: fetchRequest
+        }
+    },
+    actionSubgenresMultiple: function(fetchRequest) {
+        return {
+            type: ACTIONS.MEDIUM.FETCH.MULTIPLE.MEDIUMS_SUBGENRES,
+            payload: fetchRequest
+        }
     }
 };
