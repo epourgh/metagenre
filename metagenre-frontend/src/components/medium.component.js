@@ -20,6 +20,7 @@ export default function Medium() {
     const id = getWindowParam();
 
     // STATES
+    const [userId, setUserId] = useState(0);
     const [mediumsGenres, setMediumsGenres] = useState([]);
     const [userpickedGenresLength, setUserPickedGenresLength] = useState(0);
     const [mediumsSubgenres, setMediumsSubgenres] = useState([]);
@@ -46,11 +47,21 @@ export default function Medium() {
         dispatchRequests.similarMediums();
         dispatchRequests.extLinks();
         dispatchRequests.creatorSeries();
-        dispatchRequests.mediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
-        dispatchRequests.mediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
     }, [])
 
     useEffect(() => {
+        if (typeof userId !== "undefined") {
+            dispatchRequests.mediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+            dispatchRequests.mediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
+        }
+    }, [userId])
+
+    useEffect(() => {
+        
+        if (userId === 0 && typeof reducers.user.id !== "undefined") {
+            setUserId(reducers.user.id)
+        }
+
         setMediumDetails((typeof reducers.medium.details !== "undefined")?reducers.medium.details:[{title: ''}]);
         setMediumPictureCount((typeof reducers.medium.pictureCount !== "undefined")?reducers.medium.pictureCount:[0, 0, 0, '', '']);
         setPlatforms((typeof reducers.medium.platforms !== "undefined")?reducers.medium.platforms:[]);
@@ -75,11 +86,9 @@ export default function Medium() {
         extLinks: () => dispatchMiddleware(dispatch)(actionMedium.actionExternalLinks({url: `${backendUrl}/mediumExternalLinks/${id}`})),
         creatorSeries: () => dispatchMiddleware(dispatch)(actionMedium.actionCreatorsSeries({url: `${backendUrl}/mediumsCreatorsSeries/view/${id}`})),
         mediumsGenresMultiple: (mediumsGenres, userBooleanMediumsGenres) => {
-            let userId = (reducers.user.id === undefined)?0:reducers.user.id;
             dispatchMiddleware(dispatch)(actionMedium.actionGenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsGenres}/view/${id}`]}));
         },
         mediumsSubgenresMultiple: (mediumsSubenres, userBooleanMediumsGenres) => {
-            let userId = (reducers.user.id === undefined)?0:reducers.user.id;
             dispatchMiddleware(dispatch)(actionMedium.actionSubgenresMultiple({url: [`${backendUrl}/${userBooleanMediumsGenres}?userId=${userId}&mediumId=${id}`, `${backendUrl}/${mediumsSubenres}/view/${id}`]}))
         }
     }

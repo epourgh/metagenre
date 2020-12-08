@@ -32,8 +32,6 @@ export const GlobalProvider = ({ children }) => {
   
   useEffect(() => {
 
-    console.log('passed global useeffect []')
-
     getMediums();
     getGenres();
     getSubgenres();
@@ -75,8 +73,6 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('passed global useeffect [reducers]')
-
     localStorage.setItem('reducer-id', reducers.user.id);
     localStorage.setItem('reducer-username', reducers.user.username);
     localStorage.setItem('reducer-display', reducers.user.display);
