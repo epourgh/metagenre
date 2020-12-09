@@ -22,8 +22,8 @@ export const GlobalProvider = ({ children }) => {
   const [subgenres, setSubgenres] = useState([{id: 0, name: ''}]);
   const [showNavStyle, setShowNavStyle] = useState('navbar');
 
-  // const backendUrl = '/api';
-  const backendUrl = 'http://localhost:4000';
+  const backendUrl = '/api';
+  // const backendUrl = 'http://localhost:4000';
 
   const [reducers, dispatch] = useReducer(combineReducers({
     user: user,

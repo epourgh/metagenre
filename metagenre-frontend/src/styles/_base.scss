@@ -90,6 +90,7 @@ a:hover {
 }
 
 .listGenreStyling .userVotedForThis a, .listGenreStyling .userVotedForThis p {
+  cursor: pointer;
   border: 1px solid $userVote;
   background: $userVote;
 }
