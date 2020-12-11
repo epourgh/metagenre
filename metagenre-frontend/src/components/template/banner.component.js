@@ -113,7 +113,7 @@ export default function Banner() {
         <div className="column-header-1">
             <h1>
               <Link to="/" className="navbar-brand">
-                <img src={`/images/logo/nodes.svg`} alt="banner logo" className="logo" width="25" /> Metagenre
+                <img src={`/images/logo/nodes.svg`} alt="banner logo" className="logo" width="25" className="logo" /> Metagenre
                 </Link>
             </h1>
         </div>
