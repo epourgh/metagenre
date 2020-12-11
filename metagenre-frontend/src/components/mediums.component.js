@@ -196,7 +196,12 @@ export default function Medium() {
     if(reducers.user.id === 0) {
       return (
         <div className="individualStyling individualMediumStyling row warning-alert">
-          <FontAwesomeIcon className="navbar-hamburger" icon={faExclamationCircle}/> You'll need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.
+          <div className="padding-mobile">
+            <div className="icon-centered-mobile">
+              <FontAwesomeIcon className="fontawesome-exclamation-circle" icon={faExclamationCircle}/> 
+            </div>
+            You'll need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.
+          </div>
         </div>
       )
     } else {

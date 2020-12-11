@@ -171,10 +171,22 @@
         height: auto
     }
 
-
     .warning-alert { 
         padding: 100px 0;
         margin-bottom: 50px
+    }
+
+    .icon-centered-mobile {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .fontawesome-exclamation-circle {
+        font-size: 8em;
+    }
+
+    .padding-mobile {
+        padding: 0 15%
     }
 
 }
