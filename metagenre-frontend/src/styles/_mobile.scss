@@ -15,6 +15,11 @@
         border: 0;
     }
 
+    .medium-individual-styling {
+        padding: 10px 0;
+        border: 1px solid $grey;
+    }
+
     .individualMediumStyling {
         width: 100vw;
         margin: 0;
@@ -95,6 +100,13 @@
         margin: 10% 0;
     }
 
+    .hr-mobile-display-sm {
+          display: block;
+          border: 0;
+          border-top: 1px solid lighten($grey, 10%);
+          margin: 0 30%;
+    }
+
     .inner-card-hr-mobile-display {
         display: none;
     }
@@ -130,6 +142,39 @@
 
     .paragraph-crunch {
         padding: 5% 0%;
+    }
+
+    .column1, .column2 {
+        text-align: center
+    }
+
+    .column2 h3 b {
+        visibility: hidden;
+    }
+
+    .column2 h3 {
+        padding: 20px 0 5px 0; 
+
+    }
+
+    .column2 h3 b a {
+        color: $header-color;
+        text-decoration: underline;
+        font-size: 2em;
+        visibility: visible;
+        text-transform: uppercase;
+    }
+
+    .mediums-image {
+        border-radius: 300px !important;
+        width: 200px;
+        height: auto
+    }
+
+
+    .warning-alert { 
+        padding: 100px 0;
+        margin-bottom: 50px
     }
 
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 function getWindowParam() {
   var url_string = window.location.href;
@@ -158,10 +160,10 @@ export default function Medium() {
 
       if (medium !== undefined) {
           return (
-              <div key={medium.id} className="individualStyling row">
+              <div key={medium.id} className="individualStyling row medium-individual-styling">
 
                 <div className="column1">
-                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="front page thumbnail" width="150"/>
+                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="front page thumbnail" className="mediums-image" width="150"/>
                 </div>
                 <div className="column2">
 
@@ -173,6 +175,8 @@ export default function Medium() {
                     <li className="genreCategory"><b>genres:</b></li>
                     {medium.genresVoted.map(genre => <li key={genre.id}><p><b>{genre.name}</b> | {genre.votes}</p> {" "}</li>)}
                   </ul>
+
+                  <hr className="hr-mobile-display-sm"/>
 
                   
                   <ul className="listGenreStyling">
@@ -192,7 +196,7 @@ export default function Medium() {
     if(reducers.user.id === 0) {
       return (
         <div className="individualStyling individualMediumStyling row warning-alert">
-          Need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.
+          <FontAwesomeIcon className="navbar-hamburger" icon={faExclamationCircle}/> You'll need to <a href="./user/login">sign in</a> to vote for medium genres and subgenres.
         </div>
       )
     } else {
@@ -220,9 +224,9 @@ export default function Medium() {
           mediums.map((medium) => {
 
             return (
-              <div key={medium.id} className="individualStyling row">
+              <div key={medium.id} className="individualStyling row medium-individual-styling">
                 <div className="column1">
-                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="Front Page Thumbnail" width="150"/>
+                  <img src={`./images/medium/${medium.id}/frontPageThumbnail.png`} alt="Front Page Thumbnail" className="mediums-image" width="150"/>
                 </div>
                 <div className="column2">
                   <h3><b><Link to={`/medium?id=${medium.id}`}>{capitalizeFirstLetter(medium.title)}</Link></b></h3>                
