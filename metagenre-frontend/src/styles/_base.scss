@@ -194,7 +194,7 @@ a:hover {
 .login-container .user-login-icon {
   border-radius: 8px 0 0 8px;
   width: 12%;
-  padding: .45em 4% .1em 4%;
+  padding: .45em 3% .1em 3%;
   margin: 0% 2%;
   margin-right: 0%;
   font-size: 1em;
@@ -205,10 +205,10 @@ a:hover {
 }
 
 .login-container span {
-  color: #fff;
+  background: $black;
+  color: $white;
   width: 100px;
 }
-
 
 .login-container .user-login-icon .FontAwesomeIcon,
 .login-container .password-view-toggle .FontAwesomeIcon {
