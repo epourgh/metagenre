@@ -144,6 +144,11 @@ a:hover {
   padding: 5%;
 }
 
+.loginBodyContentStyling {
+  padding: 5% 0;
+}
+
+
 .single-content-container {
   border: 1px solid #ccc;
   padding: 10px
@@ -617,15 +622,17 @@ input::placeholder {
   z-index: 10000;
 }
 
+button.oneTimeEmailCode,
+button.securityQuestionInput {
+  background: $black;
+  color: $white;
+
+}
+
 @media screen and (max-width: 500px) {
   .item {
     min-height: 400px;
     min-width: 300px;
     margin: 2em .5em;
   }
-}
-
-.oneTimeEmailCode,
-.securityQuestionInput {
-  background: $white
 }

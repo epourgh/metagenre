@@ -115,80 +115,84 @@ export default function Register() {
   }
 
   return (
-    <div className="login-container">
-        
-        <div className="login-title">
-            <h2>Register</h2>
+    <div className="loginBodyContentStyling">
+        <div className="login-container">
+
+            
+            
+            <div className="login-title">
+                <h2>Register</h2>
+            </div>
+
+
+            <input value={usernameObject.username} 
+                placeholder={"Username*"}
+                className="full-rounded-input"
+                onChange={e => setUsernameObject({ ...usernameObject, username: e.target.value })} />
+
+            <input value={usernameObject.password}
+                placeholder={"Password*"}
+                className="register-password-input"
+                type={passwordVisibilityToggle1 || 'password'}
+                onChange={e => setUsernameObject({ ...usernameObject, password: e.target.value })} /><button onClick={() => togglePasswordVisibility1()} className="password-view-toggle"><FontAwesomeIcon className="FontAwesomeIcon" icon={faEye}/></button>
+
+
+            <input value={usernameObject.password2} 
+                placeholder={"Retype Password*"}
+                className="register-password-input"
+                type={passwordVisibilityToggle2 || 'password'}
+                onChange={e => setUsernameObject({ ...usernameObject, password2: e.target.value })} /><button onClick={() => togglePasswordVisibility2()} className="password-view-toggle"><FontAwesomeIcon className="FontAwesomeIcon" icon={faEye}/></button>
+
+            <input value={usernameObject.displayName} 
+                placeholder={"Display Name*"}
+                className="full-rounded-input"
+                onChange={e => setUsernameObject({ ...usernameObject, displayName: e.target.value })} />           
+
+            <input value={usernameObject.email} 
+                placeholder={"Email*"}
+                className="full-rounded-input"
+                onChange={e => setUsernameObject({ ...usernameObject, email: e.target.value })} />   
+
+            <hr className="login-container-hr"/>
+            <div className="security-question-div">
+                <label>Security Queston 1: </label>
+            </div>
+            <div className="security-question-div">
+                <select required
+                        onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, id: e.target.value} })}>
+                    {
+                        questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
+                    }
+                </select>
+            </div>
+                        
+
+            <input value={usernameObject.question1.answer} 
+                placeholder={"Answer to Security Question 1*"}
+                className="full-rounded-input"
+                onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, answer: e.target.value} })} />
+            
+            <hr className="login-container-hr"/>
+            <div className="security-question-div">
+                <label>Security Queston 2: </label>
+            </div>
+            <div className="security-question-div">
+                <select required
+                        onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, id: e.target.value} })}>
+                    {
+                        questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
+                    }
+                </select>
+            </div>
+            
+            <input value={usernameObject.question2.answer} 
+                placeholder={"Answer to Security Question 1*"}
+                className="full-rounded-input"
+                onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, answer: e.target.value} })} />
+
+            <hr className="login-container-hr"/>
+            <button onClick={() => signUp()}>Sign Up</button>
         </div>
-
-
-        <input value={usernameObject.username} 
-            placeholder={"Username*"}
-            className="full-rounded-input"
-            onChange={e => setUsernameObject({ ...usernameObject, username: e.target.value })} />
-
-        <input value={usernameObject.password}
-            placeholder={"Password*"}
-            className="register-password-input"
-            type={passwordVisibilityToggle1 || 'password'}
-            onChange={e => setUsernameObject({ ...usernameObject, password: e.target.value })} /><button onClick={() => togglePasswordVisibility1()} className="password-view-toggle"><FontAwesomeIcon className="FontAwesomeIcon" icon={faEye}/></button>
-
-
-        <input value={usernameObject.password2} 
-            placeholder={"Retype Password*"}
-            className="register-password-input"
-            type={passwordVisibilityToggle2 || 'password'}
-            onChange={e => setUsernameObject({ ...usernameObject, password2: e.target.value })} /><button onClick={() => togglePasswordVisibility2()} className="password-view-toggle"><FontAwesomeIcon className="FontAwesomeIcon" icon={faEye}/></button>
-
-        <input value={usernameObject.displayName} 
-            placeholder={"Display Name*"}
-            className="full-rounded-input"
-            onChange={e => setUsernameObject({ ...usernameObject, displayName: e.target.value })} />           
-
-        <input value={usernameObject.email} 
-            placeholder={"Email*"}
-            className="full-rounded-input"
-            onChange={e => setUsernameObject({ ...usernameObject, email: e.target.value })} />   
-
-        <hr className="login-container-hr"/>
-        <div className="security-question-div">
-            <label>Security Queston 1: </label>
-        </div>
-        <div className="security-question-div">
-            <select required
-                    onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, id: e.target.value} })}>
-                {
-                    questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
-                }
-            </select>
-        </div>
-                    
-
-        <input value={usernameObject.question1.answer} 
-            placeholder={"Answer to Security Question 1*"}
-            className="full-rounded-input"
-            onChange={e => setUsernameObject({ ...usernameObject, question1: {...usernameObject.question1, answer: e.target.value} })} />
-        
-        <hr className="login-container-hr"/>
-        <div className="security-question-div">
-            <label>Security Queston 2: </label>
-        </div>
-        <div className="security-question-div">
-            <select required
-                    onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, id: e.target.value} })}>
-                {
-                    questions.map(question => <option key={question.id} value={question.id}>{question.content}</option>)
-                }
-            </select>
-        </div>
-        
-        <input value={usernameObject.question2.answer} 
-            placeholder={"Answer to Security Question 1*"}
-            className="full-rounded-input"
-            onChange={e => setUsernameObject({ ...usernameObject, question2: {...usernameObject.question1, answer: e.target.value} })} />
-
-        <hr className="login-container-hr"/>
-        <button onClick={() => signUp()}>Sign Up</button>
     </div>
   )
 }
