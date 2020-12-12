@@ -41,21 +41,19 @@ export default function ForgotIndex() {
   }
 
   return (
-    <div className="bodyContentStyling">
-        <div className="single-content-container">
-          <ul>
-            <li className="navbar-item">
-                <label>Type in your code: </label>
-                <input value={code} 
-                    onChange={e => setCode(e.target.value)} />
-                <br />
-            </li>
-            <li className="navbar-item">
-                <br />
-                <button onClick={() => submission()}>Submit</button>
-            </li>
-          </ul>
-      </div>
+    <div className="login-container">
+        <ul>
+          <li className="navbar-item">
+              <label>Type in your code: </label>
+              <input value={code} 
+                  onChange={e => setCode(e.target.value)} />
+              <br />
+          </li>
+          <li className="navbar-item">
+              <br />
+              <button onClick={() => submission()}>Submit</button>
+          </li>
+        </ul>
     </div>
   );
 }

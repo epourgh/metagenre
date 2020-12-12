@@ -66,18 +66,16 @@ export default function ForgotIndex() {
         }
 
     return (
-        <div className="bodyContentStyling">
-            <div className="single-content-container">
+        <div className="login-container">
 
-                <h2>Change Password</h2>
-                <br />
+            <h2>Change Password</h2>
+            <br />
 
-                <RenderQuestions />
+            <RenderQuestions />
 
-                <br />
-                <button onClick={() => submitQuestions()}>Submit</button>
-                
-            </div>
+            <br />
+            <button onClick={() => submitQuestions()}>Submit</button>
+            
         </div>
     );
 }

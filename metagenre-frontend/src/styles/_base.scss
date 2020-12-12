@@ -257,21 +257,24 @@ a:hover {
   text-align: center;
 }
 
-.login-container .security-question-div {
+.login-container .security-question-div,
+.login-container .credentials-retrival-div {
   text-align: center;
   margin: 5%;
 }
 
-.login-container .security-question-div label {
+.login-container .security-question-div label,
+.login-container .credentials-retrival-div label {
   text-transform: uppercase;
   font-size: 1.2em;
 }
 
-.security-question-div {
+.security-question-div, .credentials-retrival-div {
   margin: 2%
 }
 
-.security-question-div select {
+.security-question-div select,
+.credentials-retrival-div select {
   width: 100%;
   font-size: 1.2em;
   border-radius: 8px;

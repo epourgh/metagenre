@@ -71,26 +71,24 @@ export default function ForgotIndex() {
   }
 
   return (
-    <div className="bodyContentStyling">
-        <div className="single-content-container">
+    <div className="login-container">
 
-            <h2>Change Password</h2>
-            <br />
+        <h2>Change Password</h2>
+        <br />
 
-            <label>Password: </label>
-            <input value={passwordObject.password} 
-                onChange={e => setPasswordObject({ ...passwordObject, password: e.target.value })} />
-            <br />
+        <label>Password: </label>
+        <input value={passwordObject.password} 
+            onChange={e => setPasswordObject({ ...passwordObject, password: e.target.value })} />
+        <br />
 
-            <label>Retype Password: </label>
-            <input value={passwordObject.password2} 
-                onChange={e => setPasswordObject({ ...passwordObject, password2: e.target.value })} />
-            <br />
+        <label>Retype Password: </label>
+        <input value={passwordObject.password2} 
+            onChange={e => setPasswordObject({ ...passwordObject, password2: e.target.value })} />
+        <br />
 
-          <br />
-          <button onClick={() => changePassword()}>Submit</button>
-          
-      </div>
+        <br />
+        <button onClick={() => changePassword()}>Submit</button>
+        
     </div>
   );
 }

@@ -28,28 +28,30 @@ export default function ForgotIndex() {
   }
 
   return (
-    <div className="bodyContentStyling">
-        <div className="single-content-container">
-          <ul>
-            <li className="navbar-item">
-              <label>Password Retrieval Method: </label>
-              <button className={`${type}Input`} onClick={() => typeHandler('securityQuestion')}>Security Questions</button>{" "}
-              <button className={`${type}Code`}  onClick={() => typeHandler('oneTimeEmail')}>Email One time Code</button>
-            </li> 
-            <br/><br/>
-            <li className="navbar-item">
-                <label>Type in your username or email: </label>
-                <input value={usernameOrEmail} 
-                    onChange={e => setUsernameOrEmail(e.target.value)} />
-                <br />
-            </li>
-            <br/><br/>
-            <li className="navbar-item">
-                <button onClick={() => retrieve()}>Continue</button>
-                <br />
-            </li>
-          </ul>
-      </div>
+    <div className="login-container">
+        <div className="login-title">
+          <h2>Retrieval</h2>
+        </div>
+        <ul>
+          <li className="navbar-item">
+            <div className="credentials-retrival-div">
+                <label>Password Retrieval Method: </label>
+            </div>
+            <button className={`${type}Input`} onClick={() => typeHandler('securityQuestion')}>Security Questions</button>{" "}
+            <div className="credentials-retrival-div">
+                <label>OR</label>
+            </div>
+            <button className={`${type}Code`}  onClick={() => typeHandler('oneTimeEmail')}>Email One time Code</button>
+          </li> 
+          <br/><br/>
+          <li className="navbar-item">
+              <input value={usernameOrEmail} 
+                  placeholder={"Type in username or email*"}
+                  onChange={e => setUsernameOrEmail(e.target.value)} />
+              <br />
+          </li>
+          <button onClick={() => retrieve()}>Continue</button>
+        </ul>
     </div>
   );
 }
