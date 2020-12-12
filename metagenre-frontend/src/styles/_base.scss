@@ -149,6 +149,82 @@ a:hover {
   padding: 10px
 }
 
+.login-container {
+  border: 1px solid #ccc;
+  margin: 0 35%;
+}
+
+.login-container input {
+  font-size: 1.5em;
+  box-sizing: border-box;
+  border-radius: 0;
+  margin: 2%;
+  width: 96%;
+}
+
+.login-container .password-input {
+  width: 72%;
+  margin: 0;
+}
+
+.login-container .user-input {
+  width: 84%;
+  margin-left: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.login-container button {
+  font-size: 1.2em;
+  padding: 5px;
+  margin: 2%;
+  width: 96%;
+}
+
+.login-container .user-login-icon {
+  border-radius: 8px 0 0 8px;
+  width: 12%;
+  padding: 0px;
+  margin: 0% 2%;
+  margin-right: 0%;
+  font-size: 1.5em;
+  background: $grey;
+  color: $black;
+  border: 1px solid $darkestGrey;
+  border-right: 1px solid $darkenGrey;
+}
+
+.login-container .password-view-toggle {
+  width: 12%;
+  padding: 0px;
+  margin: 0% 2%;
+  cursor: pointer;
+  margin-left: 0%;
+  font-size: 1.5em;
+  background: $grey;
+  color: $black;
+  border: 1px solid $darkestGrey;
+  border-radius: 0 8px 8px 0;
+  border-left: 1px solid $darkenGrey;
+}
+
+.login-container .password-view-toggle:hover {
+  color: $white;
+  background: $header-color-darken;
+  border: 1px solid $header-color-darken;
+}
+
+.login-options {
+  text-align: center;
+  font-size: .8em;
+  padding: 5px;
+}
+
+.login-title {
+  padding: 10px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .smallFont {
   font-size: 75%;
 }
@@ -283,6 +359,8 @@ input::placeholder {
   min-height: 80vh;
   margin-bottom: -50px;
 }
+
+
 
 .footer {
   margin-top: 5em;

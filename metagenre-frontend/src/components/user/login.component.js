@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext, DispatchContext } from '../../context/GlobalState';
 import { actionUser } from '../../context/actions/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
     
@@ -9,6 +11,7 @@ export default function Login() {
         username: '',
         password: ''
     });
+    const [passwordVisibilityToggle, setPasswordVisibilityToggle] = useState('password')
 
     const { dispatchMiddleware, dispatch } = useContext(DispatchContext);
     const {backendUrl, reducers} = useContext(GlobalContext);
@@ -65,20 +68,43 @@ export default function Login() {
         )
     }
 
+    function togglePasswordVisibility() {
+
+        const changeText = (typeof passwordVisibilityToggle==='undefined' || passwordVisibilityToggle==='password')?'text':'password';
+        console.log(changeText)
+        setPasswordVisibilityToggle(changeText);
+    }
+
     function notLoggedInNav() {
         return (
-            <div className="single-content-container">
-                <p>{ reducers.user.username }</p>
+                <div className="login-container">
 
-                <input value={username.username} 
-                       onChange={e => setUsername({ ...username, username: e.target.value })} />
-                <br />
-                <input value={username.password} 
-                        onChange={e => setUsername({ ...username, password: e.target.value })} />
-                <button onClick={() => signIn()}>Sign In</button>
-                <br />
-                <p><Link to="/user/register" className="nav-link">Sign Up</Link> | <Link to="/user/forgot" className="nav-link">Forgot Password</Link></p>
-            </div>
+                    <div className="login-title">
+                        <h2>Welcome</h2>
+                    </div>
+
+                    <button className="user-login-icon"><FontAwesomeIcon icon={faUser}/></button><input value={username.username}
+                           className="user-input"
+                           placeholder={"Username"}
+                           onChange={e => setUsername({ ...username, username: e.target.value })} />
+                    
+                    <br />
+
+                    <button className="user-login-icon"><FontAwesomeIcon icon={faKey}/></button><input value={username.password} 
+                           className="password-input"
+                           type={passwordVisibilityToggle || 'password'}
+                           placeholder={"Password"}
+                           onChange={e => setUsername({ ...username, password: e.target.value })} /><button onClick={() => togglePasswordVisibility()} className="password-view-toggle"><FontAwesomeIcon icon={faEye}/></button>
+
+                    <button onClick={() => signIn()}>Sign In</button>
+
+                    <br />
+
+                    <div className="login-options">
+                        <p><Link to="/user/register" className="nav-link">Sign Up</Link> | <Link to="/user/forgot" className="nav-link">Forgot Password</Link></p>
+                    </div>
+
+                </div>
         )
     }
 
