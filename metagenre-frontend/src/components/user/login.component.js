@@ -83,18 +83,18 @@ export default function Login() {
                         <h2>Welcome</h2>
                     </div>
 
-                    <button className="user-login-icon"><FontAwesomeIcon icon={faUser}/></button><input value={username.username}
+                    <span className="user-login-icon"><FontAwesomeIcon className="FontAwesomeIcon" icon={faUser}/></span><input value={username.username}
                            className="user-input"
                            placeholder={"Username"}
                            onChange={e => setUsername({ ...username, username: e.target.value })} />
                     
                     <br />
 
-                    <button className="user-login-icon"><FontAwesomeIcon icon={faKey}/></button><input value={username.password} 
+                    <span className="user-login-icon"><FontAwesomeIcon className="FontAwesomeIcon" icon={faKey}/></span><input value={username.password} 
                            className="password-input"
                            type={passwordVisibilityToggle || 'password'}
                            placeholder={"Password"}
-                           onChange={e => setUsername({ ...username, password: e.target.value })} /><button onClick={() => togglePasswordVisibility()} className="password-view-toggle"><FontAwesomeIcon icon={faEye}/></button>
+                           onChange={e => setUsername({ ...username, password: e.target.value })} /><button onClick={() => togglePasswordVisibility()} className="password-view-toggle"><FontAwesomeIcon className="FontAwesomeIcon" icon={faEye}/></button>
 
                     <button onClick={() => signIn()}>Sign In</button>
 
