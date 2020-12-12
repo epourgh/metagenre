@@ -154,6 +154,11 @@ a:hover {
   margin: 0 35%;
 }
 
+.login-container-hr {
+  border: 0;
+  border-top: 1px solid $grey;
+}
+
 .login-container input {
   font-size: 1.5em;
   box-sizing: border-box;
@@ -165,6 +170,16 @@ a:hover {
 .login-container .password-input {
   width: 72%;
   margin: 0;
+}
+
+.login-container .register-password-input {
+  width: 84%;
+  margin-right: 0;
+  border-radius: 8px 0 0 8px;
+}
+
+.login-container .full-rounded-input {
+  border-radius: 8px;
 }
 
 .login-container .user-input {
@@ -245,6 +260,26 @@ a:hover {
   padding: 10px;
   text-transform: uppercase;
   text-align: center;
+}
+
+.login-container .security-question-div {
+  text-align: center;
+  margin: 5%;
+}
+
+.login-container .security-question-div label {
+  text-transform: uppercase;
+  font-size: 1.2em;
+}
+
+.security-question-div {
+  margin: 2%
+}
+
+.security-question-div select {
+  width: 100%;
+  font-size: 1.2em;
+  border-radius: 8px;
 }
 
 .smallFont {
