@@ -217,7 +217,6 @@
     .login-container, .profile-container {
         border: 1px solid #ccc;
         margin: 0 2%;
-        
         overflow: wrap;
     }
 
@@ -225,6 +224,13 @@
         border: 0;
         border-top: 1px solid $grey;
         width: 96%;
+    }
+
+    .nuetral-alert {
+        background: $grey;
+        border: 1px solid $darkestGrey;
+        padding: 5% 0;
+        margin: 2% 0;
     }
 
 }

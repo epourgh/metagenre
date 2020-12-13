@@ -547,7 +547,8 @@ input::placeholder {
 }
 
 .nuetral-alert {
-  background: $neutral-alert;
+  background: $grey;
+  border: 1px solid $darkestGrey;
   cursor: crosshair
 }
 

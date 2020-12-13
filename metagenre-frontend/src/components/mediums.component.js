@@ -207,7 +207,9 @@ export default function Medium() {
     } else {
       return (
         <div className="individualStyling individualMediumStyling row nuetral-alert">
-          Check out individual medium pages to vote for the medium.
+          <div className="padding-mobile">
+            Check out individual medium pages to vote for the medium.
+          </div>
         </div>
       )
     }
