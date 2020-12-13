@@ -105,19 +105,25 @@ export default function Profile() {
 
 
     return (
-        <>
-            <RequireAuthentication />
-            <div className="bodyContentStyling">
-            <div className="individualMediumStyling">
-                <div className="row">
-                        <RenderUserDisplay />
-                        <br /> 
-                        <h3>Recent genre tags:</h3>
-                        <RenderUserMediumsGenres />
+        <div className="userBodyContentStyling">
+            <div className="profile-container">
+                <RequireAuthentication />
+                <div className="bodyContentStyling">
+                <div className="individualMediumStyling">
+                    <div className="row">
+                            <RenderUserDisplay />
+                            <br /> 
+                            <div className="profile-div">
+                                <label>Recent genre tags: </label>
+                            </div>
+                            <div className="profile-recent-styling">
+                                <RenderUserMediumsGenres />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

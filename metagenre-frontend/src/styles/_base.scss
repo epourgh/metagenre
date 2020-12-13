@@ -17,6 +17,8 @@ a:hover {
 .navbar, .navbarShow {
   padding: 10px 5px;
   border-bottom: $border-style;
+  border-top: 1px solid $darkestGrey;
+  background: $black;
 }
 
 .navbar-space {
@@ -26,6 +28,18 @@ a:hover {
 .navbar-item {
   display: inline-block;
   padding: 0 1%;
+}
+
+.navbar-item a,
+.navbar-item span{
+  color: $black;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: $white;
+}
+
+.navbar-item span:hover {
+  background: $bg-color;
 }
 
 .search-container {
@@ -144,7 +158,7 @@ a:hover {
   padding: 5%;
 }
 
-.loginBodyContentStyling {
+.loginBodyContentStyling, .userBodyContentStyling {
   padding: 5% 0;
 }
 
@@ -157,6 +171,11 @@ a:hover {
 .login-container {
   border: 1px solid #ccc;
   margin: 0 35%;
+}
+
+.profile-container {
+  border: 1px solid #ccc;
+  margin: 0 20%;
 }
 
 .inner-login-content {
@@ -267,6 +286,7 @@ a:hover {
 }
 
 .login-container .security-question-div,
+.login-container .profile-div,
 .login-container .credentials-retrival-div {
   text-align: center;
   margin: 5%;
@@ -276,6 +296,10 @@ a:hover {
 .login-container .credentials-retrival-div label {
   text-transform: uppercase;
   font-size: 1.2em;
+}
+
+.profile-recent-styling {
+  border: 1px solid $grey;
 }
 
 .security-question-div, .credentials-retrival-div {

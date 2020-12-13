@@ -130,11 +130,12 @@
         padding: 10px 5px;
     }
 
-    .navbarShow a {
+    .navbarShow a,
+    .navbarShow span li span {
         color: $white;
         letter-spacing: 0.3em;
         text-transform: uppercase;
-        font-size:1.5em;
+        font-size: 1.5em;
     }
 
     .row, .column {
@@ -213,9 +214,17 @@
         width: 70vw
     }
 
-    .login-container {
+    .login-container, .profile-container {
         border: 1px solid #ccc;
         margin: 0 2%;
+        
+        overflow: wrap;
+    }
+
+    .profile-recent-styling {
+        border: 0;
+        border-top: 1px solid $grey;
+        width: 96%;
     }
 
 }
