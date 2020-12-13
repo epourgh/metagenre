@@ -61,10 +61,22 @@ export default function Login() {
 
     function userNav() {
         return (
-            <p>
-                <b>user id:</b> { reducers.user.id }, <b>display name:</b> { reducers.user.display }, <b>username:</b> { reducers.user.username }
+            <div className="login-container">
+                <div className="login-title">
+                    <h2>You're logged in:</h2>
+                </div>
+                <hr className="login-container-hr" />
+                <div className="inner-login-content">
+                    <p><b>User ID:</b> { reducers.user.id }</p>
+                    <p><b>Display Name:</b> { reducers.user.display }</p>
+                    <p><b>Username:</b> { reducers.user.username }</p>
+                    <br />
+                    <p><Link to="/user/profile">Head to profile</Link></p>
+                    <p><Link to="/">Return to landing page</Link></p>
+                </div>
+                <hr className="login-container-hr" />
                 <p><button onClick={() => signOut()}>Sign Out</button></p>
-            </p>
+            </div>
         )
     }
 
