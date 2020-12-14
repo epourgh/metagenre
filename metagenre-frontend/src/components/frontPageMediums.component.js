@@ -9,7 +9,7 @@ export default function FrontPageMediumsDisplay({frontPageMediums, clickedLink})
                         <div className="item gallery" key={frontPageMedium.id}>
                             <div className="imageContainer">
                                 {/* target="_blank"  */}
-                                <a href={`/medium?id=${frontPageMedium.id}`}>
+                                <a href={`/medium?id=${frontPageMedium.id}`} onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
                                     <img src={`./images/medium/${frontPageMedium.id}/frontPageThumbnail.png`} alt="front page thumbnail" />
                                 </a>
                                 <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
