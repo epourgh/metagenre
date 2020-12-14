@@ -1,5 +1,4 @@
 ```sql
-
 CREATE TABLE `metagenre`.`creators` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
@@ -19,6 +18,238 @@ CREATE TABLE `metagenre`.`mediums` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
+CREATE TABLE `metagenre`.`mediumsCreators` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `creatorId` INT(11) NULL DEFAULT NULL,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsDetails` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `shortDesc` VARCHAR(100) NULL DEFAULT NULL,
+  `description` VARCHAR(500) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
+CREATE TABLE `metagenre`.`mediumsExternalLinks` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `amazon` VARCHAR(100) NULL DEFAULT NULL,
+  `goodreads` VARCHAR(100) NULL DEFAULT NULL,
+  `metacritic` VARCHAR(100) NULL DEFAULT NULL,
+  `opencritic` VARCHAR(100) NULL DEFAULT NULL,
+  `rateyourmusic` VARCHAR(100) NULL DEFAULT NULL,
+  `imdb` VARCHAR(100) NULL DEFAULT NULL,
+  `youtube` VARCHAR(100) NULL DEFAULT NULL,
+  `wiki` VARCHAR(100) NULL DEFAULT NULL,
+  `howlongtobeat` VARCHAR(100) NULL DEFAULT NULL,
+  `fandomPrefix` VARCHAR(100) NULL DEFAULT NULL,
+  `fandomSuffix` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsFrontPage` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsGenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  `votes` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsPictures` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `numberOfGalleryPics` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsReleases` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `publisherId` INT(11) NULL DEFAULT NULL,
+  `platformId1` INT(11) NULL DEFAULT NULL,
+  `platformId2` INT(11) NULL DEFAULT NULL,
+  `platformId3` INT(11) NULL DEFAULT NULL,
+  `platformId4` INT(11) NULL DEFAULT NULL,
+  `platformId5` INT(11) NULL DEFAULT NULL,
+  `regionId1` INT(11) NULL DEFAULT NULL,
+  `regionId2` INT(11) NULL DEFAULT NULL,
+  `regionId3` INT(11) NULL DEFAULT NULL,
+  `regionId4` INT(11) NULL DEFAULT NULL,
+  `regionId5` INT(11) NULL DEFAULT NULL,
+  `year` INT(11) NULL DEFAULT NULL,
+  `month` INT(11) NULL DEFAULT NULL,
+  `day` INT(11) NULL DEFAULT NULL,
+  `unabridged` TINYINT(4) NULL DEFAULT NULL,
+  `remaster` TINYINT(4) NULL DEFAULT NULL,
+  `remake` TINYINT(4) NULL DEFAULT NULL,
+  `directorsCut` TINYINT(4) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsSeries` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `seriesId` INT(11) NULL DEFAULT NULL,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`mediumsSubgenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `votes` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`nicknames` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `name` VARCHAR(65) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`platforms` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`publishers` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`regions` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  `acronym` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`relationships` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  `connection` TINYINT(4) NULL DEFAULT NULL,
+  `votes` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`relationshipsTotalTally` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `votes` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`securityQuestions` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `content` VARCHAR(120) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`series` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`similar` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `firstChoice` INT(11) NULL DEFAULT NULL,
+  `firstChoicePercentage` INT(11) NULL DEFAULT NULL,
+  `secondChoice` INT(11) NULL DEFAULT NULL,
+  `secondChoicePercentage` INT(11) NULL DEFAULT NULL,
+  `thirdChoice` VARCHAR(45) NULL DEFAULT NULL,
+  `thirdChoicePercentage` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`subgenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userBooleanMediumsGenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `date` DATETIME NULL DEFAULT NULL,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  `voted` TINYINT(4) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userBooleanMediumsSubgenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `date` DATETIME NULL DEFAULT NULL,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `voted` TINYINT(4) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userBooleanRelationships` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `date` DATETIME NULL DEFAULT NULL,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  `voted` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userfavGenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `genreId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userFavMediumTitles` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `mediumId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+CREATE TABLE `metagenre`.`userfavSubgenres` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `userId` INT(11) NULL DEFAULT NULL,
+  `subgenreId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+ 
+CREATE TABLE `metagenre`.`usernames` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(20) NULL DEFAULT NULL,
+  `password` VARCHAR(120) NULL DEFAULT NULL,
+  `displayName` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(60) NULL DEFAULT NULL,
+  `bio` VARCHAR(45) NULL DEFAULT NULL,
+  `securityQuestion1id` VARCHAR(45) NULL DEFAULT NULL,
+  `securityQuestion1answer` VARCHAR(45) NULL DEFAULT NULL,
+  `securityQuestion2id` VARCHAR(45) NULL DEFAULT NULL,
+  `securityQuestion2answer` VARCHAR(45) NULL DEFAULT NULL,
+  `emailedChecksum` VARCHAR(45) NULL DEFAULT NULL,
+  `verified` TINYINT(1) NULL DEFAULT NULL,
+  `requestPassword` TINYINT(1) NULL DEFAULT NULL,
+  `allowPasswordReset` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 ```
