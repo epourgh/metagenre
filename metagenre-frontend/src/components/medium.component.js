@@ -41,13 +41,16 @@ export default function Medium() {
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     useEffect(() => {
-        dispatchRequests.mediumsDetails();
-        dispatchRequests.platforms();
-        dispatchRequests.regions();
-        dispatchRequests.similarMediums();
-        dispatchRequests.extLinks();
-        dispatchRequests.creatorSeries();
+        dispatchRequestsCallback();
     }, [])
+
+    useEffect(() => {
+        dispatchRequestsCallback();
+        if (typeof userId !== "undefined") {
+            dispatchRequests.mediumsGenresMultiple('mediumsGenres', 'userBooleanMediumsGenres');
+            dispatchRequests.mediumsSubgenresMultiple('mediumsSubgenres','userBooleanMediumsSubgenres');
+        }
+    }, [id])
 
     useEffect(() => {
         if (typeof userId !== "undefined") {
@@ -77,6 +80,15 @@ export default function Medium() {
     useEffect(() => {  
         checkMediumsGenres();
     })
+
+    const dispatchRequestsCallback = () => {
+        dispatchRequests.mediumsDetails();
+        dispatchRequests.platforms();
+        dispatchRequests.regions();
+        dispatchRequests.similarMediums();
+        dispatchRequests.extLinks();
+        dispatchRequests.creatorSeries();
+    }
 
     const dispatchRequests = {
         mediumsDetails: () => dispatchMiddleware(dispatch)(actionMedium.actionMediumDetails({url: `${backendUrl}/mediumsDetails/${id}`})),
