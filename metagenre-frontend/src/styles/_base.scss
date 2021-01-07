@@ -383,7 +383,7 @@ input::placeholder {
 .frontPageBodyContentStyling .gallery,
 .gallery {
   border: $border-style;
-  min-height: 425px;
+  min-height: 375px;
 }
 
 .frontPageBodyContentStyling .gallery:hover {
@@ -396,7 +396,7 @@ input::placeholder {
 }
 
 .frontPageBodyContentStyling .gallery p {
-  font-size: .75em;
+  font-size: .2em;
 }
 
 .selectedImage {
@@ -637,13 +637,17 @@ input::placeholder {
   color: black;
   background: #fff;
   border: grey 1px solid;
-  max-height: 400px;
-  max-width: 300px;
-  margin: 2em 1em;
+  max-height: 300px;
+  max-width: 225px;
+  margin: 2em .25em;
 }
 
 .item .imageContainer img {
   width: 100%;
+}
+
+.front-link {
+  font-size: 1em;
 }
 
 .front-link a {

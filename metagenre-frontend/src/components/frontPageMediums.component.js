@@ -14,10 +14,10 @@ export default function FrontPageMediumsDisplay({frontPageMediums, clickedLink})
                                 </a>
                                 <div className={`imageContainerTopLeft ${frontPageMedium.mediumType}ImageContainerTopLeft`}><b>{frontPageMedium.mediumType}</b></div>
                             </div>
+                            <br />
                             <h2 className="front-link" onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
                                 {frontPageMedium.title}
                             </h2>
-                            <p>{frontPageMedium.shortDesc}</p>
                             <br />
                             <ul className="listGenreStyling">
                                 {
