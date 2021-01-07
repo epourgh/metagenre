@@ -5,13 +5,14 @@ const { route } = require('./relationships');
 
 router.get('/mediumsFrontPage/', (req, res) => {
     const SELECT_MEDIUMSFRONTPAGE_QUERY = `
-    select m.id, m.title, m.mediumType, mg.id as mediumGenreId, g.name, mg.votes, md.shortDesc, mel.amazon, mel.goodreads, mel.metacritic, mel.opencritic, mel.rateyourmusic, mel.youtube, mel.wiki, mel.howlongtobeat, mel.fandomPrefix, mel.fandomSuffix
-    from metagenre.mediumsGenres as mg, metagenre.genres as g, metagenre.mediums as m, metagenre.mediumsFrontPage as mfp, metagenre.mediumsDetails as md, metagenre.mediumsExternalLinks as mel
-    where(select count( * ) from metagenre.mediumsGenres as mg2 where mg2.mediumId = mg.mediumId and mg2.votes >= mg.votes) <= 2
-    AND mg.genreId = g.id AND mg.mediumId = m.id
-    AND mfp.mediumId = m.id
-    AND md.mediumId = m.id
-    AND mel.mediumId = m.id;
+        SELECT concat(m.title, ' - ', (SELECT count(  DISTINCT ( mg2.votes ) ) FROM metagenre.mediumsGenres AS mg2 WHERE mg2.mediumId = mg.mediumId AND mg2.votes >= mg.votes)) as rank, m.id, m.title, m.mediumType, mg.id as mediumGenreId, g.name, mg.votes, md.shortDesc, mel.amazon, mel.goodreads, mel.metacritic, mel.opencritic, mel.rateyourmusic, mel.youtube, mel.wiki, mel.howlongtobeat, mel.fandomPrefix, mel.fandomSuffix
+        FROM metagenre.mediumsGenres AS mg, metagenre.genres AS g, metagenre.mediums AS m, metagenre.mediumsFrontPage AS mfp, metagenre.mediumsDetails AS md, metagenre.mediumsExternalLinks AS mel
+        WHERE(SELECT count(  DISTINCT ( mg2.votes ) ) FROM metagenre.mediumsGenres AS mg2 WHERE mg2.mediumId = mg.mediumId AND mg2.votes >= mg.votes) <= 2
+        AND mg.genreId = g.id AND mg.mediumId = m.id
+        AND mfp.mediumId = m.id
+        AND md.mediumId = m.id
+        AND mel.mediumId = m.id
+        ORDER BY rank;
     `;
     connection.query(SELECT_MEDIUMSFRONTPAGE_QUERY, (err, results) => {
         if (err) {

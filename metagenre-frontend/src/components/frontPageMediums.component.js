@@ -2,11 +2,11 @@ import React from 'react';
 
 export default function FrontPageMediumsDisplay({frontPageMediums, clickedLink}) {
     return (
-        <div>
+        <ul>
             {
                 frontPageMediums.map(frontPageMedium => {
                     return(
-                        <div className="item gallery" key={frontPageMedium.id}>
+                        <li className="item gallery" key={frontPageMedium.id}>
                             <div className="imageContainer">
                                 {/* target="_blank"  */}
                                 <a href={`/medium?id=${frontPageMedium.id}`} onMouseDown={(e) => clickedLink(e, frontPageMedium.id)}>
@@ -26,10 +26,10 @@ export default function FrontPageMediumsDisplay({frontPageMediums, clickedLink})
                                     })
                                 }
                             </ul>
-                        </div>
+                        </li>
                     )
                 })
             }
-        </div>
+        </ul>
     )
 } 

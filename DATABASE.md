@@ -360,7 +360,7 @@ INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) V
 INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('15', '5', '3', '3');
 INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('16', '7', '1', '4');
 INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('17', '15', '1', '3');
-INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('18', '2', '18', '2');
+INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('18', '2', '5', '2');
 
 INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('1', '1', '0');
 INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('2', '2', '4');

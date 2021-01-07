@@ -33,6 +33,7 @@ export default function RelationshipsIndex() {
         fetch(`${backendUrl}/mediumsFrontPage`)
             .then(response => response.json())
             .then(response => {
+                console.log(response)
                 if (response.data.length > 0) {
                     response.data.forEach(frontPageMediumContent => {
 
@@ -52,7 +53,7 @@ export default function RelationshipsIndex() {
                         holder.mediumGenreId = frontPageMediumContent.mediumGenreId;
                         holder.name = frontPageMediumContent.name;
                         holder.votes = frontPageMediumContent.votes;
-                        container[mediumsIdToString].genres.unshift(holder);
+                        container[mediumsIdToString].genres.push(holder);
                     })
 
                     let container2 = [];
