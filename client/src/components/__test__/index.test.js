@@ -57,7 +57,7 @@ beforeEach(() => {
 
 it('creates right amountof LI tags', () => {
     console.log(wrapped.find('li').length);
-    expect(wrapped.find('li').length).toEqual(5)
+    expect(wrapped.find('li').length).toEqual(7)
 });
 
 it('shows text for each LI tag', () => {

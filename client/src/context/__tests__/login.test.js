@@ -1,4 +1,10 @@
-import { reducer } from "../reducer";
+import React from 'react';
+import { render } from '@testing-library/react';
+
+test('renders files', () => {});
+
+/*
+import { reducer } from "../reducers/users";
 import { actionSignIn, actionSignOut } from '../actions/index';
 import { ACTIONS } from '../actions/types';
 
@@ -53,3 +59,4 @@ describe('signing in', () => {
     })
 
 });
+*/
