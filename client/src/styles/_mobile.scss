@@ -1,0 +1,236 @@
+@media only screen and (max-width: 720px) and (max-height: 850px) {
+
+    .body {
+        margin-top: 150px;
+    }
+
+    .bodyContentStyling {
+        padding: 0%;
+        margin: 0%;
+    }
+    
+    .individualStyling {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .medium-individual-styling {
+        padding: 10px 0;
+        border: 1px solid $grey;
+    }
+
+    .individualMediumStyling {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+    }
+
+    .frontPageBodyContentStyling {
+        grid-template-columns: 100%;
+    }
+    
+    .frontPageBodyContentStyling .gallery {
+        width: 100%;
+    }
+
+    .gallery {
+        border: $border-style;
+        padding: 5%;
+    }
+
+    .frontPageBodyContentStyling .gallery img {
+        width: 75%;
+        border-radius: 100%;
+    }
+
+    .column-body, .column-sidebar {
+        width: 100%;
+    }
+
+    .genreVoteBody {
+        width: 100%;
+        padding: 3% 0;
+    }
+
+    .column-header-2 {
+        padding: 10px 0;
+        float: left;
+        width: 100%;
+    }
+
+    .selectedImage {
+        width: 100%;
+        height: auto;
+    }
+
+    .headerBannerStyling {
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    .navbar-hamburger {
+        font-size: 1.5em;
+        line-height: 1.5;
+        display: inline-block;
+        vertical-align: middle;
+        
+    }
+
+    .column-header-1 {
+        padding: 15px 15px 0 15px
+    }
+
+    .column-header-mobile {
+        float: left;
+        padding: 0 10px;
+    }
+    .column-header-mobile span svg {
+        font-size: 30px;
+    }
+
+    .banner-hr {
+        display: block;
+        border: 0;
+        border-top: 1px solid $grey;
+        margin: 10px 0;
+
+    }
+
+    .hr-mobile-display {
+        display: block;
+        border-top: 1px solid lighten($grey, 15%);
+        margin: 10% 0;
+    }
+
+    .hr-mobile-display-sm {
+          display: block;
+          border: 0;
+          border-top: 1px solid lighten($grey, 10%);
+          margin: 0 30%;
+    }
+
+    .inner-card-hr-mobile-display {
+        display: none;
+    }
+
+    .navbarShow {
+        display: block;
+        margin: 0;
+        padding: 0;
+        background: $black;
+        color: $white;
+    }
+
+    ul .navbar-item {
+        padding: 10px 5px;
+    }
+
+    .navbarShow a,
+    .navbarShow span li span {
+        color: $white;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-size: 1.5em;
+    }
+
+    .row, .column {
+        width: 100%;
+    }
+
+    .navbar-item {
+        display: block;
+        border-top: 1px solid $grey;
+        margin: 0;
+        padding: 0;
+    }
+
+    .search-container {
+        border-top: 0 solid $grey;
+    }
+
+    .paragraph-crunch {
+        padding: 5% 0%;
+    }
+
+    .column1, .column2 {
+        text-align: center
+    }
+
+    .column2 h3 b {
+        visibility: hidden;
+    }
+
+    .column2 h3 {
+        padding: 20px 0 5px 0; 
+
+    }
+
+    .column2 h3 b a {
+        color: $header-color;
+        text-decoration: underline;
+        font-size: 2em;
+        visibility: visible;
+        text-transform: uppercase;
+    }
+
+    .mediums-image {
+        border-radius: 300px !important;
+        width: 200px;
+        height: auto
+    }
+
+    .warning-alert { 
+        padding: 100px 0;
+        margin-bottom: 50px
+    }
+
+    .icon-centered-mobile {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .fontawesome-exclamation-circle {
+        font-size: 8em;
+    }
+
+    .padding-mobile {
+        padding: 0 15%
+    }
+    
+    .logo {
+        width: 35px
+    }
+
+    .navbar-brand {
+        font-size: 1.2em;
+    }
+
+    .banner-search-input {
+        width: 70vw
+    }
+
+    .login-container, .profile-container {
+        border: 1px solid #ccc;
+        margin: 0 2%;
+        overflow: wrap;
+    }
+
+    .profile-recent-styling {
+        border: 0;
+        border-top: 1px solid $grey;
+        width: 96%;
+    }
+
+    .nuetral-alert {
+        background: $grey;
+        border: 1px solid $darkestGrey;
+        padding: 5% 0;
+        margin: 2% 0;
+    }
+
+}

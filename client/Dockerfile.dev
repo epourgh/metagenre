@@ -1,0 +1,10 @@
+FROM node:alpine
+WORKDIR "/app"
+
+COPY ./package.json ./
+
+# Install yarn and other dependencies via apk
+RUN apk update && apk add python g++ make && rm -rf /var/cache/apk/* && npm install
+
+COPY . .
+CMD ["npm", "run", "start"]
