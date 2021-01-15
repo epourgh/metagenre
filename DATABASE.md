@@ -1,16 +1,15 @@
 ```sql
 
 -- table inserts
+CREATE TABLE `metagenre`.`genres` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 CREATE TABLE `metagenre`.`creators` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
-
-CREATE TABLE `metagenre`.`genres` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
@@ -266,6 +265,8 @@ INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('2', 'From Software');
 INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('3', 'Intelligent Systems');
 INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('4', 'Team Ninja');
 INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('5', 'Square Enix ');
+INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('6', 'J. K. Rowling');
+INSERT INTO `metagenre`.`creators` (`id`, `name`) VALUES ('7', 'Pixar');
 
 INSERT INTO `metagenre`.`genres` (`id`, `name`) VALUES ('1', 'fantasy');
 INSERT INTO `metagenre`.`genres` (`id`, `name`) VALUES ('2', 'slice of life');
@@ -292,12 +293,41 @@ INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('16', 'W
 INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('17', 'Oathbringer', 'book');
 INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('18', 'Rhythm of War', 'book');
 INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('19', 'Fire Emblem Awakening', 'game');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('20', 'Harry Potter and the Philosopher\'s Stone', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('21', 'Harry Potter and the Chamber of Secrets\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('22', 'Harry Potter and the Prisoner of Azkaban\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('23', 'Harry Potter and the Goblet of Fire\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('24', 'Harry Potter and the Order of the Phoenix\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('25', 'Harry Potter and the Half-Blood Prince\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('26', 'Harry Potter and the Deathly Hallows\n', 'book');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('27', 'Toy Story', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('28', 'Toy Story 2', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('29', 'Toy Story 3', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('30', 'Toy Story 4', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('31', 'Moonlight', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('32', 'Her', 'film');
+INSERT INTO `metagenre`.`mediums` (`id`, `title`, `mediumType`) VALUES ('33', 'Inside Out', 'film');
+
 
 INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('1', '1', '15');
 INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('2', '1', '16');
 INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('3', '1', '17');
 INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('4', '1', '18');
 INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('5', '3', '7');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('6', '3', '19');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('7', '6', '20');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('8', '6', '21');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('9', '6', '22');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('10', '6', '23');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('11', '6', '24');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('12', '6', '25');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('13', '6', '26');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('14', '7', '27');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('15', '7', '28');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('16', '7', '29');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('17', '7', '30');
+INSERT INTO `metagenre`.`mediumsCreators` (`id`, `creatorId`, `mediumId`) VALUES ('18', '7', '33');
+
 
 INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('1', '1', 'short desc', 'This is the long description.');
 INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('2', '2', 'short desc', 'This is the long description.');
@@ -318,6 +348,20 @@ INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `descri
 INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('17', '17', 'short desc', 'This is the long description.');
 INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('18', '18', 'short desc', 'This is the long description.');
 INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('19', '19', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('20', '20', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('21', '21', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('22', '22', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('23', '23', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('24', '24', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('25', '25', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('26', '26', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('27', '27', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('28', '28', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('29', '29', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('30', '30', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('31', '31', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('32', '32', 'short desc', 'This is the long description.');
+INSERT INTO `metagenre`.`mediumsDetails` (`id`, `mediumId`, `shortDesc`, `description`) VALUES ('33', '33', 'short desc', 'This is the long description.');
 
 INSERT INTO `metagenre`.`mediumsExternalLinks` (`id`, `mediumId`) VALUES ('1', '1');
 INSERT INTO `metagenre`.`mediumsExternalLinks` (`id`, `mediumId`) VALUES ('2', '2');
@@ -340,10 +384,11 @@ INSERT INTO `metagenre`.`mediumsExternalLinks` (`id`, `mediumId`) VALUES ('18', 
 
 INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('1', '1');
 INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('2', '2');
-INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('3', '15');
+INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('7', '3');
 INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('4', '5');
 INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('5', '7');
 INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('6', '8');
+INSERT INTO `metagenre`.`mediumsFrontPage` (`id`, `mediumId`) VALUES ('3', '15');
 
 INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('1', '1', '1', '24');
 INSERT INTO `metagenre`.`mediumsGenres` (`id`, `mediumId`, `genreId`, `votes`) VALUES ('2', '1', '2', '62');
@@ -380,27 +425,58 @@ INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPic
 INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('16', '16', '0');
 INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('17', '17', '0');
 INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('18', '18', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('19', '19', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('20', '20', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('21', '21', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('22', '22', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('23', '23', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('24', '24', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('25', '25', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('26', '26', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('27', '27', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('28', '28', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('29', '29', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('30', '30', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('31', '31', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('32', '32', '0');
+INSERT INTO `metagenre`.`mediumsPictures` (`id`, `mediumId`, `numberOfGalleryPics`) VALUES ('33', '33', '0');
 
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('1', '1');
+
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('1', '1', '2021', '12', '31');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `platformId1`, `platformId2`, `platformId3`, `year`, `month`, `day`) VALUES ('2', '2', '1', '2', '4', '2019', '3', '22');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('3', '3');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('3', '3', '2017', '8', '27');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('4', '4');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('5', '5');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('6', '6');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('7', '7');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('8', '8');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('9', '9');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('10', '10');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('11', '11');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('12', '12');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('13', '13');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('14', '14');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('5', '5', '2017', '10', '6');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('6', '6', '2019', '10', '5');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('7', '7', '2019', '6', '26');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('8', '8', '2021', '12', '31');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('9', '9', '2010', '9', '30');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('10', '10', '2017', '2', '7');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('11', '11', '1996', '3', '9');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('12', '12', '2016', '11', '29');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('13', '13', '1996', '2', '27');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('14', '14', '2020', '3', '12');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('15', '15', '2010', '8', '31');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('16', '16', '2014', '3', '4');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('17', '17', '2017', '11', '14');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('18', '18', '2020', '11', '17');
-INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`) VALUES ('19', '19');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('19', '19', '2012', '4', '19');
 INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `regionId1`, `regionId2`, `regionId3`, `regionId4`) VALUES ('20', '2', '1', '2', '3', '4');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('21', '20', '1997', '6', '26');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('22', '21', '1998', '7', '2');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('23', '22', '1999', '7', '8');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('24', '23', '2000', '7', '8');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('25', '24', '2003', '6', '21');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('26', '25', '2005', '7', '16');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('27', '26', '2007', '7', '21');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('28', '27', '1995', '11', '19');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('29', '28', '1999', '11', '13');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('30', '29', '2010', '6', '12');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('31', '30', '2019', '6', '11');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('32', '31', '2016', '9', '2');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('33', '32', '2013', '8', '17');
+INSERT INTO `metagenre`.`mediumsReleases` (`id`, `mediumId`, `year`, `month`, `day`) VALUES ('34', '33', '2015', '6', '19');
+
 
 INSERT INTO `metagenre`.`mediumsSeries` (`id`, `seriesId`, `mediumId`) VALUES ('1', '1', '15');
 INSERT INTO `metagenre`.`mediumsSeries` (`id`, `seriesId`, `mediumId`) VALUES ('2', '1', '16');
@@ -490,6 +566,8 @@ INSERT INTO `metagenre`.`securityQuestions` (`id`, `content`) VALUES ('3', 'What
 
 INSERT INTO `metagenre`.`series` (`id`, `name`) VALUES ('1', 'Stormlight Archives');
 INSERT INTO `metagenre`.`series` (`id`, `name`) VALUES ('2', 'Fire Emblem');
+INSERT INTO `metagenre`.`series` (`id`, `name`) VALUES ('3', 'Harry Potter');
+INSERT INTO `metagenre`.`series` (`id`, `name`) VALUES ('4', 'Toy Story');
 
 INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('1', '1', '2', '30', '3', '10', '8', '10');
 INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('2', '2', '1', '30', '3', '10', '8', '10');
@@ -509,7 +587,21 @@ INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoice
 INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('16', '16', '0', '0', '0', '0', '0', '0');
 INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('17', '17', '0', '0', '0', '0', '0', '0');
 INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('18', '18', '0', '0', '0', '0', '0', '0');
-INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`) VALUES ('19', '19', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`) VALUES ('19', '19', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('20', '20', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('21', '21', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('22', '22', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('24', '24', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('25', '25', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('26', '26', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('27', '27', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('28', '28', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('29', '29', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('30', '30', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('31', '31', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('32', '32', '0', '0', '0', '0', '0', '0');
+INSERT INTO `metagenre`.`similar` (`id`, `mediumId`, `firstChoice`, `firstChoicePercentage`, `secondChoice`, `secondChoicePercentage`, `thirdChoice`, `thirdChoicePercentage`) VALUES ('33', '33', '0', '0', '0', '0', '0', '0');
+
 
 INSERT INTO `metagenre`.`subgenres` (`id`, `name`) VALUES ('1', 'low fantasy');
 INSERT INTO `metagenre`.`subgenres` (`id`, `name`) VALUES ('2', 'high fantasy');

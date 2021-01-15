@@ -1,0 +1,34 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t epourgh/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true epourgh/react-test npm test
+
+after_success:
+  - docker build -t epourgh/meta-client ./client
+  - docker build -t epourgh/meta-nginx ./nginx
+  - docker build -t epourgh/meta-server ./server
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push epourgh/meta-client
+  - docker push epourgh/meta-nginx
+  - docker push epourgh/meta-server
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: 'us-east-1'
+#   app: 'multi-docker'
+#   env: 'MultiDocker-env'
+#   bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+#   bucket_path: 'docker-multi'
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
