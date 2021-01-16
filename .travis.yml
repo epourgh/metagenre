@@ -21,4 +21,14 @@ after_success:
   - docker push epourgh/meta-nginx
   - docker push epourgh/meta-server
 
-
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-2'
+  app: 'meta-docker'
+  env: 'MetaDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-2-012691451194'
+  bucket_path: 'docker-meta'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
