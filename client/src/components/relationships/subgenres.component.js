@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext, DispatchContext } from '../../context/GlobalState';
+import { actionRelationship } from '../../context/actions/index';
 
 function getWindowParam() {
     var url_string = window.location.href;
@@ -18,7 +19,11 @@ function capitalizeFirstLetter(string) {
 
 export default function RelationshipsSubgenres() {
     
-    const { backendUrl, reducers} = useContext(GlobalContext)
+    const [userId, setUserId] = useState(0);
+
+    const { dispatchMiddleware, dispatch } = useContext(DispatchContext);
+    const { backendUrl, reducers} = useContext(GlobalContext);
+
     const [id, title] = getWindowParam();
     const [genre] =  useState({
         id: id,
@@ -26,82 +31,45 @@ export default function RelationshipsSubgenres() {
     });
     const [subgenresFiltered, setSubgenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [fetchGenreSubgenres, setFetchGenreSubgenres] = useState({
-        picks: [], 
-        organization: []
-    });
+    const [fetchGenreSubgenres, setFetchGenreSubgenres] = useState([]);
     const [message, setMessage] = useState('Currently nothing to show.');
     const [genresSubgenres, setGenresSubgenres] = useState([]);
     const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
 
     useEffect(() => {
-        getGenreSubgenres()
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        dispatchRequestsCallback();
+    }, [])
 
     useEffect(() => {
-        getGenreSubgenres();
+
+        if (userId === 0 && typeof reducers.user.id !== "undefined") {
+            setUserId(reducers.user.id)
+        }
+
+        setGenresSubgenres((typeof reducers.relationship.genresSubgenres !== "undefined")?reducers.relationship.genresSubgenres:[]);
+        setUserPickedSubgenresLength((typeof reducers.relationship.userPickedSubgenresLength !== "undefined")?reducers.relationship.userPickedSubgenresLength:7);
+        setFetchGenreSubgenres((typeof reducers.relationship.fetchedSubgenresPicks !== "undefined")?reducers.relationship.fetchedSubgenresPicks:[]);
+        // console.log('---- INIT ---')
+        // getGenreSubgenres()
+    }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        console.log('---- VOTED ---')
+        // getGenreSubgenres();
+        dispatchRequestsCallback();
         searchHandler();
     }, [userPickedSubgenresLength]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
-        organizeGenreSubgenres()
-    }, [fetchGenreSubgenres]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const getGenreSubgenres = (() => {
-        Promise.all([
-        fetch(`${backendUrl}/userBooleanRelationships?userId=${reducers.user.id}&genreId=${genre.id}`),
-        fetch(`${backendUrl}/genreSubgenresDesc?genreId=${genre.id}`)
-        ])
-        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-        .then(([data1, data2]) => {
-            setFetchGenreSubgenres({
-                picks: data1.data, 
-                organization: data2.data
-            })
-        });
-    });
+    const dispatchRequestsCallback = () => {
+        dispatchRequests.pickedSubgenres();
+    }
 
-    const organizeGenreSubgenres = (() => {
-
-        const userPickedContainer = [];
-
-        if (fetchGenreSubgenres.picks.length > 0) {
-            fetchGenreSubgenres.picks.forEach(item => {
-                userPickedContainer.push(item.subgenreId);
-            })
+    const dispatchRequests = {
+        pickedSubgenres: () => {
+            dispatchMiddleware(dispatch)(actionRelationship.actionPickedSubgenres({url: [`${backendUrl}/userBooleanRelationships?userId=${userId}&genreId=${genre.id}`, `${backendUrl}/genreSubgenresDesc?genreId=${genre.id}`]}));
         }
-
-        const mediumsGenresContainer = [];
-
-        let found;
-        let userVoted;
-
-        fetchGenreSubgenres.organization.forEach(item => {
-
-            found = userPickedContainer.find(element => element === item.subgenreId);
-
-            console.log('FOUND')
-            console.log(found)
-            userVoted = (found !== undefined) ? 1 : 0;
-
-            let content = {
-                id: item.subgenreId, 
-                name: item.name,
-                votes: item.votes,
-                voted: userVoted,
-                total: item.totalVotes
-            }
-
-            content.subgenreId = item.subgenreId;
-
-            mediumsGenresContainer.push(content);
-        })
-
-        setGenresSubgenres(mediumsGenresContainer)
-
-        setUserPickedSubgenresLength(userPickedContainer.length);
-
-    });
+    }
 
     const searchHandler = () => {
         console.log(searchValue)
@@ -145,7 +113,7 @@ export default function RelationshipsSubgenres() {
             date: date,
             genreId: genreId,
             subgenreId: subgenreId,
-            userId: reducers.user.id,
+            userId: userId,
             symbol: symbol
         }
 
@@ -165,14 +133,15 @@ export default function RelationshipsSubgenres() {
             })
             .catch(err => console.error(err))
 
-        getGenreSubgenres();
+        // getGenreSubgenres();
+        dispatchRequestsCallback();
         setSearchValue('');
         setUserPickedSubgenresLength(userPickLength);
 
     }
 
     const RenderVotedSubgenre = () => {
-        return fetchGenreSubgenres.picks.map(subgenre => {
+        return fetchGenreSubgenres.map(subgenre => {
             return (
                 <li key={subgenre.subgenreId} className="userVotedForThis">
                     <p onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></p>{" "}
@@ -183,24 +152,24 @@ export default function RelationshipsSubgenres() {
 
     const RenderSearchedSubgenre = () => {
         return subgenresFiltered.map(subgenre => {
-                if(subgenre.voted === 1) {
+            if(subgenre.voted === 1) {
+                return (
+                    <li className="userVotedForThis" key={subgenre.id}>
+                        <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}</p>{" "}
+                    </li>
+                );
+            } else {
+                if (userPickedSubgenresLength === 3) {
+                    return <li key={subgenre.id}><p><b>{subgenre.name}</b> | {subgenre.votes}</p></li>;
+                } else {
                     return (
-                        <li className="userVotedForThis" key={subgenre.id}>
-                            <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '-')}><b>{subgenre.name}</b> | {subgenre.votes}</p>{" "}
+                        <li key={subgenre.id}>
+                            <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b>| {subgenre.votes}</p>{" "}
                         </li>
                     );
-                } else {
-                    if (userPickedSubgenresLength === 3) {
-                        return <li key={subgenre.id}><p><b>{subgenre.name}</b> | {subgenre.votes}</p></li>;
-                    } else {
-                        return (
-                            <li key={subgenre.id}>
-                                <p onClick={(e) => voteSubgenreIntoGenre(e, genre.id, subgenre.id, '+')}><b>{subgenre.name}</b>| {subgenre.votes}</p>{" "}
-                            </li>
-                        );
-                    }
                 }
-            })
+            }
+        })
     }
 
     return (

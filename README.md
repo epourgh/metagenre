@@ -7,7 +7,7 @@ docker ps -a
 > CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                          PORTS                 NAMES
 > 2013d0869b9c        mysql:latest        "docker-entrypoint.s…"   27 seconds ago      Up 25 seconds                   3306/tcp, 33060/tcp   mysql
 
-docker exec -it my-mysql /bin/bash
+docker exec -it metagenre_db_1 /bin/bash
 mysql -uroot -p -A
 > PW: my-secret-pw 
 

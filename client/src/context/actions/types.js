@@ -27,5 +27,8 @@ export const ACTIONS = {
                 MEDIUMS_SUBGENRES: 'fetch-multiple-mediums-subgenres'
             }
         }
+    },
+    RELATIONSHIP: {
+        PICKS: 'fetch-multiple-relationship-picks'    
     }
 }

@@ -68,3 +68,18 @@ export const actionMedium = {
         }
     }
 };
+
+export const actionRelationship = {
+    actionRelationshipInit: function(objectLiterals) {
+        return {
+            type: ACTIONS.MEDIUM.INIT, 
+            payload: objectLiterals
+        }
+    },  
+    actionPickedSubgenres: function(choices) {
+        return {
+            type: ACTIONS.RELATIONSHIP.PICKS,
+            payload: choices
+        }
+    }
+}

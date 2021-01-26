@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { GlobalContext } from '../../context/GlobalState';
 
 export default function RelationshipsIndex() {
     
+    const {backendUrl} = useContext(GlobalContext) || 'localhost:3000';
     const [genres, setGenres] = useState([]);
     const [genresFiltered, setGenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -10,7 +12,7 @@ export default function RelationshipsIndex() {
 
     useEffect(() => {
         getGenres();
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const searchHandler = () => {
         console.log(searchValue)
@@ -33,7 +35,7 @@ export default function RelationshipsIndex() {
 
 
     const getGenres = (stringParam) => {
-        fetch(`http://localhost:4000/genres`)
+        fetch(`${backendUrl}/genres`)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data.length)
