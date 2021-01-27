@@ -69,7 +69,7 @@ export const GlobalProvider = ({ children }) => {
     };
 
     const relationshipInitState = {
-      fetchedSubgenresPicks: [],
+      userSubgenreChoices: [],
       genresSubgenres: [],
       userPickedSubgenresLength: 3
     };

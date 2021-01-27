@@ -4,7 +4,7 @@ import { ACTIONS } from '../actions/types';
 function initRelationship(state, payload) {
   return {
     ... state,
-    fetchedSubgenresPicks: [],
+    userSubgenreChoices: [],
     genresSubgenres: [],
     userPickedSubgenresLength: 3
   }
@@ -52,7 +52,7 @@ export default function relationship(state, action) {
 
         console.log('--Reducers Relationship--')
 
-        return {... state, fetchedSubgenresPicks: fetchGenreSubgenres[0], genresSubgenres: mediumsGenresContainer, userPickedSubgenresLength: userPickedContainer.length }
+        return {... state, userSubgenreChoices: fetchGenreSubgenres[0], genresSubgenres: mediumsGenresContainer, userPickedSubgenresLength: userPickedContainer.length }
         
     default:
       return state;

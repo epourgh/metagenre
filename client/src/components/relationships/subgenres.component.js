@@ -30,7 +30,7 @@ export default function RelationshipsSubgenres() {
     });
     const [subgenresFiltered, setSubgenresFiltered] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [fetchGenreSubgenres, setFetchGenreSubgenres] = useState([]);
+    const [userSubgenreChoices, setUserSubgenreChoices] = useState([]);
     const [message, setMessage] = useState('Currently nothing to show.');
     const [genresSubgenres, setGenresSubgenres] = useState([]);
     const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
@@ -51,7 +51,7 @@ export default function RelationshipsSubgenres() {
 
         setGenresSubgenres((typeof reducers.relationship.genresSubgenres !== "undefined")?reducers.relationship.genresSubgenres:[]);
         setUserPickedSubgenresLength((typeof reducers.relationship.userPickedSubgenresLength !== "undefined")?reducers.relationship.userPickedSubgenresLength:3);
-        setFetchGenreSubgenres((typeof reducers.relationship.fetchedSubgenresPicks !== "undefined")?reducers.relationship.fetchedSubgenresPicks:[]);
+        setUserSubgenreChoices((typeof reducers.relationship.userSubgenreChoices !== "undefined")?reducers.relationship.userSubgenreChoices:[]);
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -139,7 +139,7 @@ export default function RelationshipsSubgenres() {
     }
 
     const RenderVotedSubgenre = () => {
-        return fetchGenreSubgenres.map(subgenre => {
+        return userSubgenreChoices.map(subgenre => {
             return (
                 <li key={subgenre.subgenreId} className="userVotedForThis">
                     <p onClick={(e) => voteSubgenreIntoGenre(e, subgenre.genreId, subgenre.subgenreId, '-')}><b>{subgenre.name}</b></p>{" "}
