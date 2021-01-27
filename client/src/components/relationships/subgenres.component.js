@@ -5,7 +5,6 @@ import { actionRelationship } from '../../context/actions/index';
 function getWindowParam() {
     var url_string = window.location.href;
     var url = new URL(url_string);
-    console.log(`id: ${url.searchParams.get("id")}`)
     const id = url.searchParams.get("id").toString();
     const title = capitalizeFirstLetter(url.searchParams.get("title").toString());
     const windowsParams = [id, title];
@@ -35,31 +34,42 @@ export default function RelationshipsSubgenres() {
     const [message, setMessage] = useState('Currently nothing to show.');
     const [genresSubgenres, setGenresSubgenres] = useState([]);
     const [userPickedSubgenresLength, setUserPickedSubgenresLength] = useState(3);
+    const [voted, setVoted] = useState(1);
 
     useEffect(() => {
+        console.log('dispatchedRequestsCallback')
         dispatchRequestsCallback();
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
+
+        console.log('useEffect(reducers)')
 
         if (userId === 0 && typeof reducers.user.id !== "undefined") {
             setUserId(reducers.user.id)
         }
 
         setGenresSubgenres((typeof reducers.relationship.genresSubgenres !== "undefined")?reducers.relationship.genresSubgenres:[]);
-        setUserPickedSubgenresLength((typeof reducers.relationship.userPickedSubgenresLength !== "undefined")?reducers.relationship.userPickedSubgenresLength:7);
+        setUserPickedSubgenresLength((typeof reducers.relationship.userPickedSubgenresLength !== "undefined")?reducers.relationship.userPickedSubgenresLength:3);
         setFetchGenreSubgenres((typeof reducers.relationship.fetchedSubgenresPicks !== "undefined")?reducers.relationship.fetchedSubgenresPicks:[]);
-        // console.log('---- INIT ---')
-        // getGenreSubgenres()
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        console.log('---- VOTED ---')
-        // getGenreSubgenres();
         dispatchRequestsCallback();
         searchHandler();
-    }, [userPickedSubgenresLength]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        dispatchRequestsCallback();
+    }, [voted]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        dispatchRequestsCallback();
+    }, [voted]) // eslint-disable-line react-hooks/exhaustive-deps
+    
+    useEffect(() => {
+        searchHandler();
+    }, [genresSubgenres]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const dispatchRequestsCallback = () => {
         dispatchRequests.pickedSubgenres();
@@ -72,7 +82,6 @@ export default function RelationshipsSubgenres() {
     }
 
     const searchHandler = () => {
-        console.log(searchValue)
         let [tempSubgenres, j] = [[], 0];
 
 
@@ -96,16 +105,7 @@ export default function RelationshipsSubgenres() {
 
 
     const voteSubgenreIntoGenre = (e, genreId, subgenreId, symbol) => {
-        e.preventDefault();
-
-        let userPickLength = userPickedSubgenresLength;
-
-        if (symbol === '+') {
-            userPickLength += 1;
-        } else if (symbol === '-') {
-            userPickLength -= 1;
-        }
-        console.log(`user pick length: ${userPickLength}`)
+        // e.preventDefault();
 
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
@@ -130,13 +130,11 @@ export default function RelationshipsSubgenres() {
             .then(response => response.json())
             .then(response => {
                 console.log(` RESPONSE: ${response.data}`)
+                setVoted(1);
+                setVoted(0);
             })
             .catch(err => console.error(err))
 
-        // getGenreSubgenres();
-        dispatchRequestsCallback();
-        setSearchValue('');
-        setUserPickedSubgenresLength(userPickLength);
 
     }
 
