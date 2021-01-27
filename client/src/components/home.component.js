@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
 import FrontPageMediumsDisplay from './frontPageMediums.component';
+import RenderMediumReleaseTitle from './renderMediumReleaseTitle.component';
 
 export default function RelationshipsIndex() {
     
@@ -214,7 +215,6 @@ export default function RelationshipsIndex() {
         )
     }
 
-
     const MediumsReleases = () => {
         return (
             <div className="grid-container-3-cl">
@@ -222,69 +222,21 @@ export default function RelationshipsIndex() {
                     <h1 className="jumbo-h1">Books</h1>
                     <br/><hr className='inner-card-hr-mobile-display'/>
                     <ul className="releases">
-                        {
-                            mediumsReleases.books.map(book => {
-                                return (
-                                    <li key={book.id}>
-                                        <div className="grid-releases-container-2-cl">
-                                            <div className="grid-cell">
-                                                <p>{`${book.month}/${book.day}/${book.year}`}</p>
-                                            </div>
-                                            <div className="grid-cell">
-                                                <b><Link to={`medium?id=${book.id}`}>{book.title}</Link></b>
-                                            </div>
-                                        </div>
-                                        <hr className="greyLine"/>
-                                    </li>
-                                )
-                            })
-                        }
+                        { mediumsReleases.books.map(book => <RenderMediumReleaseTitle id={book.id} mediumObject={book} />) }
                     </ul>
                 </div>
                 <div className = "individualStyling individualHomePageStyling grid-cell">
                     <h1 className="jumbo-h1">Films</h1>
                     <br/><hr className='inner-card-hr-mobile-display'/>
                     <ul className="releases">
-                        {
-                            mediumsReleases.films.map(film => {
-                                return (
-                                    <li key={film.id}>
-                                        <div className="grid-releases-container-2-cl">
-                                            <div className="grid-cell">
-                                                <p>{`${film.month}/${film.day}/${film.year}`}</p>
-                                            </div>
-                                            <div className="grid-cell">
-                                                <b><Link to={`medium?id=${film.id}`}>{film.title}</Link></b>
-                                            </div>
-                                        </div>
-                                        <hr className="greyLine"/>
-                                    </li>
-                                )
-                            })
-                        }
+                        { mediumsReleases.films.map(film => <RenderMediumReleaseTitle id={film.id} mediumObject={film} />) }
                     </ul>
                 </div>
                 <div className = "individualStyling individualHomePageStyling grid-cell">
                     <h1 className="jumbo-h1">Games</h1>
                     <br/><hr className='inner-card-hr-mobile-display'/>
                     <ul className="releases">
-                        {
-                            mediumsReleases.games.map(game => {
-                                return (
-                                    <li key={game.id}>
-                                        <div className="grid-releases-container-2-cl">
-                                            <div className="grid-cell">
-                                                <p>{`${game.month}/${game.day}/${game.year}`}</p>
-                                            </div>
-                                            <div className="grid-cell">
-                                                <b><Link to={`medium?id=${game.id}`}>{game.title}</Link></b>
-                                            </div>
-                                        </div>
-                                        <hr className="greyLine"/>
-                                    </li>
-                                )
-                            })
-                        }
+                        { mediumsReleases.games.map(game => <RenderMediumReleaseTitle id={game.id} mediumObject={game} />) }
                     </ul>
                 </div>
             </div>

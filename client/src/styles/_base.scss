@@ -395,6 +395,7 @@ input::placeholder {
 .grid-releases-container-2-cl {
   display: grid;
   grid-template-columns: 30% 70%;
+  font-size: .8rem;
 }
 
 .grid-cell {
@@ -403,7 +404,7 @@ input::placeholder {
 }
 
 .grid-releases-container-2-cl>.grid-cell {
-  margin: 1%;
+  margin: 0%;
   min-height: 2em;
 }
 
