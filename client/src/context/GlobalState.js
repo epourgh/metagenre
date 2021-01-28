@@ -4,8 +4,9 @@ import dispatchMiddleware from "./middleware/async";
 import user from "./reducers/user";
 import medium from "./reducers/medium";
 import relationship from "./reducers/relationship";
+import home from "./reducers/home";
 
-import { actionUser, actionMedium, actionRelationship } from "./actions/index";
+import { actionUser, actionMedium, actionRelationship, actionHome } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
@@ -29,8 +30,9 @@ export const GlobalProvider = ({ children }) => {
   const [reducers, dispatch] = useReducer(combineReducers({
     user: user,
     medium: medium,
-    relationship: relationship
-  }), {user: [], medium: [], relationship: []});
+    relationship: relationship,
+    home: home
+  }), {user: [], medium: [], relationship: [], home: []});
   
   useEffect(() => {
 
@@ -74,9 +76,15 @@ export const GlobalProvider = ({ children }) => {
       userPickedSubgenresLength: 3
     };
 
+    const homeInitState = {
+      frontPageMediums: [],
+      mediumsReleases: {books: [], films: [], games: []}
+    }
+
     dispatchMiddleware(dispatch)(actionUser.signIn(userInitState));
     dispatchMiddleware(dispatch)(actionMedium.actionMediumInit(mediumInitState));
     dispatchMiddleware(dispatch)(actionRelationship.actionRelationshipInit(relationshipInitState));
+    dispatchMiddleware(dispatch)(actionHome.actionHomeInit(homeInitState));
 
   }, []);
 

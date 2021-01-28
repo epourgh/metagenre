@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import medium from '../../../context/reducers/medium';
 
 export default function Release({id, mediumObject}) {
 

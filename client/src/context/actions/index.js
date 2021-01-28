@@ -83,3 +83,26 @@ export const actionRelationship = {
         }
     }
 }
+
+
+export const actionHome = {
+    actionHomeInit: function(objectLiterals) {
+        return {
+            type: ACTIONS.HOME.INIT, 
+            payload: objectLiterals
+        }
+    },  
+    actionHomeFront: function(choices) {
+        return {
+            type: ACTIONS.HOME.FRONT,
+            payload: choices
+        }
+    },  
+    actionHomeReleases: function(choices) {
+        return {
+            type: ACTIONS.HOME.RELEASES,
+            payload: choices
+        }
+    }
+}
+

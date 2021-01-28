@@ -1,80 +1,39 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext, DispatchContext } from '../context/GlobalState';
 import Gallery from './home/gallery.component';
 import About from './home/about.component';
 import Relationships from './home/relationships.component';
 import Releases from './home/releases/releases.component';
+import { actionHome } from '../context/actions/index';
 
 export default function RelationshipsIndex() {
     
-    const {backendUrl} = useContext(GlobalContext) || 'localhost:3000';
+    const { dispatchMiddleware, dispatch } = useContext(DispatchContext);
+    const {backendUrl, reducers} = useContext(GlobalContext) || 'localhost:3000';
     const [frontPageMediums, setFrontPageMediums] = useState([]);
     const [mediumsReleases, setMediumsReleases] = useState({books: [], films: [], games: []});
 
-
     useEffect(() => {
-        getFrontPageMediums();
-        getMediumsByTypeAndRelease();
+        dispatchRequestsCallback();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const getMediumsByTypeAndRelease = () => {
+    useEffect(() => {
+        setFrontPageMediums((typeof reducers.home.frontPageMediums !== "undefined")?reducers.home.frontPageMediums:[]);
+        setMediumsReleases((typeof reducers.home.mediumsReleases !== "undefined")?reducers.home.mediumsReleases:{books: [], films: [], games: []});
+    }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
 
-        Promise.all([
-            fetch(`${backendUrl}/mediums/recent?mediumType=book`),
-            fetch(`${backendUrl}/mediums/recent?mediumType=film`),
-            fetch(`${backendUrl}/mediums/recent?mediumType=game`)
-        ])
-        .then(([res1, res2, res3]) => Promise.all([res1.json(), res2.json(), res3.json()]))
-        .then(([data1, data2, data3]) => {
-            setMediumsReleases({
-                books: data1.data, 
-                films: data2.data, 
-                games: data3.data
-            })
-        });
-    
+    const dispatchRequestsCallback = () => {
+        dispatchRequests.homeFront();
+        dispatchRequests.releases();
     }
 
-    const getFrontPageMediums = (stringParam) => {
-        const container = {};
-        fetch(`${backendUrl}/mediumsFrontPage`)
-            .then(response => response.json())
-            .then(response => {
-                console.log(response)
-                if (response.data.length > 0) {
-                    response.data.forEach(frontPageMediumContent => {
-
-                        let mediumsIdToString = frontPageMediumContent.id;
-
-                        if (container[mediumsIdToString] === undefined) {
-                            container[mediumsIdToString] = {
-                                genres: [],
-                            };
-                            container[mediumsIdToString].id = frontPageMediumContent.id;
-                            container[mediumsIdToString].title = frontPageMediumContent.title;
-                            container[mediumsIdToString].mediumType = frontPageMediumContent.mediumType.toUpperCase();
-                            container[mediumsIdToString].shortDesc = frontPageMediumContent.shortDesc;
-                        }
-
-                        let holder = {}
-                        holder.mediumGenreId = frontPageMediumContent.mediumGenreId;
-                        holder.name = frontPageMediumContent.name;
-                        holder.votes = frontPageMediumContent.votes;
-                        container[mediumsIdToString].genres.push(holder);
-                    })
-
-                    let container2 = [];
-
-                    for (var key in container) {
-                        container2.push(container[key])
-                    }
-                    setFrontPageMediums(container2)
-                }
-            
-
-
-            });
-
+    const dispatchRequests = {
+        homeFront: () => {
+            dispatchMiddleware(dispatch)(actionHome.actionHomeFront({url: `${backendUrl}/mediumsFrontPage`}));
+        },
+        releases: () => {
+            dispatchMiddleware(dispatch)(actionHome.actionHomeReleases({url: [`${backendUrl}/mediums/recent?mediumType=book`, `${backendUrl}/mediums/recent?mediumType=film`, `${backendUrl}/mediums/recent?mediumType=game`]}));
+        }
     }
 
     return (

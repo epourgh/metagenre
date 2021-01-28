@@ -30,5 +30,10 @@ export const ACTIONS = {
     },
     RELATIONSHIP: {
         PICKS: 'fetch-multiple-relationship-picks'    
+    },
+    HOME: {
+        INIT: 'initial-state',
+        FRONT: 'fetch-single-front-page-mediums',
+        RELEASES: 'fetch-multiple-releases'
     }
 }
