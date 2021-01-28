@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FrontPageMediumsDisplay({frontPageMediums, clickedLink}) {
+export default function Curated({frontPageMediums, clickedLink}) {
     return (
         <ul>
             {

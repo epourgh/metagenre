@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import medium from '../context/reducers/medium';
+import medium from '../../../context/reducers/medium';
 
-export default function RenderMediumReleaseTitle({id, mediumObject}) {
+export default function Release({id, mediumObject}) {
 
     if (typeof mediumObject === "undefined") {
         return <></>;
