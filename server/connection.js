@@ -5,7 +5,7 @@ let connection = mysql.createPool({
     host: process.env.MYSQL_ROOT_HOST,
     port: process.env.MYSQL_PORT,
     user: 'root',
-    password: 'root123',
+    password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     multipleStatements: true
 });
