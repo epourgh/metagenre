@@ -14,19 +14,13 @@ export const DispatchContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
 
-  const [mediums, setMediums] = useState([{
-    id: 0,
-    tag: 0,
-    title: '',
-    active: 0
-  }]);
-
+  const [mediums, setMediums] = useState([{ id: 0, tag: 0, title: '', active: 0 }]);
   const [genres, setGenres] = useState([{id: 0, name: ''}]);
   const [subgenres, setSubgenres] = useState([{id: 0, name: ''}]);
   const [showNavStyle, setShowNavStyle] = useState('navbar');
 
+  // const backendUrl = 'http://localhost:4000'; // docker container does not need localhost with local nginx
   const backendUrl = '/api';
-  // const backendUrl = 'http://localhost:4000';
 
   const [reducers, dispatch] = useReducer(combineReducers({
     user: user,
@@ -39,7 +33,7 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
 
     dispatchRequestsCallback();
-    
+
     dispatchMiddleware(dispatch)(actionUser.signIn(userInitState));
     dispatchMiddleware(dispatch)(actionMedium.actionMediumInit(mediumInitState));
     dispatchMiddleware(dispatch)(actionRelationship.actionRelationshipInit(relationshipInitState));
@@ -49,7 +43,6 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-
     setMediums((typeof reducers.global.mediums !== "undefined")?reducers.global.mediums:[{ id: 0, tag: 0, title: '', active: 0 }]);
     setGenres((typeof reducers.global.genres !== "undefined")?reducers.global.genres:[{id: 0, name: ''}]);
     setSubgenres((typeof reducers.global.subgenres !== "undefined")?reducers.home.subgenres:[{id: 0, name: ''}]);
@@ -78,18 +71,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
   return (
-    <GlobalContext.Provider value={
-      {
-        backendUrl,
-        mediums,
-        setMediums,
-        genres,
-        subgenres,
-        showNavStyle,
-        setShowNavStyle,
-        reducers
-      }
-    }>
+    <GlobalContext.Provider value={{ backendUrl, mediums, setMediums, genres, subgenres, showNavStyle, setShowNavStyle, reducers }}>
       <DispatchContext.Provider value={{dispatchMiddleware, dispatch}}>
         {children}
       </DispatchContext.Provider>

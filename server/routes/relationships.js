@@ -278,45 +278,68 @@ router.post('/relationships', verifyToken, (req, res) => {
 
 router.get('/genreSubgenres', (req, res) => {
 
-            const {genreId} = req.query;
+    const {genreId} = req.query;
 
+    const GENRE_SUBGENRES_QUERY = `
+        SELECT r.id, r.genreId, g.name as genreName, r.subgenreId, s.name as subgenreName, r.votes, rtt.votes as totalVotesInSubgenre
+        FROM metagenre.relationships r, metagenre.genres g, metagenre.subgenres s, metagenre.relationshipsTotalTally rtt
+        WHERE r.subgenreId = s.id AND r.genreId = g.id AND rtt.id = s.id
+        AND r.genreId = ${genreId} AND r.votes > (rtt.votes / 2);
+    `;
 
-            const GENRE_SUBGENRES_QUERY = `
-                SELECT r.id, r.genreId, g.name as genreName, r.subgenreId, s.name as subgenreName, r.votes, rtt.votes as totalVotesInSubgenre
-                FROM metagenre.relationships r, metagenre.genres g, metagenre.subgenres s, metagenre.relationshipsTotalTally RTT
-                WHERE r.subgenreId = s.id AND r.genreId = g.id AND rtt.id = s.id
-                AND r.genreId = ${genreId} AND r.votes > (rtt.votes / 2);
-            `;
-
-            connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
-                if (err) {
-                    return res.send(err);
-                } else {
-                    return res.json({
-                        data: results
-                    })
-                }
-            });
+    connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.json({
+                data: results
+            })
+        }
+    });
 });
 
 router.get('/genreSubgenresDesc', (req, res) => {
 
-            const {genreId} = req.query;
+    const {genreId} = req.query;
 
-            const GENRE_SUBGENRES_QUERY = `
-                SELECT r.subgenreId, s.name, r.votes, rtt.votes totalVotes FROM metagenre.relationships r, metagenre.relationshipsTotalTally rtt, metagenre.subgenres s
-                WHERE genreId = ${genreId} AND r.subgenreId = rtt.subgenreId AND s.id = r.subgenreId ORDER BY r.votes DESC;
-            `;
+    const GENRE_SUBGENRES_QUERY = `
+        SELECT r.subgenreId, s.name, r.votes, rtt.votes totalVotes FROM metagenre.relationships r, metagenre.relationshipsTotalTally rtt, metagenre.subgenres s
+        WHERE genreId = ${genreId} AND r.subgenreId = rtt.subgenreId AND s.id = r.subgenreId ORDER BY r.votes DESC;
+    `;
 
-            connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
-                if (err) {
-                    return res.send(err);
-                } else {
-                    return res.json({
-                        data: results
-                    })
-                }
-            });
+    connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.json({
+                data: results
+            })
+        }
+    });
 });
+
+router.get('/subgenreGenres', (req, res) => {
+
+    const {subgenreId} = req.query;
+
+    const GENRE_SUBGENRES_QUERY = `
+        SELECT r.id, r.genreId, g.name as genreName, r.subgenreId, s.name as subgenreName, r.votes, rtt.votes as totalVotesInSubgenre
+        FROM metagenre.relationships r, metagenre.genres g, metagenre.subgenres s, metagenre.relationshipsTotalTally rtt
+        WHERE r.subgenreId = s.id AND r.genreId = g.id AND rtt.id = s.id
+        AND r.subgenreId = ${subgenreId} AND r.votes > (rtt.votes / 2);
+    `;
+
+    connection.query(GENRE_SUBGENRES_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.json({
+                data: results
+            })
+        }
+    });
+});
+
+
 
 module.exports = router;
