@@ -106,3 +106,30 @@ export const actionHome = {
     }
 }
 
+export const actionGlobal = {
+    actionGlobalInit: function(objectLiterals) {
+        return {
+            type: ACTIONS.GLOBAL.INIT, 
+            payload: objectLiterals
+        }
+    },  
+    actionGlobalMediums: function(objectLiterals) {
+        return {
+            type: ACTIONS.GLOBAL.MEDIUMS, 
+            payload: objectLiterals
+        }
+    },  
+    actionGlobalGenres: function(choices) {
+        return {
+            type: ACTIONS.GLOBAL.GENRES,
+            payload: choices
+        }
+    },  
+    actionGlobalSubgenres: function(choices) {
+        return {
+            type: ACTIONS.GLOBAL.SUBGENRES,
+            payload: choices
+        }
+    }
+}
+

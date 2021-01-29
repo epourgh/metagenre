@@ -5,8 +5,9 @@ import user from "./reducers/user";
 import medium from "./reducers/medium";
 import relationship from "./reducers/relationship";
 import home from "./reducers/home";
-
-import { actionUser, actionMedium, actionRelationship, actionHome } from "./actions/index";
+import global from "./reducers/global";
+import { userInitState, mediumInitState, relationshipInitState, homeInitState, globalInitState } from "./reducers/init"
+import { actionUser, actionMedium, actionRelationship, actionHome, actionGlobal } from "./actions/index";
 
 export const GlobalContext = createContext();
 export const DispatchContext = createContext();
@@ -31,99 +32,49 @@ export const GlobalProvider = ({ children }) => {
     user: user,
     medium: medium,
     relationship: relationship,
-    home: home
-  }), {user: [], medium: [], relationship: [], home: []});
+    home: home,
+    global: global
+  }), { user: [], medium: [], relationship: [], home: [], global: [] });
   
   useEffect(() => {
 
-    getMediums();
-    getGenres();
-    getSubgenres();
-
-    const userInitState =  {id: parseInt(localStorage.getItem('reducer-id')) || 0, 
-                               username: localStorage.getItem('reducer-username') || 'Currently not logged in.', 
-                               display: localStorage.getItem('reducer-display') || '-'};
+    dispatchRequestsCallback();
     
-    const mediumInitState = {
-      mediumsGenres: [],
-      userpickedGenresLength: 0,
-      mediumsSubgenres: [],
-      mediumsCreatorsSeries: [],
-      similarTitle: [],
-      extLinks: [], 
-      similar: [{title: '', mediums: []}],  
-      details: [{title: ''}], 
-      platforms: [], 
-      regions: [], 
-      pictureCount: [0, 0, 0, '', ''], 
-      medium: {
-              genreName: '',
-              genreType: 'genre'
-      },
-      mediumsGenresMultiple: {
-              items: [], 
-              mediumsGenresView: []
-      },
-      mediumsSubgenresMultiple: {
-              items: [], 
-              mediumsGenresView: []
-      }
-    };
-
-    const relationshipInitState = {
-      userSubgenreChoices: [],
-      genresSubgenres: [],
-      userPickedSubgenresLength: 3
-    };
-
-    const homeInitState = {
-      frontPageMediums: [],
-      mediumsReleases: {books: [], films: [], games: []}
-    }
-
     dispatchMiddleware(dispatch)(actionUser.signIn(userInitState));
     dispatchMiddleware(dispatch)(actionMedium.actionMediumInit(mediumInitState));
     dispatchMiddleware(dispatch)(actionRelationship.actionRelationshipInit(relationshipInitState));
     dispatchMiddleware(dispatch)(actionHome.actionHomeInit(homeInitState));
+    dispatchMiddleware(dispatch)(actionGlobal.actionGlobalInit(globalInitState));
 
   }, []);
 
   useEffect(() => {
+
+    setMediums((typeof reducers.global.mediums !== "undefined")?reducers.global.mediums:[{ id: 0, tag: 0, title: '', active: 0 }]);
+    setGenres((typeof reducers.global.genres !== "undefined")?reducers.global.genres:[{id: 0, name: ''}]);
+    setSubgenres((typeof reducers.global.subgenres !== "undefined")?reducers.home.subgenres:[{id: 0, name: ''}]);
+
     localStorage.setItem('reducer-id', reducers.user.id);
     localStorage.setItem('reducer-username', reducers.user.username);
     localStorage.setItem('reducer-display', reducers.user.display);
   }, [reducers]);
-  
 
-  const getMediums = () => {
-    fetch(`${backendUrl}/mediumsForSearch`)
-      .then(response => response.json())
-      .then(response => {
-        setMediums(response.data.map(medium => {
-          return {
-            id: medium.id,
-            tag: medium.title.toLowerCase(),
-            title: medium.title,
-            active: 0
-          };
-        }))
-      });
+  const dispatchRequestsCallback = () => {
+      dispatchRequests.mediums();
+      dispatchRequests.genres();
+      dispatchRequests.subgenres();
   }
 
-  const getGenres = () => {
-    fetch(`${backendUrl}/genres`)
-      .then(response => response.json())
-      .then(response => {
-        setGenres(response.data)
-      });
-  }
-
-  const getSubgenres = () => {
-    fetch(`${backendUrl}/subgenres`)
-      .then(response => response.json())
-      .then(response => {
-        setSubgenres(response.data)
-      });
+  const dispatchRequests = {
+      mediums: () => {
+          dispatchMiddleware(dispatch)(actionGlobal.actionGlobalMediums({url: `${backendUrl}/mediumsForSearch`}));
+      },
+      genres: () => {
+          dispatchMiddleware(dispatch)(actionGlobal.actionGlobalGenres({url: `${backendUrl}/genres`}));
+      },
+      subgenres: () => {
+          dispatchMiddleware(dispatch)(actionGlobal.actionGlobalSubgenres({url: `${backendUrl}/subgenres`}));
+      }
   }
 
   return (

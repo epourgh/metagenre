@@ -17,6 +17,7 @@ export default function RelationshipsIndex() {
         dispatchRequestsCallback();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+
     useEffect(() => {
         setFrontPageMediums((typeof reducers.home.frontPageMediums !== "undefined")?reducers.home.frontPageMediums:[]);
         setMediumsReleases((typeof reducers.home.mediumsReleases !== "undefined")?reducers.home.mediumsReleases:{books: [], films: [], games: []});

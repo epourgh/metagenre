@@ -1,4 +1,10 @@
 export const ACTIONS = {
+    GLOBAL: {
+        INIT: 'initial-state',
+        MEDIUMS: 'fetch-single-mediums',
+        GENRES: 'fetch-single-genres',
+        SUBGENRES: 'fetch-single-subgenres'
+    },
     USER: {
         SIGN_IN: 'sign-in',
         SIGN_OUT: 'sign-out'        
