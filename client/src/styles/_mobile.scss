@@ -54,7 +54,7 @@
     }
 
     .column-header-2 {
-        padding: 10px 0;
+        padding: 0 0 10px 0;
         float: left;
         width: 100%;
     }
@@ -82,7 +82,7 @@
     }
 
     .column-header-1 {
-        padding: 15px 15px 0 15px
+        padding: 0 15px 0 15px
     }
 
     .column-header-mobile {
@@ -135,7 +135,7 @@
         color: $white;
         letter-spacing: 0.3em;
         text-transform: uppercase;
-        font-size: 1.5em;
+        font-size: 1em;
     }
 
     .row, .column {
@@ -207,7 +207,7 @@
     }
 
     .navbar-brand {
-        font-size: 1.2em;
+        font-size: .8em;
     }
 
     .banner-search-input {
