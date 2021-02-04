@@ -3,7 +3,7 @@ import Release from './release.component';
 
 export default function Releases({releases}) {
     return (
-        <div className="grid-container-3-cl">
+        <div className="grid-container-3-cl desktop-grid-container-2-cl">
             <div className = "individualStyling individualHomePageStyling grid-cell">
                 <h1 className="jumbo-h1">Books</h1>
                 <br/><hr className='inner-card-hr-mobile-display'/>

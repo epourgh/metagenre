@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalState';
-import { Require as RequireAuthentication} from './auth/require.component'
+import { Require as RequireAuthentication} from './auth/require.component';
+import timeDifference from '../../utility/time-difference.utility';
 
 export default function Profile() {
     
     const [userId, setUserId] = useState(0);
     const {backendUrl, reducers, mediums, genres, subgenres} = useContext(GlobalContext);
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
+
+    useEffect(() => {
+        getUserMediumsGenresVotes()
+    }, [])
 
     useEffect(() => {
         if (userId === 0 && typeof reducers.user.id !== "undefined") {
@@ -16,50 +21,13 @@ export default function Profile() {
     }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
     
     const getUserMediumsGenresVotes = () => {
-
         fetch(`${backendUrl}/userBooleanMediums/${userId}`)
         .then(response => response.json())
         .then(response => {
-            console.log('response.data')
-            console.log(response.data);
             if (response.data !== undefined) {
                 setUserMediumsGenres(response.data);
-                console.log(userMediumsGenres);
             }
         });
-    }
-
-    function timeDifference(previous) {
-
-        previous = new Date(previous);
-
-        let current = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        current = new Date(current);
-
-        console.log(`curr: ${current}`)
-        console.log(`prev: ${previous}`)
-
-        var msPerMinute = 60 * 1000;
-        var msPerHour = msPerMinute * 60;
-        var msPerDay = msPerHour * 24;
-        var msPerMonth = msPerDay * 30;
-        var msPerYear = msPerDay * 365;
-
-        var elapsed = current - previous;
-
-        if (elapsed < msPerMinute) {
-            return Math.round(elapsed / 1000) + ' seconds ago';
-        } else if (elapsed < msPerHour) {
-            return Math.round(elapsed / msPerMinute) + ' minutes ago';
-        } else if (elapsed < msPerDay) {
-            return Math.round(elapsed / msPerHour) + ' hours ago';
-        } else if (elapsed < msPerMonth) {
-            return 'approximately ' + Math.round(elapsed / msPerDay) + ' days ago';
-        } else if (elapsed < msPerYear) {
-            return 'approximately ' + Math.round(elapsed / msPerMonth) + ' months ago';
-        } else {
-            return 'approximately ' + Math.round(elapsed / msPerYear) + ' years ago';
-        }
     }
 
     const RenderUserDisplay = () => {
@@ -80,20 +48,23 @@ export default function Profile() {
             )
         }
     }
+    
 
     const RenderUserMediumsGenres = () => {
         if (mediums[0].id !== 0 && genres[0].id !== 0 && subgenres[0].id !== 0) {
 
+            // ids need to be subtracted as mediums/genres/subgenres containers index at 0
+            
             return (
                 <>
                     {
                         userMediumsGenres.map(userMediumsGenre => {
                             if (userMediumsGenre.category === 'genres') {
-                                return (<span key={userMediumsGenre.id}><hr className="greyLine"/><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {genres[userMediumsGenre.genreId].name}(genre) {" "} <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i></p></span>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine"/><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId-1].title}</b></a>: {genres[userMediumsGenre.genreId-1].name}(genre) {" "} <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i></p></span>);
                             } else if (userMediumsGenre.category === 'subgenres') {
-                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId].title}</b></a>: {subgenres[userMediumsGenre.subgenreId].name}(subgenre) <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><a href={`/medium?id=${userMediumsGenre.mediumId}`}><b>{mediums[userMediumsGenre.mediumId-1].title}</b></a>: {subgenres[userMediumsGenre.subgenreId-1].name}(subgenre) <i className="greyFont">{timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
                             } else if (userMediumsGenre.category === 'relationships') {
-                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><b><a href={`/genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId].name} (genre)</a> x <a href={`/genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId].name} (subgenre)</a></b><i className="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
+                                return (<span key={userMediumsGenre.id}><hr className="greyLine" /><p className="smallFont"><b><a href={`/genre?type=genre&id=${userMediumsGenre.genreId}`}>{genres[userMediumsGenre.genreId-1].name} (genre)</a> x <a href={`/genre?type=subgenre&id=${userMediumsGenre.subgenreId}`}>{subgenres[userMediumsGenre.subgenreId-1].name} (subgenre)</a></b><i className="greyFont"> {timeDifference(userMediumsGenre.date)}</i>{" "}</p></span>);
                             }
 
                             return null;

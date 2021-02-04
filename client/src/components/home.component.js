@@ -38,10 +38,10 @@ export default function RelationshipsIndex() {
     }
 
     return (
-        <div className="bodyContentStyling styleCenter">
+        <div className="bodyContentStyling styleCenter desktopBodyContentStyling">
             <Gallery frontPageMediums={frontPageMediums} mediumsReleases={mediumsReleases} /><br />
             <hr className='hr-mobile-display' />
-            <div className="grid-container-2-cl">
+            <div className="grid-container-2-cl desktop-home-custom-2-cl">
                 <About />
                 <hr className='hr-mobile-display' />
                 <Relationships />

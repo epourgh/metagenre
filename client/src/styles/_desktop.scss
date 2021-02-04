@@ -1,0 +1,24 @@
+@media only screen and (min-width: 1600px) and (min-height: 850px) {
+    .desktopBodyContentStyling {
+        padding: 5% 20%;
+    }
+
+    .desktop-home-custom-2-cl {
+        display: grid;
+        grid-template-columns: 35% 65%;
+    }
+
+    .paragraph-crunch {
+        padding: 1% 5%;
+    }
+
+    .desktop-grid-container-2-cl {
+        grid-template-columns: 48% 48%;
+        grid-gap: 5%;
+    }
+
+    .jumbo-h1 {
+        font-size: 2em;
+    }
+
+}
