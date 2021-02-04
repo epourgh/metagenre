@@ -24,6 +24,16 @@ CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
 FLUSH PRIVILEGES;
 
 
+# Docker-dev Running Tests
+
+docker ps -a
+> <container_id> metagenre_client_1
+
+Grab the container ID for the client and within another running while the image is running, execute the following command:
+
+docker exec -it <container_id> npm run test --watch
+
+
 ### Acknowledgments & Guides
 * FontAwesome and FlatIcon icons 
 * SVG CSS filter generator to convert from black to target hex color: https://codepen.io/sosuke/pen/Pjoqqp

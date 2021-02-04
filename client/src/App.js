@@ -15,7 +15,6 @@ import ForgotChange from "./components/user/forgot/change.component";
 import Profile from "./components/user/profile.component";
 import Security from "./components/user/forgot/security.component";
 
-
 import Mediums from "./components/mediums.component";
 import Medium from "./components/medium.component";
 import Banner from "./components/template/banner.component";

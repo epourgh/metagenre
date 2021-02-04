@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import FrontPageMediumsDisplay from '../frontPageMediums.component';
+import Curated from '../home/curated.component';
 let wrapped;
 
 beforeEach(() => {
@@ -50,7 +50,7 @@ beforeEach(() => {
         }
     ]
 
-    wrapped = mount(<FrontPageMediumsDisplay frontPageMediums={initialState} />);
+    wrapped = mount(<Curated frontPageMediums={initialState} />);
 
 });
 
