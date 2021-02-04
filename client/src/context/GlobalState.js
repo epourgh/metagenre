@@ -45,7 +45,7 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     setMediums((typeof reducers.global.mediums !== "undefined")?reducers.global.mediums:[{ id: 0, tag: 0, title: '', active: 0 }]);
     setGenres((typeof reducers.global.genres !== "undefined")?reducers.global.genres:[{id: 0, name: ''}]);
-    setSubgenres((typeof reducers.global.subgenres !== "undefined")?reducers.home.subgenres:[{id: 0, name: ''}]);
+    setSubgenres((typeof reducers.global.subgenres !== "undefined")?reducers.global.subgenres:[{id: 0, name: ''}]);
 
     localStorage.setItem('reducer-id', reducers.user.id);
     localStorage.setItem('reducer-username', reducers.user.username);

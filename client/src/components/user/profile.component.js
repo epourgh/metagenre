@@ -4,16 +4,20 @@ import { Require as RequireAuthentication} from './auth/require.component'
 
 export default function Profile() {
     
+    const [userId, setUserId] = useState(0);
     const {backendUrl, reducers, mediums, genres, subgenres} = useContext(GlobalContext);
     const [userMediumsGenres, setUserMediumsGenres] = useState([]);
 
     useEffect(() => {
+        if (userId === 0 && typeof reducers.user.id !== "undefined") {
+            setUserId(reducers.user.id)
+        }
         getUserMediumsGenresVotes()
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [reducers]) // eslint-disable-line react-hooks/exhaustive-deps
     
     const getUserMediumsGenresVotes = () => {
-        
-        fetch(`${backendUrl}/userBooleanMediums/${reducers.user.id}`)
+
+        fetch(`${backendUrl}/userBooleanMediums/${userId}`)
         .then(response => response.json())
         .then(response => {
             console.log('response.data')
